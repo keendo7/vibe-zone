@@ -5,4 +5,5 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   
   has_many :authored_posts, foreign_key: 'author_id', class_name: 'Post'
+  has_many :created_comments, foreign_key: 'commenter_id', class_name: 'Comment'
 end
