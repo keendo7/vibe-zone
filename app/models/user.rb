@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  before_save :set_firstname, :set_lastname
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -10,6 +11,9 @@ class User < ApplicationRecord
   has_many :friends, through: :friendships
   has_many :received_friendships, class_name: 'Friendship', foreign_key: 'friend_id'
   has_many :received_friends, through: :received_friendships, source: 'user'
+
+  validates :first_name, length: { in: 2..40 }
+  validates :last_name, length: { in: 2..40 }
   
   def active_friends
     friends.select{ |friend| friend.friends.include?(self) }  
@@ -17,5 +21,19 @@ class User < ApplicationRecord
   
   def pending_friends
     friends.select{ |friend| !friend.friends.include?(self) }  
+  end
+
+  def timeline
+    self.authored_posts.to_a.union(self.active_friends.map { |friend| friend.authored_posts }).flatten
+  end
+
+  private
+  
+  def set_firstname
+    self.first_name = self.first_name.strip.titlecase
+  end
+
+  def set_lastname
+    self.last_name = self.last_name.strip.titlecase
   end
 end
