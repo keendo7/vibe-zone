@@ -21,9 +21,8 @@
           <li> <b> <%= post.author.full_name %> </b> </li>
           <li> added <%= time_ago_in_words(post.created_at) %> ago </li>
           <li> <%= post.content %> </li>
-          <% if post.comments %>
-            <%= link_to "#{pluralize(post.comments.count, 'comment')}", post_path(post) %>
-          <% end %>
+          <%= link_to "#{pluralize(post.comments.count, 'comment')}", post_path(post) %>
+          <p><%= pluralize(post.likes.count, 'like') %></p>
         <% end %>
       </ul>
     <% end %>

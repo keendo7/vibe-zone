@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_post, only: [:show, :like, :unlike]
 
   def home
     @posts = current_user.timeline
@@ -7,7 +8,6 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post = Post.find(params[:id])
     @comment = @post.comments.build
   end
 
@@ -16,9 +16,23 @@ class PostsController < ApplicationController
     redirect_to root_path if @post.save  
   end
 
+  def like
+    current_user.likes.create(likeable: @post)
+    redirect_to post_path(@post)  
+  end
+
+  def unlike
+    current_user.likes.find_by(likeable: @post).destroy
+    redirect_to post_path(@post)  
+  end
+
   private
 
   def post_params
     params.require(:post).permit(:content)
+  end
+
+  def set_post
+    @post = Post.find(params[:id])
   end
 end

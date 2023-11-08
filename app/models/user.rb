@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :friends, through: :friendships
   has_many :received_friendships, class_name: 'Friendship', foreign_key: 'friend_id'
   has_many :received_friends, through: :received_friendships, source: 'user'
+  has_many :likes, dependent: :destroy
 
   validates :first_name, length: { in: 2..40 }
   validates :last_name, length: { in: 2..40 }
