@@ -1,0 +1,19 @@
+<ul>
+  <li> <%= @post.author.full_name %> </li>
+  <li> added <%= time_ago_in_words(@post.created_at) %> ago </li>
+  <li> <%= @post.content %> </li>
+</ul>
+
+<%= render 'comments/form' %>
+
+<% if @post.comments %>
+  <ul>
+    <% @post.comments.each do |comment| %> 
+      <% if comment.commenter %>
+        <li> <b> <%= comment.commenter.full_name %> </b> </li>
+        <li> <%= comment.content %> </li>
+        <li> <%= time_ago_in_words(comment.created_at) %> </li>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>

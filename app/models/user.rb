@@ -5,8 +5,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   
-  has_many :authored_posts, foreign_key: 'author_id', class_name: 'Post'
-  has_many :created_comments, foreign_key: 'commenter_id', class_name: 'Comment'
+  has_many :authored_posts, foreign_key: 'author_id', class_name: 'Post', dependent: :destroy
+  has_many :created_comments, foreign_key: 'commenter_id', class_name: 'Comment', dependent: :destroy
   has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships
   has_many :received_friendships, class_name: 'Friendship', foreign_key: 'friend_id'
@@ -24,7 +24,12 @@ class User < ApplicationRecord
   end
 
   def timeline
-    self.authored_posts.to_a.union(self.active_friends.map { |friend| friend.authored_posts }).flatten
+    friend_ids = self.active_friends.pluck(:id)
+    Post.where(author_id: [self.id] + friend_ids)
+  end
+
+  def full_name
+    "#{self.first_name} #{self.last_name}"
   end
 
   private
