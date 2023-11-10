@@ -1,0 +1,15 @@
+<div class="posts">
+  <% if @posts %>
+    <% @posts.each do |post| %>
+      <ul>
+        <% if post.valid? %>
+          <li> <b> <%= post.author.full_name %> </b> </li>
+          <li> added <%= time_ago_in_words(post.created_at) %> ago </li>
+          <li> <%= post.content %> </li>
+          <%= link_to "#{pluralize(post.comments.count, 'comment')}", post_path(post) %>
+          <p><%= pluralize(post.likes.count, 'like') %></p>
+        <% end %>
+      </ul>
+    <% end %>
+  <% end %>
+</div>

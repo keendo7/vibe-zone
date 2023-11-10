@@ -11,6 +11,6 @@ Rails.application.routes.draw do
       delete "unlike", to: "posts#unlike"
     end
   end
-  
   resources :comments
+  resources :users, only: [:show, :destroy]
 end

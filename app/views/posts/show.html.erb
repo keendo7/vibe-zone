@@ -16,7 +16,7 @@
   <ul>
     <% @post.comments.each do |comment| %> 
       <% if comment.commenter %>
-        <li> <b> <%= comment.commenter.full_name %> </b> </li>
+        <li> <b> <%= link_to "#{comment.commenter.full_name}", user_path(comment.commenter) %> </b> </li>
         <li> <%= comment.content %> </li>
         <li> <%= time_ago_in_words(comment.created_at) %> </li>
       <% end %>

@@ -1,10 +1,3 @@
-<div class="topnav">
-  <%= link_to "Vibebook", root_path %>
-  <%= link_to "Profile", "#" %>
-  <%= link_to "Notifications", "#" %>
-  <%= button_to "Sign Out", destroy_user_session_path, method: :delete %>
-<div>
-
 <div class="new-post-form">
   <%= form_with model: @post do |form| %>
     <%= form.text_area :content %>
@@ -12,19 +5,5 @@
   <% end %>
 </div>
 
-<div class="timeline">
-  <h3> Posts </h3>
-  <% if @posts %>
-    <% @posts.each do |post| %>
-      <ul>
-        <% if post.valid? %>
-          <li> <b> <%= post.author.full_name %> </b> </li>
-          <li> added <%= time_ago_in_words(post.created_at) %> ago </li>
-          <li> <%= post.content %> </li>
-          <%= link_to "#{pluralize(post.comments.count, 'comment')}", post_path(post) %>
-          <p><%= pluralize(post.likes.count, 'like') %></p>
-        <% end %>
-      </ul>
-    <% end %>
-  <% end %>
-</div>
+<h3> Posts </h3>
+<%= render 'posts' %>
