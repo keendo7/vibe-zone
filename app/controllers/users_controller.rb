@@ -4,6 +4,10 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @posts = @user.authored_posts
+
+    if @user != current_user
+      @friendship = current_user.friendships.where(friend_id: @user.id).first
+    end
   end
 
   def destroy
