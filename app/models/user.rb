@@ -35,7 +35,7 @@ class User < ApplicationRecord
 
   def remove_friendship(friendship)
     if friendship.is_mutual
-      inverse_friendship = friend.friendships.find_by(friend: self)
+      inverse_friendship = friendship.friend.friendships.find_by(friend: self)
       transaction do
         friendship.destroy
         inverse_friendship.destroy
