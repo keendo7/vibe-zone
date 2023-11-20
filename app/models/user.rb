@@ -33,6 +33,18 @@ class User < ApplicationRecord
     "#{self.first_name} #{self.last_name}"
   end
 
+  def remove_friendship(friendship)
+    if friendship.is_mutual
+      inverse_friendship = friend.friendships.find_by(friend: self)
+      transaction do
+        friendship.destroy
+        inverse_friendship.destroy
+      end
+    else
+      friendship.destroy
+    end
+  end
+
   private
   
   def set_firstname

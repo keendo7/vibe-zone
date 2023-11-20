@@ -1,0 +1,7 @@
+<% @received_friendships.each do |friendship| %>
+  <% if !friendship.is_mutual %>
+    <p> <%= friendship.user.full_name %> </p>
+    <%= button_to 'Accept', user_friendships_path(friendship.user_id), method: :post %>
+    <%= button_to 'Remove', friendship_path(friendship), method: :delete %>
+  <% end %>
+<% end %>

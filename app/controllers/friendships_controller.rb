@@ -5,9 +5,13 @@ class FriendshipsController < ApplicationController
     @friendships = Friendship.where(user_id: params[:user_id])
   end
 
+  def notifications
+    @received_friendships = current_user.received_friendships
+  end
+
   def destroy
     @friendship = Friendship.find(params[:id])
-    @friendship.destroy
+    current_user.remove_friendship(@friendship)
     redirect_to root_path
   end
   
