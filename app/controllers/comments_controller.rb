@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
-  before_action :authenticate_user!, :set_comment
+  before_action :authenticate_user!
+  before_action :set_comment, only: [:like, :unlike]
 
   def new
     @comment = Comment.new
