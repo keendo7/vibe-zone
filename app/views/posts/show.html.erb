@@ -19,6 +19,7 @@
         <li> <b> <%= link_to "#{comment.commenter.full_name}", user_path(comment.commenter) %> </b> </li>
         <li> <%= comment.content %> </li>
         <li> <%= time_ago_in_words(comment.created_at) %> </li>
+        <p><%= pluralize(comment.likes.count, 'like') %></p>
         <% if comment.likes.exists?(user_id: current_user.id) %>
           <%= button_to "Unlike", unlike_comment_path(comment), method: :delete %>
         <% else %>
