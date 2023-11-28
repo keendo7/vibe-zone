@@ -15,6 +15,8 @@ class User < ApplicationRecord
 
   validates :first_name, length: { in: 2..40 }
   validates :last_name, length: { in: 2..40 }
+
+  scope :search, ->(query) { where("CONCAT_WS(' ', first_name, last_name) ILIKE ?", "%#{query}%") }
   
   def active_friends
     friends.select{ |friend| friend.friends.include?(self) }  
