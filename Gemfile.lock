@@ -113,6 +113,7 @@ GEM
       thor (>= 0.14.0, < 2)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    gravtastic (3.2.6)
     hashie (5.0.0)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
@@ -291,6 +292,7 @@ DEPENDENCIES
   debug
   devise (~> 4.9)
   figaro
+  gravtastic
   importmap-rails
   jbuilder
   omniauth-facebook
