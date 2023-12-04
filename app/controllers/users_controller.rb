@@ -15,6 +15,19 @@ class UsersController < ApplicationController
     end
   end
 
+  def edit
+    @user = current_user
+  end
+
+  def update
+    @user = current_user
+    if @user.update(user_params)
+      redirect_to root_path
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   def search
     @users = User.search(params[:query])
   end
@@ -22,5 +35,11 @@ class UsersController < ApplicationController
   def destroy
     current_user.destroy
     redirect_to new_user_session_path, status: :see_other
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:first_name, :last_name)
   end
 end
