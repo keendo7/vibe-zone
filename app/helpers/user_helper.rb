@@ -1,7 +1,7 @@
 module UserHelper
   def user_avatar(user)
-    if user.image
-      user.image
+    if user.avatar.attached?
+      user.avatar
     else
       user.gravatar_url
     end

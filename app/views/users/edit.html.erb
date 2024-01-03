@@ -1,4 +1,6 @@
 <%= form_with model: @user do |form| %>
+  <%= form.file_field :avatar %>
+
   <%= form.label :first_name %>
   <%= form.text_field :first_name %>
 

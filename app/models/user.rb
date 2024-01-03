@@ -1,3 +1,5 @@
+require 'open-uri'
+
 class User < ApplicationRecord
   include Gravtastic
   gravtastic
@@ -14,6 +16,7 @@ class User < ApplicationRecord
   has_many :received_friendships, class_name: 'Friendship', foreign_key: 'friend_id'
   has_many :received_friends, through: :received_friendships, source: 'user'
   has_many :likes, dependent: :destroy
+  has_one_attached :avatar
 
   validates :first_name, length: { in: 2..40 }
   validates :last_name, length: { in: 2..40 }
@@ -54,11 +57,12 @@ class User < ApplicationRecord
       user.email = auth.info.email
       user.password = Devise.friendly_token[0, 20]
       user.first_name = auth.info.name.split(" ")[0]
-      user.last_name = auth.info.name.split(" ")[1]  # assuming the user model has a name
-      user.image = auth.info.image # assuming the user model has an image
-      # If you are using confirmable and the provider(s) you use validate emails, 
-      # uncomment the line below to skip the confirmation emails.
-      # user.skip_confirmation!
+      user.last_name = auth.info.name.split(" ")[1] 
+      url = URI.parse(auth.info.image)
+      filename = File.basename(url.path)
+      file = URI.open(url)
+      user.avatar.attach(io: file, filename: filename)
+
       user.save!
     end
   end
