@@ -1,3 +1,7 @@
+<% if flash[:alert]%>
+  <span class='alert'><%= flash[:alert] %></span>
+<% end %>
+
 <%= form_with model: @user do |form| %>
   <%= form.file_field :avatar %>
 

@@ -20,6 +20,7 @@ class User < ApplicationRecord
 
   validates :first_name, length: { in: 2..40 }
   validates :last_name, length: { in: 2..40 }
+  validates :avatar, blob: { content_type: ['image/png', 'image/jpg', 'image/jpeg'], size_range: 1..(5.megabytes) }
 
   scope :search, ->(query) { where("CONCAT_WS(' ', first_name, last_name) ILIKE ?", "%#{query}%") }
   
