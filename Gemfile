@@ -80,3 +80,5 @@ gem 'omniauth-facebook'
 gem 'omniauth-rails_csrf_protection'
 gem 'figaro'
 gem 'gravtastic'
+
+gem "sidekiq", "~> 7.2"
