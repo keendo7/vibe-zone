@@ -2,7 +2,9 @@ require 'open-uri'
 
 class User < ApplicationRecord
   include Gravtastic
+  extend FriendlyId
   gravtastic
+  friendly_id :full_name, use: :sequentially_slugged
   before_save :set_firstname, :set_lastname
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
