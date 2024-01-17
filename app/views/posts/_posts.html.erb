@@ -3,7 +3,9 @@
     <% @posts.each do |post| %>
       <ul>
         <% if post.valid? %>
-          <li> <b> <%= post.author.full_name %> </b> </li>
+          <%= image_tag user_avatar(post.author), class: "avatar" %> </li> 
+          <b> <%= post.author.full_name %> </b> </li>
+          </ul>
           <li> added <%= time_ago_in_words(post.created_at) %> ago </li>
           <li> <%= post.content %> </li>
           <%= link_to "#{pluralize(post.comments.count, 'comment')}", post_path(post) %>

@@ -12,7 +12,7 @@
  *
  *= require_self
  */
- @import "bootstrap";
+ @import 'bootstrap';
 
 h2 {
   font-size: 6em;
@@ -32,7 +32,7 @@ ul {
   padding: 0;
 }
 
-.gravatar {
-  height: 150px;
-  width: auto;
+.avatar {
+  border: 1px solid black;
+  border-radius: 50%;
 }
