@@ -5,13 +5,13 @@
   <%= button_to 'Delete', user_path, method: :delete, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
   <%= link_to 'Edit details', details_path %>
 <% end %>
-<%= link_to "#{pluralize(@user.active_friends.count, 'friend')}", user_friendships_path(@user) %>
+<%= link_to "#{pluralize(@user.active_friends.count, 'friend')}", user_friendships_path(@user.id) %>
 <% if current_user != @user %>
   <% unless @friendship %>
     <% if current_user.received_friends.include?(@user) %>
       <%= button_to 'Received friend request!', notifications_path, method: :get %>
     <% else %>
-      <%= button_to "Send friend request", user_friendships_path(@user), method: :post %>
+      <%= button_to "Send friend request", user_friendships_path(@user.id), method: :post %>
     <% end %>
   <% else %>
     <%= button_to "Remove from friends", friendship_path(@friendship), method: :delete %>
