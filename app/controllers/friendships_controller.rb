@@ -2,7 +2,8 @@ class FriendshipsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @friendships = Friendship.where(user_id: params[:user_id])
+    @user = User.friendly.find(params[:user_id])
+    @friendships = @user.friendships
   end
 
   def notifications
