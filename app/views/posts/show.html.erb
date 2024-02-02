@@ -10,7 +10,7 @@
   <% end %>
 </ul>
 
-<%= render 'comments/form' %>
+<%= render 'comments/form', commentable_id: @post.id, commentable_type: "#{@post.class.name}" %>
 
 <% if @post.comments %>
   <ul>
