@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   def show
     begin
-      @user = User.find(params[:id])
+      @user = User.friendly.find(params[:id])
       @posts = @user.authored_posts
     rescue ActiveRecord::RecordNotFound
       redirect_to root_path, notice: "User not found"

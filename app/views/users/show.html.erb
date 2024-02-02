@@ -11,7 +11,7 @@
     <% if current_user.received_friends.include?(@user) %>
       <%= button_to 'Received friend request!', notifications_path, method: :get %>
     <% else %>
-      <%= button_to "Send friend request", user_friendships_path(@user), method: :post %>
+      <%= button_to "Send friend request", user_friendships_path(@user.id), method: :post %>
     <% end %>
   <% else %>
     <%= button_to "Remove from friends", friendship_path(@friendship), method: :delete %>

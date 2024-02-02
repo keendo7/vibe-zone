@@ -2,7 +2,9 @@ require 'open-uri'
 
 class User < ApplicationRecord
   include Gravtastic
+  extend FriendlyId
   gravtastic
+  friendly_id :full_name, use: :sequentially_slugged
   before_save :set_firstname, :set_lastname
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -13,7 +15,7 @@ class User < ApplicationRecord
   has_many :created_comments, foreign_key: 'commenter_id', class_name: 'Comment', dependent: :destroy
   has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships
-  has_many :received_friendships, class_name: 'Friendship', foreign_key: 'friend_id'
+  has_many :received_friendships, class_name: 'Friendship', foreign_key: 'friend_id', dependent: :destroy
   has_many :received_friends, through: :received_friendships, source: 'user'
   has_many :likes, dependent: :destroy
   has_one_attached :avatar
@@ -39,6 +41,10 @@ class User < ApplicationRecord
 
   def full_name
     "#{self.first_name} #{self.last_name}"
+  end
+  
+  def to_param
+    slug
   end
 
   def remove_friendship(friendship)
@@ -77,6 +83,10 @@ class User < ApplicationRecord
   end
 
   private
+
+  def should_generate_new_friendly_id?
+    first_name_changed? || last_name_changed?
+   end   
   
   def set_firstname
     self.first_name = self.first_name.strip.titlecase
