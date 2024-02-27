@@ -34,6 +34,12 @@ class User < ApplicationRecord
     friends.select{ |friend| !friend.friends.include?(self) }  
   end
 
+  def mutual_friends(user)
+    friendships.select do |friend|
+      user.friendships.find_by(friend_id: friend.friend_id)
+    end
+  end
+
   def timeline
     friend_ids = self.active_friends.pluck(:id)
     Post.where(author_id: [self.id] + friend_ids)
@@ -45,18 +51,6 @@ class User < ApplicationRecord
   
   def to_param
     slug
-  end
-
-  def remove_friendship(friendship)
-    if friendship.is_mutual
-      inverse_friendship = friendship.friend.friendships.find_by(friend: self)
-      transaction do
-        friendship.destroy
-        inverse_friendship.destroy
-      end
-    else
-      friendship.destroy
-    end
   end
 
   def self.from_omniauth(auth)

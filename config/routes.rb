@@ -14,7 +14,11 @@ Rails.application.routes.draw do
     end
   end
   resources :users, only: [:show, :destroy, :update] do
-    resources :friendships, only: [:index, :create]
+    resources :friendships, only: [:index, :create] do
+      collection do
+        get :mutual_friends
+      end
+    end
   end
   resources :friendships, only: [:destroy]
   get 'notifications', to: 'friendships#notifications', as: 'notifications'

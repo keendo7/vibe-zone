@@ -1,6 +1,6 @@
 <ul>
 <% @friendships.each do |friendship| %>
-  <li> <%= friendship.friend.full_name %> </li>
+  <%= link_to "#{friendship.friend.full_name}", user_path(friendship.friend) %> 
   <% if current_user == @user %>
     <li> <%= button_to "Remove friend", friendship_path(friendship), method: :delete, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %> </li>
     <% end %>

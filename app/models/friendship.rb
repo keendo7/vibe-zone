@@ -9,6 +9,17 @@ class Friendship < ApplicationRecord
     def is_mutual
       self.friend.friends.include?(self.user)
     end
+
+    def self.remove_friendship(friendship)
+      if friendship.is_mutual
+        transaction do
+          find_by(user_id: friendship.user.id, friend_id: friendship.friend.id).destroy
+          find_by(user_id: friendship.friend.id, friend_id: friendship.user.id).destroy
+        end
+      else
+        friendship.destroy
+      end
+    end
   
     private
     def user_is_not_equal_friend
