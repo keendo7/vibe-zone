@@ -1,8 +1,9 @@
-<ul>
-<% @friendships.each do |friendship| %>
-  <%= link_to "#{friendship.friend.full_name}", user_path(friendship.friend) %> 
-  <% if current_user == @user %>
-    <li> <%= button_to "Remove friend", friendship_path(friendship), method: :delete, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %> </li>
-    <% end %>
-  <% end %>
-</ul>
+<%= form_with(url: user_friendships_path, method: :get, data: {turbo_frame: "search-results", turbo_action: "advance", controller: "search", action: "input->search#submit"}) do |form| %>
+  <%= form.label :query, "Search user" %>
+  <%= form.text_field :query %>
+  <%= form.submit 'Search' %>
+<% end %>
+
+<%= turbo_frame_tag "search-results" do %>
+  <%= render partial: "friendships", locals: { friendships: @friendships } %>
+<% end %>

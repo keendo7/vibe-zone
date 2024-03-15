@@ -5,6 +5,7 @@ class Friendship < ApplicationRecord
     validates :user_id, presence: true, uniqueness: { scope: :friend_id }
     validates :friend_id, presence: true
     validate :user_is_not_equal_friend
+    scope :search_friend, ->(query) { joins(:friend).where("CONCAT_WS(' ', first_name, last_name) ILIKE ?", "%#{query}%") }
   
     def is_mutual
       self.friend.friends.include?(self.user)
@@ -20,7 +21,7 @@ class Friendship < ApplicationRecord
         friendship.destroy
       end
     end
-  
+    
     private
     def user_is_not_equal_friend
       errors.add(:friend, "can't be the same as the user") if self.user == self.friend

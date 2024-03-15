@@ -5,9 +5,8 @@
   <%= button_to 'Delete', user_path, method: :delete, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
   <%= link_to 'Edit details', details_path %>
 <% else %>
-  <% mutual_friends_count = current_user.mutual_friends(@user).count %>
-  <% if mutual_friends_count != 0 %>
-    <%= link_to "#{pluralize(mutual_friends_count, 'mutual friend')}", mutual_friends_user_friendships_path(@user) %>
+  <% if @mutual_friends_count != 0 %>
+    <%= link_to "#{pluralize(@mutual_friends_count, 'mutual friend')}", mutual_friends_user_friendships_path(@user) %>
   <% end %>
 <% end %>
 <%= link_to "#{pluralize(@user.active_friends.count, 'friend')}", user_friendships_path(@user) %>

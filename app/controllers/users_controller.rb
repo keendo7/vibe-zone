@@ -12,6 +12,7 @@ class UsersController < ApplicationController
 
     if @user != current_user
       @friendship = current_user.friendships.where(friend_id: @user.id).first
+      @mutual_friends_count = current_user.mutual_friends(@user).count
     end
   end
 
