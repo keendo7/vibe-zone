@@ -1,5 +1,5 @@
 <ul>
-  <li> <%= @post.author.full_name %> </li>
+  <li> <b> <%= link_to "#{@post.author.full_name}", user_path(@post.author) %> </b> </li>
   <li> added <%= time_ago_in_words(@post.created_at) %> ago </li>
   <li> <%= @post.content %> </li>
   <p><%= pluralize(@post.likes.count, 'like') %></p>
@@ -10,21 +10,19 @@
   <% end %>
 </ul>
 
-<%= render 'comments/form', commentable_id: @post.id, commentable_type: "#{@post.class.name}" %>
+<%= render 'comments/form', commentable_id: @post.id, commentable_type: "#{@post.class.name}" %>  
 
-<% if @post.comments %>
+<% if @comments %>
   <ul>
-    <% @post.comments.each do |comment| %> 
-      <% if comment.commenter %>
-        <li> <b> <%= link_to "#{comment.commenter.full_name}", user_path(comment.commenter) %> </b> </li>
-        <li> <%= comment.content %> </li>
-        <li> <%= time_ago_in_words(comment.created_at) %> </li>
-        <p><%= pluralize(comment.likes.count, 'like') %></p>
-        <% if comment.likes.exists?(user_id: current_user.id) %>
-          <%= button_to "Unlike", unlike_comment_path(comment), method: :delete %>
-        <% else %>
-          <%= button_to "Like", like_comment_path(comment), method: :post %>
-        <% end %>
+    <% @comments.each do |comment| %> 
+      <li> <b> <%= link_to "#{comment.commenter.full_name}", user_path(comment.commenter) %> </b> </li>
+      <li> <%= comment.content %> </li>
+      <li> <%= time_ago_in_words(comment.created_at) %> </li>
+      <li> <%= pluralize(comment.likes.count, "like") %> </li>
+      <% if comment.likes.exists?(user_id: current_user.id) %>
+        <%= button_to "Unlike", unlike_comment_path(comment), method: :delete %>
+      <% else %>
+        <%= button_to "Like", like_comment_path(comment), method: :post %>
       <% end %>
     <% end %>
   </ul>

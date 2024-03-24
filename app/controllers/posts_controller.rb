@@ -8,6 +8,7 @@ class PostsController < ApplicationController
   end
 
   def show
+    @comments = @post.comments.where.not(id: nil)
     @comment = @post.comments.build
   end
 
