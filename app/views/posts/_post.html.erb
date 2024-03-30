@@ -1,0 +1,12 @@
+<%= turbo_frame_tag dom_id(post) do %>  
+  <li> <%= image_tag user_avatar(post.author), class: "avatar" %> </li> 
+  <li> <b> <%= post.author.full_name %> </b> </li>
+  <li> added <%= time_ago_in_words(post.created_at) %> ago </li>
+  <li> <%= post.content %> </li>
+  <p><%= pluralize(post.likes.count, 'like') %></p>
+  <% if post.likes.exists?(user_id: current_user.id) %>
+    <%= button_to "Unlike", unlike_post_path(post), method: :delete %>
+  <% else %>
+    <%= button_to "Like", like_post_path(post), method: :post %>
+  <% end %>
+<% end %>

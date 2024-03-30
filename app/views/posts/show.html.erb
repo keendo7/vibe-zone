@@ -1,17 +1,5 @@
-<ul>
-  <li> <b> <%= link_to "#{@post.author.full_name}", user_path(@post.author) %> </b> </li>
-  <li> added <%= time_ago_in_words(@post.created_at) %> ago </li>
-  <li> <%= @post.content %> </li>
-  <p><%= pluralize(@post.likes.count, 'like') %></p>
-  <% if @post.likes.exists?(user_id: current_user.id) %>
-    <%= button_to "Unlike", unlike_post_path(@post), method: :delete %>
-  <% else %>
-    <%= button_to "Like", like_post_path(@post), method: :post %>
-  <% end %>
-</ul>
-
+<%= render partial: "post", locals: { post: @post } %>
 <%= render 'comments/form', commentable_id: @post.id, commentable_type: "#{@post.class.name}" %>  
-
 <% if @comments %>
   <ul>
     <% @comments.each do |comment| %> 

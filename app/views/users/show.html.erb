@@ -23,4 +23,9 @@
 <% end %>
 
 <h3> My Posts </h3>
-<%= render 'posts/posts' %>
+<% if @posts %>
+  <% @posts.reverse.each do |post| %>
+    <%= render post %>
+    <%= link_to "#{pluralize(post.comments.count, 'comment')}", post_path(post)%>
+  <% end %>
+<% end %>

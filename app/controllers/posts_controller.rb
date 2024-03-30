@@ -19,12 +19,12 @@ class PostsController < ApplicationController
 
   def like
     current_user.likes.create(likeable: @post)
-    redirect_to post_path(@post)  
+    render partial: "posts/post", locals: { post: @post }
   end
 
   def unlike
     current_user.likes.find_by(likeable: @post).destroy
-    redirect_to post_path(@post)  
+    render partial: "posts/post", locals: { post: @post } 
   end
 
   private
