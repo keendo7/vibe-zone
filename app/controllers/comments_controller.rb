@@ -13,12 +13,12 @@ class CommentsController < ApplicationController
 
   def like
     current_user.likes.create(likeable: @comment)
-    redirect_to @comment.commentable
+    render partial: 'comments/comment', locals: { comment: @comment }
   end
 
   def unlike
     current_user.likes.find_by(likeable: @comment).destroy
-    redirect_to @comment.commentable
+    render partial: 'comments/comment', locals: { comment: @comment }
   end
 
   private
