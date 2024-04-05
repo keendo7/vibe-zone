@@ -21,6 +21,14 @@ class CommentsController < ApplicationController
     render partial: 'comments/comment', locals: { comment: @comment }
   end
 
+  def destroy
+    @comment = Comment.find(params[:id])
+    @commentable = @comment.commentable
+
+    @comment.destroy
+    redirect_to @commentable
+  end
+
   private
 
   def set_comment

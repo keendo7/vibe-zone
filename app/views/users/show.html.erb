@@ -22,10 +22,5 @@
   <% end %>
 <% end %>
 
-<h3> My Posts </h3>
-<% if @posts %>
-  <% @posts.reverse.each do |post| %>
-    <%= render post %>
-    <%= link_to "#{pluralize(post.comments.count, 'comment')}", post_path(post)%>
-  <% end %>
-<% end %>
+<h3> <%= "#{pluralize(@posts.count, 'post')}" %> </h3>
+<%= render partial: "posts/posts", locals: { posts: @posts } %>

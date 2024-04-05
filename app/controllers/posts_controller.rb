@@ -6,6 +6,11 @@ class PostsController < ApplicationController
     @posts = current_user.timeline
     @post = current_user.authored_posts.new
   end
+  
+  def index
+    @posts = Post.all
+    @post = current_user.authored_posts.new
+  end
 
   def show
     @comments = @post.comments.where.not(id: nil)
@@ -15,6 +20,12 @@ class PostsController < ApplicationController
   def create
     @post = current_user.authored_posts.new(post_params)
     redirect_to root_path if @post.save  
+  end
+
+  def destroy
+    @post = Post.friendly.find(params[:id])
+    @post.destroy
+    redirect_to root_path
   end
 
   def like
