@@ -8,11 +8,15 @@ class CommentsController < ApplicationController
 
   def create
     @comment = Comment.new(comment_params)
-    redirect_to @comment.commentable if @comment.save      
+    if @comment.save
+      notify(@comment.commentable.author, @comment)
+      redirect_to @comment.commentable
+    end   
   end
 
   def like
-    current_user.likes.create(likeable: @comment)
+    like = current_user.likes.create(likeable: @comment)
+    notify(@comment.commenter, like)
     render partial: 'comments/comment', locals: { comment: @comment }
   end
 
@@ -37,5 +41,15 @@ class CommentsController < ApplicationController
 
   def comment_params
     params.require(:comment).permit(:content, :commentable_id, :commentable_type).merge(commenter_id: current_user.id)
+  end
+
+  def like_params
+    params.require(:like).permit(:user_id, :likeable)
+  end
+
+  def notify(recipient, comment)
+    return unless recipient != current_user
+
+    Notification.create(user_id: recipient.id, sender_id: current_user.id, notifiable: comment)
   end
 end

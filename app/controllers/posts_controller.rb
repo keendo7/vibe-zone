@@ -29,7 +29,8 @@ class PostsController < ApplicationController
   end
 
   def like
-    current_user.likes.create(likeable: @post)
+    like = current_user.likes.create(likeable: @post)
+    notify(@post.author, like)
     render partial: "posts/post", locals: { post: @post }
   end
 
@@ -46,5 +47,11 @@ class PostsController < ApplicationController
 
   def set_post
     @post = Post.friendly.find(params[:id])
+  end
+
+  def notify(recipient, post)
+    return unless recipient != current_user
+
+    Notification.create(user_id: recipient.id, sender_id: current_user.id, notifiable: post)
   end
 end

@@ -1,6 +1,7 @@
 class Friendship < ApplicationRecord
     belongs_to :user
     belongs_to :friend, class_name: 'User'
+    has_many :notifications, as: :notifiable, dependent: :destroy
   
     validates :user_id, presence: true, uniqueness: { scope: :friend_id }
     validates :friend_id, presence: true
@@ -19,6 +20,14 @@ class Friendship < ApplicationRecord
         end
       else
         friendship.destroy
+      end
+    end
+
+    def message
+      if self.is_mutual
+        " and you became friends!"
+      elsif user.pending_friends.include?(friend)
+        " sent you a friend request"
       end
     end
     

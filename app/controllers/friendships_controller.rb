@@ -16,10 +16,6 @@ class FriendshipsController < ApplicationController
     @mutuals = current_user.mutual_friends(@user)
   end
 
-  def notifications
-    @received_friendships = current_user.received_friendships
-  end
-
   def destroy
     @friendship = Friendship.find(params[:id])
     Friendship.remove_friendship(@friendship)
@@ -29,6 +25,17 @@ class FriendshipsController < ApplicationController
   def create
     @user = User.find(params[:user_id])
     @friendship = current_user.friendships.new(friend_id: @user.id)
-    redirect_to root_path if @friendship.save
+    if @friendship.save
+      notify(@user, @friendship)
+      redirect_to root_path
+    end
+  end
+
+  private
+
+  def notify(recipient, friendship)
+    return unless recipient != current_user
+    
+    Notification.create(user_id: recipient.id, sender_id: current_user.id, notifiable: friendship)
   end
 end

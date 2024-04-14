@@ -18,6 +18,7 @@ class User < ApplicationRecord
   has_many :received_friendships, class_name: 'Friendship', foreign_key: 'friend_id', dependent: :destroy
   has_many :received_friends, through: :received_friendships, source: 'user'
   has_many :likes, dependent: :destroy
+  has_many :notifications, dependent: :destroy
   has_one_attached :avatar
 
   validates :first_name, length: { in: 2..40 }
@@ -38,6 +39,10 @@ class User < ApplicationRecord
     friendships.select do |friend|
       user.friendships.find_by(friend_id: friend.friend_id)
     end
+  end
+
+  def new_notifications_count
+    notifications.reject(&:was_read).count
   end
 
   def timeline
