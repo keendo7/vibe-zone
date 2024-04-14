@@ -21,7 +21,7 @@ Rails.application.routes.draw do
     end
   end
   resources :friendships, only: [:destroy]
-  get 'notifications', to: 'friendships#notifications', as: 'notifications'
+  resources :notifications, only: [:index]
   get 'details', to: 'users#edit', as: 'details'
   get 'search', to: 'users#search'
 end

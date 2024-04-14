@@ -1,0 +1,12 @@
+<% @new.each do |new_notification| %>
+  <ul>
+    <%= render new_notification %>
+  </ul>
+<% end %>
+
+<% @old.each do |old_notification| %>
+  <ul>
+    <%= render old_notification %>
+  </ul>
+<% end %>
+  

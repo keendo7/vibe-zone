@@ -1,0 +1,8 @@
+<% if notification.is_a_friend_request? %>
+  <%= render "friendships/friendship_request_notification", notification: notification %>
+<% else %>
+  <li> <%= link_to notification.sender.full_name, user_path(notification.sender) %> <%= notification.notifiable.message %> <%= time_ago_in_words(notification.created_at) %> ago </li>
+  <% unless notification.is_a_friendship? %> 
+    <li> <%= link_to content(notification), notifiable_link(notification) %> </li>
+  <% end %>
+<% end %>

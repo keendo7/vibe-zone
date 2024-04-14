@@ -1,0 +1,3 @@
+<li> <%= link_to notification.sender.full_name, user_path(notification.sender) %> <%= notification.notifiable.message %> <%= time_ago_in_words(notification.created_at) %> ago </li>
+<li> <%= button_to "Accept", user_friendships_path(notification.notifiable.user_id), method: :post %> </li>
+<li> <%= button_to "Decline", friendship_path(notification.notifiable), method: :delete %> </li>
