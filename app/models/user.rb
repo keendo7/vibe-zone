@@ -11,7 +11,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: %i[facebook]
   
-  has_many :authored_posts, foreign_key: 'author_id', class_name: 'Post', dependent: :destroy
+  has_many :authored_posts, -> { order(created_at: :desc) }, foreign_key: 'author_id', class_name: 'Post', dependent: :destroy
   has_many :created_comments, foreign_key: 'commenter_id', class_name: 'Comment', dependent: :destroy
   has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships

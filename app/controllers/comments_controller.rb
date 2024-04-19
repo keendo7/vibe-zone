@@ -28,9 +28,12 @@ class CommentsController < ApplicationController
   def destroy
     @comment = Comment.find(params[:id])
     @commentable = @comment.commentable
-
     @comment.destroy
-    redirect_to @commentable
+
+    respond_to do |format|
+      format.html { redirect_to @commentable, status: :see_other }
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(@comment) }
+    end
   end
 
   private

@@ -1,9 +1,8 @@
-<%= render partial: "post", locals: { post: @post } %>
-<%= render 'comments/form', commentable_id: @post.id, commentable_type: "#{@post.class.name}" %>  
-<% if @comments %>
-  <ul>
-    <% @comments.each do |comment| %> 
-      <%= render comment %>
-    <% end %>
-  </ul>
+<%= render partial: "detailed_post", locals: { post: @post } %>
+<%= render 'comments/form', commentable_id: @post.id, commentable_type: "#{@post.class.name}" %>
+
+<%= turbo_frame_tag :comments do %>
+  <%= render @comments %>
 <% end %>
+
+<%= turbo_frame_tag :pagination, loading: :lazy, src: post_path(format: :turbo_stream, page: @pagy.next) %>

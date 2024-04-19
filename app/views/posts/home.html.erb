@@ -1,3 +1,7 @@
 <h3> Welcome <%= "#{current_user.first_name}" %>! </h3>
 <%= render "posts/form" %>
-<%= render partial: "posts", locals: { posts: @posts } %>
+<%= turbo_frame_tag :posts do %>
+  <%= render @posts %>
+<% end %>
+
+<%= turbo_frame_tag :pagination, loading: :lazy, src: root_path(format: :turbo_stream, page: @pagy.next) %>

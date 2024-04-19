@@ -1,12 +1,14 @@
-<div class="topnav">
-  <%= link_to "Vibebook", root_path %>
-  <%= form_with url: search_path, method: :get do |form| %>
-    <%= form.text_field :query %>
-    <%= form.submit "Search" %>
-  <% end %>
+<header>
+  <div class="topnav">
+    <%= link_to "Vibebook", root_path %>
+    <%= form_with url: search_path, method: :get do |form| %>
+      <%= form.text_field :query %>
+      <%= form.submit "Search" %>
+    <% end %>
 
-  <%= link_to "Profile", user_path(current_user) %>
-  <%= link_to "Posts", posts_path %>
-  <%= link_to "Notifications#{notifications_count(current_user)}", notifications_path %>
-  <%= button_to "Sign Out", destroy_user_session_path, method: :delete %>
-<div>
+    <%= link_to "Profile", user_path(current_user) %>
+    <%= link_to "Posts", posts_path %>
+    <%= link_to "Notifications#{notifications_count(current_user)}", notifications_path %>
+    <%= button_to "Sign Out", destroy_user_session_path, method: :delete %>
+  <div>
+</header>
