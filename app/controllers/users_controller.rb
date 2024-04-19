@@ -4,7 +4,13 @@ class UsersController < ApplicationController
   def show
     begin
       @user = User.friendly.find(params[:id])
-      @posts = @user.authored_posts
+      @pagy, @posts = pagy_countless(@user.authored_posts, items: 10)
+
+      respond_to do |format|
+        format.turbo_stream
+        format.html
+      end
+
     rescue ActiveRecord::RecordNotFound
       redirect_to root_path, notice: "User not found"
       return
@@ -40,6 +46,10 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def set_user
+    @user = User.friendly.find(params[:id])
+  end
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :avatar)

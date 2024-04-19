@@ -1,8 +1,0 @@
-<ul>
-  <% if posts %>
-    <% posts.reverse.each do |post| %>
-      <%= render post %>
-      <%= link_to "#{pluralize(post.comments.count, 'comment')}", post_path(post) %>
-    <% end %>
-  <% end %>
-</ul>

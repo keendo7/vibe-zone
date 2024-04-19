@@ -22,5 +22,10 @@
   <% end %>
 <% end %>
 
-<h3> <%= "#{pluralize(@posts.count, 'post')}" %> </h3>
-<%= render partial: "posts/posts", locals: { posts: @posts } %>
+<h3> <%= "#{pluralize(@user.authored_posts.count, 'post')}" %> </h3>
+ 
+<%= turbo_frame_tag :posts do %>
+  <%= render @posts %>
+<% end %>
+
+<%= turbo_frame_tag :pagination, loading: :lazy, src: root_path(format: :turbo_stream, page: @pagy.next) %>

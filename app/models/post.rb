@@ -3,7 +3,7 @@ class Post < ApplicationRecord
   friendly_id :post_identifier, use: :slugged
 
   belongs_to :author, class_name: 'User'
-  has_many :comments, as: :commentable, dependent: :destroy
+  has_many :comments, -> {order(created_at: :desc) }, as: :commentable, dependent: :destroy
   has_many :notifications, as: :notifiable, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
 
