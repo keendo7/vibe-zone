@@ -1,7 +1,9 @@
-<% @new.each do |new_notification| %>
-  <ul>
-    <%= render new_notification %>
-  </ul>
+<% if @new.any? %>
+  <% @new.each do |new_notification| %>
+    <ul>
+      <%= render new_notification %>
+    </ul>
+  <% end %>
 <% end %>
 
 <% @old.each do |old_notification| %>
@@ -9,4 +11,3 @@
     <%= render old_notification %>
   </ul>
 <% end %>
-  

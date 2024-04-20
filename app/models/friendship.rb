@@ -25,7 +25,7 @@ class Friendship < ApplicationRecord
 
     def message
       if self.is_mutual
-        " and you became friends!"
+        " became your friend!"
       elsif user.pending_friends.include?(friend)
         " sent you a friend request"
       end
