@@ -32,24 +32,6 @@ ul {
   padding: 0;
 }
 
-.hr-sect {
-  display: flex;
-  flex-basis: 100%;
-  align-items: center;
-  color: rgb(255, 0, 0);
-  margin: 8px 0;
-
-  &:before, &:after {
-      content: "";
-      flex-grow: 1;
-      background: rgb(255, 0, 0);
-      height: 1px;
-      font-size: 0;
-      line-height: 0;
-      margin: 0 8px;
-  }
-}
-
 .avatar {
   border: 1px solid black;
   border-radius: 50%;
