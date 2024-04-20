@@ -19,7 +19,7 @@ class FriendshipsController < ApplicationController
   def destroy
     @friendship = Friendship.find(params[:id])
     Friendship.remove_friendship(@friendship)
-    redirect_to root_path
+    redirect_back(fallback_location: root_path)
   end
   
   def create
@@ -27,7 +27,7 @@ class FriendshipsController < ApplicationController
     @friendship = current_user.friendships.new(friend_id: @user.id)
     if @friendship.save
       notify(@user, @friendship)
-      redirect_to root_path
+      redirect_back(fallback_location: root_path)
     end
   end
 
