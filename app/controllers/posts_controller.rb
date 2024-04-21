@@ -13,8 +13,13 @@ class PostsController < ApplicationController
   end
   
   def index
-    @pagy, @posts = pagy_countless(Post.all, items: 10)
+    @pagy, @posts = pagy_countless(Post.all.order(created_at: :desc), items: 10)
     @post = current_user.authored_posts.new
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def show
