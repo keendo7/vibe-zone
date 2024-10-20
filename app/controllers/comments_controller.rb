@@ -10,7 +10,10 @@ class CommentsController < ApplicationController
     @comment = Comment.new(comment_params)
     if @comment.save
       notify(@comment.commentable.author, @comment)
-      redirect_to @comment.commentable
+      respond_to do |format|
+        format.html { redirect_to @comment.commentable, status: :see_other }
+        format.turbo_stream
+      end
     end   
   end
 
@@ -32,7 +35,7 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to @commentable, status: :see_other }
-      format.turbo_stream { render turbo_stream: turbo_stream.remove(@comment) }
+      format.turbo_stream
     end
   end
 

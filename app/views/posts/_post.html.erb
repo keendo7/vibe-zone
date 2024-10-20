@@ -5,7 +5,7 @@
   <li> <%= post.content %> </li>
   <%= render partial: "likes/post_buttons", locals: { post: post } %>
   <% if post.author == current_user %>
-    <%= button_to "Delete", post_path(post), method: :delete %>
+    <%= button_to "Delete", post_path(post), method: :delete, data: {turbo: "false"} %>
   <% end %>
-  <%= link_to "#{pluralize(post.comments.count, 'comment')}", post_path(post), data: { turbo_frame: "_top" } %>
+  <%= link_to "#{pluralize(post.comments.count, 'comment')}", post_path(post), data: { turbo: "false" } %>
 <% end %>

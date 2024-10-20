@@ -3,7 +3,12 @@ class PostsController < ApplicationController
   before_action :set_post, only: [:show, :like, :unlike]
 
   def home
-    @pagy, @posts = pagy_countless(current_user.timeline, items: 10)
+    if params[:query].present?
+      @pagy, @posts = pagy_countless(current_user.timeline.search_post(params[:query]), items: 10)
+    else
+      @pagy, @posts = pagy_countless(current_user.timeline, items: 10)
+    end
+    
     @post = current_user.authored_posts.new
 
     respond_to do |format|
@@ -13,7 +18,12 @@ class PostsController < ApplicationController
   end
   
   def index
-    @pagy, @posts = pagy_countless(Post.all.order(created_at: :desc), items: 10)
+    if params[:query].present?
+      @pagy, @posts = pagy_countless(Post.all.search_post(params[:query]).order(created_at: :desc), items: 10)
+    else
+      @pagy, @posts = pagy_countless(Post.all.order(created_at: :desc), items: 10)
+    end
+
     @post = current_user.authored_posts.new
 
     respond_to do |format|
@@ -23,13 +33,18 @@ class PostsController < ApplicationController
   end
 
   def show
-    @pagy, @comments = pagy_countless(@post.comments.where.not(id: nil), items: 10)
     @comment = @post.comments.build
-
-    respond_to do |format|
-      format.html
-      format.turbo_stream
+    
+    @cursor = (params[:cursor] || "0").to_i
+    if(@cursor == 0)
+      @comments = @post.comments.where.not(id: nil).where("id > ?", @cursor).take(10)
+    else
+      @comments = @post.comments.where.not(id: nil).where("id < ?", @cursor).take(10)
     end
+
+    @next_cursor = @comments.last&.id
+    @more_pages = @next_cursor.present? && @comments.count == 10
+    render "scrollable_list" if params[:cursor]
   end
 
   def create
@@ -40,10 +55,13 @@ class PostsController < ApplicationController
   def destroy
     @post = Post.friendly.find(params[:id])
     @post.destroy
-
-    respond_to do |format|
-      format.html { redirect_to root_path, status: :see_other }
-      format.turbo_stream { render turbo_stream: turbo_stream.remove(@post) }
+    case URI(request.referer).path
+      when '/posts'
+        redirect_to posts_path
+      when '/'
+        redirect_to root_path
+      else
+        redirect_to user_path(current_user)
     end
   end
 

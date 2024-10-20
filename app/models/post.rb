@@ -8,6 +8,7 @@ class Post < ApplicationRecord
   has_many :likes, as: :likeable, dependent: :destroy
 
   validates :content, length: { in: 3..200 }
+  scope :search_post, ->(query) { where("content ILIKE ?", "%#{query}%" ) } 
 
   def to_param
     slug
