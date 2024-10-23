@@ -1,0 +1,4 @@
+<%= turbo_frame_tag "comments-page-#{@cursor}" do %>
+  <%= render @comments %>
+  <%= render "next_page" %>
+<% end %>

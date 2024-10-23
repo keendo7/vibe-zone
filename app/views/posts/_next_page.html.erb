@@ -1,0 +1,10 @@
+<% if @more_pages %>
+  <%= turbo_frame_tag("comments-page-#{@next_cursor}",
+        autoscroll: true,
+        loading: :lazy,
+        src: post_path(cursor: @next_cursor),
+        target: "_top"
+      ) do %>
+    Loading...
+  <% end %>
+<% end %>

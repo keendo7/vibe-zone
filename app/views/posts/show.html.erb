@@ -1,8 +1,10 @@
 <%= render partial: "detailed_post", locals: { post: @post } %>
+<h3 id=<%= "comments_count" %> class='text-3xl duration-500 font-bold my-4'>
+  <%= pluralize(@post.comments.count, 'Comment') %>
+</h3>
 <%= render 'comments/form', commentable_id: @post.id, commentable_type: "#{@post.class.name}" %>
 
 <%= turbo_frame_tag :comments do %>
   <%= render @comments %>
+  <%= render "next_page" %>
 <% end %>
-
-<%= turbo_frame_tag :pagination, loading: :lazy, src: post_path(format: :turbo_stream, page: @pagy.next) %>
