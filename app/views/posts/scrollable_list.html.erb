@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "posts-page-#{@cursor}" do %>
-  <%= render partial: "comments/comment", collection: @comments %>
+<%= turbo_frame_tag "comments-page-#{@cursor}" do %>
+  <%= render @comments %>
   <%= render "next_page" %>
 <% end %>
