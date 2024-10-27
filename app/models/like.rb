@@ -8,10 +8,10 @@ class Like < ApplicationRecord
   end
 
   def is_a_comment?
-    likeable_type == Comment
+    likeable_type == "Comment"
   end
 
   def is_a_post?
-    likeable_type == Post
+    likeable_type == "Post"
   end
 end
