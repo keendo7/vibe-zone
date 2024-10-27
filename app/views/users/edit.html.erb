@@ -11,5 +11,10 @@
   <%= form.label :last_name %>
   <%= form.text_field :last_name %>
 
+  <% if current_user.avatar.attached? %>
+    <%= form.check_box :purge_avatar %>
+    Use Gravatar as profile image
+  <% end %>
+
   <%= form.submit "Submit" %>
 <% end %>

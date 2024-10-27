@@ -29,6 +29,7 @@ class UsersController < ApplicationController
   def update
     @user = current_user
     if @user.update(user_params)
+      purge_avatar if params[:user][:purge_avatar] == '1'
       redirect_to @user
     else
       flash[:alert] = @user.errors.full_messages.join(', ')
@@ -46,6 +47,10 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def purge_avatar
+    @user.avatar.purge
+  end
 
   def set_user
     @user = User.friendly.find(params[:id])
