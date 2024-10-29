@@ -59,6 +59,8 @@ class User < ApplicationRecord
   end
 
   def self.from_omniauth(auth)
+    return nil if auth.info.email.blank?
+
     find_or_create_by(provider: auth.provider, uid: auth.uid) do |user|
       user.email = auth.info.email
       user.password = Devise.friendly_token[0, 20]
