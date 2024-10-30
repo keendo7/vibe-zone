@@ -4,10 +4,6 @@ Rails.application.routes.draw do
     authenticated :user do
       root 'posts#home', as: :authenticated_root
     end
-
-    unauthenticated :user do
-      root 'devise/sessions#new', as: :unauthenticated_root
-    end
   end
   root 'devise/sessions#new'
   resources :posts do
