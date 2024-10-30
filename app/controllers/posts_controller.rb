@@ -52,6 +52,19 @@ class PostsController < ApplicationController
     redirect_to @post if @post.save
   end
 
+  def edit
+    @post = Post.friendly.find(params[:id])
+  end
+
+  def update
+    @post = Post.friendly.find(params[:id])
+    if @post.update(post_params)
+      render @post
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     @post = Post.friendly.find(params[:id])
     @post.destroy
