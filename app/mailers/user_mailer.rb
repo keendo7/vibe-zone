@@ -14,4 +14,10 @@ class UserMailer < ApplicationMailer
     @sender = sender
     mail(to: recipient.email, subject: "You got a new friendship request from #{sender.first_name}!")
   end
+
+  def user_friendship_request_accepted(recipient, sender)
+    @recipient = recipient
+    @sender = sender
+    mail(to: recipient.email, subject: "#{sender.first_name} is now your friend!")
+  end
 end

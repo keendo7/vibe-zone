@@ -37,6 +37,10 @@ class FriendshipsController < ApplicationController
     return unless recipient != current_user
     
     Notification.create(user_id: recipient.id, sender_id: current_user.id, notifiable: friendship)
-    UserFriendshipRequestJob.perform_async(recipient.id, current_user.id)
+    unless friendship.is_mutual
+      UserFriendshipRequestJob.perform_async(recipient.id, current_user.id)
+    else
+      UserFriendshipRequestAcceptedJob.perform_async(recipient.id, current_user.id)
+    end
   end
 end
