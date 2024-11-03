@@ -59,7 +59,7 @@ class PostsController < ApplicationController
   def update
     @post = Post.friendly.find(params[:id])
     if @post.update(post_params)
-      render @post
+      redirect_to post_path(@post)
     else
       render :edit, status: :unprocessable_entity
     end

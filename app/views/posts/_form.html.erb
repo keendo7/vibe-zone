@@ -1,5 +1,5 @@
 <div class="new-post-form">
-  <%= form_with(model: @post) do |form| %>
+  <%= form_with(model: @post, data: { turbo: false }) do |form| %>
     <%= form.text_area :content %>
     <%= form.submit %>
   <% end %>

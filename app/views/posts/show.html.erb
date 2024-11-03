@@ -1,4 +1,4 @@
-<%= render partial: "detailed_post", locals: { post: @post } %>
+<%= render @post %>
 <h3 id=<%= "comments_count" %> class='text-3xl duration-500 font-bold my-4'>
   <%= pluralize(@post.comments.count, 'Comment') %>
 </h3>

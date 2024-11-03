@@ -4,10 +4,10 @@
   <%= button_to "Like", like_comment_path(comment), method: :post %>
 <% end %>
 
-<% if comment.commentable.author == current_user %>
+<% if (comment.commentable.author == current_user || comment.commenter == current_user) %>
   <%= button_to "Delete", comment_path(comment), method: :delete, data: {turbo_frame: "_top"} %>
-<% else %>
-  <% if comment.commenter == current_user %>
-    <%= button_to "Delete", comment_path(comment), method: :delete, data: {turbo_frame: "_top"} %>
-  <% end %>
+<% end %>
+
+<% if comment.commenter == current_user %>
+  <%= button_to "Edit", edit_comment_path(comment), method: :get %>
 <% end %>

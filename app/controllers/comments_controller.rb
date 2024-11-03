@@ -6,6 +6,19 @@ class CommentsController < ApplicationController
     @comment = Comment.new
   end
 
+  def edit
+    @comment = Comment.find(params[:id])
+  end
+
+  def update
+    @comment = Comment.find(params[:id])
+    if @comment.update(comment_params)
+      render @comment
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   def create
     @comment = Comment.new(comment_params)
     if @comment.save
