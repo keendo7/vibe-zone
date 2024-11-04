@@ -29,4 +29,5 @@ Rails.application.routes.draw do
   resources :notifications, only: [:index]
   get 'details', to: 'users#edit', as: 'details'
   get 'search', to: 'users#search'
+  get 'home', to: 'posts#home'
 end
