@@ -3,6 +3,9 @@ require 'open-uri'
 class User < ApplicationRecord
   include Gravtastic
   extend FriendlyId
+
+  AVATAR_CONTENT_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/bmp"].freeze
+
   gravtastic
   friendly_id :full_name, use: :sequentially_slugged
   before_save :set_firstname, :set_lastname
@@ -21,9 +24,9 @@ class User < ApplicationRecord
   has_many :notifications, dependent: :destroy
   has_one_attached :avatar
 
-  validates :first_name, length: { in: 2..40 }
-  validates :last_name, length: { in: 2..40 }
-  validates :avatar, blob: { content_type: ['image/png', 'image/jpg', 'image/jpeg'], size_range: 1..(5.megabytes) }
+  validates :first_name, :last_name, presence: true, format: {with: /\A\D{2,}\z/ }
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :avatar, blob: { content_type: AVATAR_CONTENT_TYPES, size: { less_than: 5.megabytes} }
 
   scope :search, ->(query) { where("CONCAT_WS(' ', first_name, last_name) ILIKE ?", "%#{query}%") }
   
