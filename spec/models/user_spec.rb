@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  subject { FactoryBot.create(:user) }
+
   describe 'relationships' do
     it { is_expected.to have_many(:authored_posts).class_name("Post").dependent(:destroy).with_foreign_key(:author_id)}
     it { is_expected.to have_many(:created_comments).class_name("Comment").dependent(:destroy).with_foreign_key(:commenter_id)}
@@ -14,7 +16,6 @@ RSpec.describe User, type: :model do
   end
 
   describe 'validations' do
-    subject { FactoryBot.create(:user) }
     it { is_expected.to validate_presence_of(:first_name) }
     it { is_expected.to validate_presence_of(:last_name) }
     it { is_expected.to validate_presence_of(:email) }
@@ -78,10 +79,9 @@ RSpec.describe User, type: :model do
   end
 
   describe '#full_name' do
-    let(:user) { build :user }
-    let(:expected_result) { "#{user.first_name} #{user.last_name}" }
+    let(:expected_result) { "#{subject.first_name} #{subject.last_name}" }
 
-    it { expect(user.full_name).to eq(expected_result) }
+    it { expect(subject.full_name).to eq(expected_result) }
   end
 
   describe '#active_friends' do
