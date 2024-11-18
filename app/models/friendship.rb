@@ -9,7 +9,7 @@ class Friendship < ApplicationRecord
     scope :search_friend, ->(query) { joins(:friend).where("CONCAT_WS(' ', first_name, last_name) ILIKE ?", "%#{query}%") }
   
     def is_mutual
-      self.friend.friends.include?(self.user)
+      Friendship.exists?(user: self.friend, friend: self.user)
     end
 
     def self.remove_friendship(friendship)
