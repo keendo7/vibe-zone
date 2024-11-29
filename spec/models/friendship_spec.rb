@@ -29,34 +29,29 @@ RSpec.describe Friendship, type: :model do
   end
 
   describe '#is_mutual' do
-    let(:friendship1) { create(:friendship, user: user1, friend: user2) }
-
     context 'when friendship is not mutual' do
-      it { expect(friendship1.is_mutual).to be false }
+      let(:friendship) { create(:friendship, user: user1, friend: user2) }
+      it { expect(friendship.is_mutual).to be false }
     end
 
     context 'when friendship is mutual' do
-      let(:friendship2) { create(:friendship, user: user2, friend: user1) }
-      it do 
-        friendship1.reload
-        expect(friendship2.is_mutual).to be true 
-      end
+      let(:friendship) { create(:friendship, :for_mutual, user: user1, friend: user2) }
+      it { expect(friendship.is_mutual).to be true }
     end
   end
 
   describe '.remove_friendship' do
-    let!(:friendship1) { create(:friendship, user: user1, friend: user2) }
-
     context 'when friendship is not mutual' do
+      let!(:friendship) { create(:friendship, user: user1, friend: user2) }
       it 'removes the friendship and decreases count by 1' do
-        expect { described_class.remove_friendship(friendship1) }.to change { described_class.count }.by(-1)
+        expect { described_class.remove_friendship(friendship) }.to change { described_class.count }.by(-1)
       end
     end
 
     context 'when friendship is mutual' do
-      let!(:friendship2) { create(:friendship, user: user2, friend: user1) }
+      let!(:friendship) { create(:friendship, :for_mutual, user: user1, friend: user2) }
       it 'removes both friendships and decreases cound by 2' do
-        expect { described_class.remove_friendship(friendship1) }.to change { described_class.count }.by(-2)
+        expect { described_class.remove_friendship(friendship) }.to change { described_class.count }.by(-2)
       end
     end
   end

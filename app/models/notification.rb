@@ -4,13 +4,13 @@ class Notification < ApplicationRecord
   belongs_to :notifiable, -> { order(created_at: :desc) }, polymorphic: true
  
   def is_a_friend_request?
-    return unless notifiable_type == "Friendship"
-    sender.pending_friends.include?(user)
+    return false unless notifiable_type == "Friendship"
+    !self.notifiable.is_mutual
   end
 
   def is_a_friendship?
-    return if self.is_a_friend_request?
-    return notifiable_type == "Friendship"
+    return false unless notifiable_type == "Friendship"
+    self.notifiable.is_mutual
   end
 
   def is_a_comment?
