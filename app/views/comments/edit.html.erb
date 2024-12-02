@@ -3,4 +3,5 @@
     comment: @comment, 
     commentable_id: @comment.commentable.id, 
     commentable_type: "#{@comment.commentable.class.name}" %>
+  <%= link_to "Cancel", @comment %>
 <% end %>

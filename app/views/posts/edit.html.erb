@@ -1,3 +1,4 @@
 <%= turbo_frame_tag dom_id(@post) do %>
   <%= render "form", post: @post %>
+  <%= link_to "Cancel", @post %>
 <% end %>

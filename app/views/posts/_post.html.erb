@@ -6,9 +6,10 @@
   <%= render partial: "likes/post_buttons", locals: { post: post } %>
   <% if post.author == current_user %>
     <%= button_to "Delete", post_path(post), method: :delete, data: {turbo: "false"} %>
-    <%= button_to "Edit", edit_post_path(post), method: :get %>
   <% end %>
   <% unless current_page?(post_path(post)) %>
     <%= link_to "#{pluralize(post.comments.count, 'comment')}", post_path(post), data: { turbo: "false" } %>
+  <% else %>
+    <%= button_to "Edit", edit_post_path(post), method: :get if post.author == current_user %>
   <% end %>
 <% end %>

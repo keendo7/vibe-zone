@@ -2,6 +2,10 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_comment, only: [:like, :unlike]
 
+  def show
+    @comment = Comment.find(params[:id])
+  end
+
   def new
     @comment = Comment.new
   end
