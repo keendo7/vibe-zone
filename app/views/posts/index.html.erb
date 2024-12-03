@@ -7,6 +7,17 @@
   <%= form.submit 'Search' %>
 <% end %>
 
+<div data-controller="post-sort">
+  <form method="get" action="<%= posts_path %>" data-turbo-frame="posts" data-turbo-stream>
+    <label for="sort_by">Sort by:</label>
+    <select name="sort_by" data-action="post-sort#update" data-post-sort-target="select">
+      <option value="newest" <%= 'selected' if params[:sort_by] == 'newest' %>>Newest</option>
+      <option value="oldest" <%= 'selected' if params[:sort_by] == 'oldest' %>>Oldest</option>
+      <option value="most_liked" <%= 'selected' if params[:sort_by] == 'most_liked' %>>Most liked</option>
+    </select>
+  </form>
+</div>
+
 <%= turbo_frame_tag :posts do %>
   <%== pagy_bootstrap_nav(@pagy) if @pagy.pages > 1 %>
   <%= render @posts %>

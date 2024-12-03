@@ -16,14 +16,25 @@ class PostsController < ApplicationController
       format.turbo_stream
     end
   end
-  
+
+
   def index
+    posts = Post.all
+
     if params[:query].present?
-      @pagy, @posts = pagy_countless(Post.all.search_post(params[:query]).order(created_at: :desc), items: 10)
-    else
-      @pagy, @posts = pagy_countless(Post.all.order(created_at: :desc), items: 10)
+      posts = Post.all.search_post(params[:query])
     end
 
+    case params[:sort_by]
+    when 'newest'
+      posts = posts.order(created_at: :desc)
+    when 'oldest'
+      posts = posts.order(created_at: :asc)
+    when 'most_liked'
+      posts = posts.order(likeable_count: :desc)
+    end
+
+    @pagy, @posts = pagy_countless(posts, items: 10)
     @post = current_user.authored_posts.new
 
     respond_to do |format|
@@ -31,7 +42,7 @@ class PostsController < ApplicationController
       format.turbo_stream
     end
   end
-
+  
   def show
     @comment = @post.comments.build
     
