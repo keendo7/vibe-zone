@@ -1,4 +1,0 @@
-<%= turbo_stream.prepend :comments, @comment %>
-<%= turbo_stream.update :comments_count do %>
-  <%= pluralize(@comment.commentable.comments.count, "Comment") %>
-<% end %>

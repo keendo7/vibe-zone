@@ -1,7 +1,7 @@
 class Post < ApplicationRecord
   extend FriendlyId
   friendly_id :post_identifier, use: :slugged
-
+  default_scope { order(created_at: :desc) }  
   belongs_to :author, class_name: 'User'
   has_many :comments, -> {order(created_at: :desc) }, as: :commentable, dependent: :destroy
   has_many :notifications, as: :notifiable, dependent: :destroy

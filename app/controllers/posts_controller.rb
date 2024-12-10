@@ -3,11 +3,16 @@ class PostsController < ApplicationController
   before_action :set_post, only: [:show, :like, :unlike]
 
   def home
+    posts = current_user.timeline
+
     if params[:query].present?
-      @pagy, @posts = pagy_countless(current_user.timeline.search_post(params[:query]), items: 10)
-    else
-      @pagy, @posts = pagy_countless(current_user.timeline, items: 10)
+      posts = current_user.timeline.search_post(params[:query])
     end
+
+    @pagy, @posts = pagy_countless(
+      params[:sort_by] ? sort_posts(posts, params[:sort_by]) : posts, 
+      items: 10
+    )
     
     @post = current_user.authored_posts.new
 
@@ -25,16 +30,11 @@ class PostsController < ApplicationController
       posts = Post.all.search_post(params[:query])
     end
 
-    case params[:sort_by]
-    when 'newest'
-      posts = posts.order(created_at: :desc)
-    when 'oldest'
-      posts = posts.order(created_at: :asc)
-    when 'most_liked'
-      posts = posts.order(likeable_count: :desc)
-    end
+    @pagy, @posts = pagy_countless(
+      params[:sort_by] ? sort_posts(posts, params[:sort_by]) : posts, 
+      items: 10
+    )
 
-    @pagy, @posts = pagy_countless(posts, items: 10)
     @post = current_user.authored_posts.new
 
     respond_to do |format|
@@ -45,17 +45,12 @@ class PostsController < ApplicationController
   
   def show
     @comment = @post.comments.build
-    
-    @cursor = (params[:cursor] || "0").to_i
-    if(@cursor == 0)
-      @comments = @post.comments.where.not(id: nil).where("id > ?", @cursor).take(10)
-    else
-      @comments = @post.comments.where.not(id: nil).where("id < ?", @cursor).take(10)
-    end
+    @pagy, @comments = pagy_countless(@post.comments, items: 10)
 
-    @next_cursor = @comments.last&.id
-    @more_pages = @next_cursor.present? && @comments.count == 10
-    render "scrollable_list" if params[:cursor]
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def create
@@ -108,6 +103,17 @@ class PostsController < ApplicationController
 
   def set_post
     @post = Post.friendly.find(params[:id])
+  end
+
+  def sort_posts(posts, params)
+    case params
+    when 'newest'
+      return posts.reorder(created_at: :desc)
+    when 'oldest'
+      return posts.reorder(created_at: :asc)
+    when 'most_liked'
+      return posts.reorder(likeable_count: :desc)
+    end
   end
 
   def notify(recipient, post)

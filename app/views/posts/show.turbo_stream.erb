@@ -1,0 +1,12 @@
+<%= turbo_stream.append :comments do %>
+  <%= render @comments %>
+<% end %>
+
+<%= turbo_stream.replace :pagination do %>
+  <% if @pagy.next.present? %>
+    <%= turbo_frame_tag :pagination,
+          loading: :lazy,
+          src: post_path(@post, format: :turbo_stream, page: @pagy.next)
+    %>
+  <% end %>
+<% end %>

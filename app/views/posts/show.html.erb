@@ -6,5 +6,9 @@
 
 <%= turbo_frame_tag :comments do %>
   <%= render @comments %>
-  <%= render "next_page" %>
 <% end %>
+
+<%= turbo_frame_tag :pagination,
+  loading: :lazy,
+  src: post_path(@post, format: :turbo_stream)
+%>
