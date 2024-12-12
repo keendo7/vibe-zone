@@ -3,12 +3,38 @@ class PostsController < ApplicationController
   before_action :set_post, only: [:show, :like, :unlike]
 
   def home
+    posts = current_user.timeline
+
     if params[:query].present?
-      @pagy, @posts = pagy_countless(current_user.timeline.search_post(params[:query]), items: 10)
-    else
-      @pagy, @posts = pagy_countless(current_user.timeline, items: 10)
+      posts = current_user.timeline.search_post(params[:query])
     end
+
+    @pagy, @posts = pagy_countless(
+      params[:sort_by] ? content_posts(posts, params[:sort_by]) : posts, 
+      items: 10
+    )
     
+    @post = current_user.authored_posts.new
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
+  end
+
+
+  def index
+    posts = Post.all
+
+    if params[:query].present?
+      posts = Post.all.search_post(params[:query])
+    end
+
+    @pagy, @posts = pagy_countless(
+      params[:sort_by] ? content_posts(posts, params[:sort_by]) : posts, 
+      items: 10
+    )
+
     @post = current_user.authored_posts.new
 
     respond_to do |format|
@@ -17,34 +43,16 @@ class PostsController < ApplicationController
     end
   end
   
-  def index
-    if params[:query].present?
-      @pagy, @posts = pagy_countless(Post.all.search_post(params[:query]).order(created_at: :desc), items: 10)
-    else
-      @pagy, @posts = pagy_countless(Post.all.order(created_at: :desc), items: 10)
-    end
-
-    @post = current_user.authored_posts.new
+  def show
+    @comment = @post.comments.build
+    @pagy, @comments = pagy_countless(
+      params[:sort_by] ? content_posts(@post.comments, params[:sort_by]) : @post.comments,
+      items: 10)
 
     respond_to do |format|
       format.html
       format.turbo_stream
     end
-  end
-
-  def show
-    @comment = @post.comments.build
-    
-    @cursor = (params[:cursor] || "0").to_i
-    if(@cursor == 0)
-      @comments = @post.comments.where.not(id: nil).where("id > ?", @cursor).take(10)
-    else
-      @comments = @post.comments.where.not(id: nil).where("id < ?", @cursor).take(10)
-    end
-
-    @next_cursor = @comments.last&.id
-    @more_pages = @next_cursor.present? && @comments.count == 10
-    render "scrollable_list" if params[:cursor]
   end
 
   def create
@@ -86,6 +94,7 @@ class PostsController < ApplicationController
 
   def unlike
     current_user.likes.find_by(likeable: @post).destroy
+    @post.reload
     render partial: "likes/post_buttons", locals: { post: @post }
   end
 
@@ -97,6 +106,19 @@ class PostsController < ApplicationController
 
   def set_post
     @post = Post.friendly.find(params[:id])
+  end
+
+  def content_posts(items, params)
+    case params
+    when 'newest'
+      return items.reorder(created_at: :desc)
+    when 'oldest'
+      return items.reorder(created_at: :asc)
+    when 'most_liked'
+      return items.reorder(likeable_count: :desc)
+    when 'most_popular'
+      return items.reorder(commentable_count: :desc)
+    end
   end
 
   def notify(recipient, post)

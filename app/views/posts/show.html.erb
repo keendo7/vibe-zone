@@ -1,10 +1,21 @@
 <%= render @post %>
 <h3 id=<%= "comments_count" %> class='text-3xl duration-500 font-bold my-4'>
-  <%= pluralize(@post.comments.count, 'Comment') %>
+  <%= pluralize(@post.commentable_count, 'Comment') %>
 </h3>
 <%= render 'comments/form', commentable_id: @post.id, commentable_type: "#{@post.class.name}" %>
 
+<div data-controller="content-sort">
+  <form method="get" action="<%= post_path(@post) %>" data-turbo-frame="comments" data-turbo-stream>
+    <label for="sort_by">Sort by:</label>
+    <select name="sort_by" data-action="content-sort#update" data-content-sort-target="select">
+      <option value="newest" <%= 'selected' if params[:sort_by] == 'newest' %>>Newest</option>
+      <option value="oldest" <%= 'selected' if params[:sort_by] == 'oldest' %>>Oldest</option>
+      <option value="most_liked" <%= 'selected' if params[:sort_by] == 'most_liked' %>>Most liked</option>
+    </select>
+  </form>
+</div>
+
 <%= turbo_frame_tag :comments do %>
+  <%== pagy_bootstrap_nav(@pagy) if @pagy.pages > 1 %>
   <%= render @comments %>
-  <%= render "next_page" %>
 <% end %>

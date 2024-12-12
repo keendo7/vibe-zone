@@ -5,7 +5,7 @@
 <% end %>
 
 <% if (comment.commentable.author == current_user || comment.commenter == current_user) %>
-  <%= button_to "Delete", comment_path(comment), method: :delete, data: {turbo_frame: "_top"} %>
+  <%= button_to "Delete", comment_path(comment), method: :delete, data: { turbo: false } %>
 <% end %>
 
 <% if comment.commenter == current_user %>
