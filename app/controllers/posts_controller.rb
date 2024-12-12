@@ -10,7 +10,7 @@ class PostsController < ApplicationController
     end
 
     @pagy, @posts = pagy_countless(
-      params[:sort_by] ? sort_posts(posts, params[:sort_by]) : posts, 
+      params[:sort_by] ? content_posts(posts, params[:sort_by]) : posts, 
       items: 10
     )
     
@@ -31,7 +31,7 @@ class PostsController < ApplicationController
     end
 
     @pagy, @posts = pagy_countless(
-      params[:sort_by] ? sort_posts(posts, params[:sort_by]) : posts, 
+      params[:sort_by] ? content_posts(posts, params[:sort_by]) : posts, 
       items: 10
     )
 
@@ -45,7 +45,9 @@ class PostsController < ApplicationController
   
   def show
     @comment = @post.comments.build
-    @pagy, @comments = pagy_countless(@post.comments, items: 10)
+    @pagy, @comments = pagy_countless(
+      params[:sort_by] ? content_posts(@post.comments, params[:sort_by]) : @post.comments,
+      items: 10)
 
     respond_to do |format|
       format.html
@@ -92,6 +94,7 @@ class PostsController < ApplicationController
 
   def unlike
     current_user.likes.find_by(likeable: @post).destroy
+    @post.reload
     render partial: "likes/post_buttons", locals: { post: @post }
   end
 
@@ -105,14 +108,16 @@ class PostsController < ApplicationController
     @post = Post.friendly.find(params[:id])
   end
 
-  def sort_posts(posts, params)
+  def content_posts(items, params)
     case params
     when 'newest'
-      return posts.reorder(created_at: :desc)
+      return items.reorder(created_at: :desc)
     when 'oldest'
-      return posts.reorder(created_at: :asc)
+      return items.reorder(created_at: :asc)
     when 'most_liked'
-      return posts.reorder(likeable_count: :desc)
+      return items.reorder(likeable_count: :desc)
+    when 'most_popular'
+      return items.reorder(commentable_count: :desc)
     end
   end
 

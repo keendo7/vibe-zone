@@ -17,7 +17,7 @@ class CommentsController < ApplicationController
   def update
     @comment = Comment.find(params[:id])
     if @comment.update(comment_params)
-      render @comment
+      redirect_to @comment.commentable
     else
       render :edit, status: :unprocessable_entity
     end
