@@ -1,13 +1,8 @@
-<% if @new.any? %>
-  <% @new.each do |new_notification| %>
-    <ul>
-      <%= render new_notification %>
-    </ul>
-  <% end %>
+<%= turbo_frame_tag :notifications do %>
+  <%= render @notifications %>
 <% end %>
 
-<% @old.each do |old_notification| %>
-  <ul>
-    <%= render old_notification %>
-  </ul>
-<% end %>
+<%= turbo_frame_tag :pagination, 
+      src: notifications_path(format: :turbo_stream), 
+      loading: :lazy  
+%>

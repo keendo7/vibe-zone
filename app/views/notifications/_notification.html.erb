@@ -1,8 +1,18 @@
-<% if notification.is_a_friend_request? %>
-  <%= render "friendships/friendship_request_notification", notification: notification %>
-<% else %>
-  <li> <%= link_to notification.sender.full_name, user_path(notification.sender) %> <%= notification.notifiable.message %> <%= time_ago_in_words(notification.created_at) %> ago </li>
-  <% unless notification.is_a_friendship? %> 
-    <li> <%= link_to content(notification), notifiable_link(notification) %> </li>
+<%= turbo_frame_tag dom_id(notification) do %>
+  <% if notification.is_a_friend_request? %>
+    <%= render "friendships/friendship_request_notification", notification: notification %>
+  <% else %>
+    <li> <%= link_to notification.sender.full_name, user_path(notification.sender), data: {turbo: false} %> 
+      <%= notification.notifiable.message %> 
+      <%= time_ago_in_words(notification.created_at) %> ago 
+    </li>
+    <% unless notification.is_a_friendship? %> 
+      <li> 
+        <%= link_to (
+          truncate content(notification).squish, length: 30, separator: /\s/, omission: "..."),
+          notifiable_link(notification), data: {turbo: false}
+        %> 
+      </li>
+    <% end %>
   <% end %>
 <% end %>
