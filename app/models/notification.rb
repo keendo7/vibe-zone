@@ -1,7 +1,9 @@
 class Notification < ApplicationRecord
   belongs_to :user
   belongs_to :sender, class_name: 'User'
-  belongs_to :notifiable, -> { order(created_at: :desc) }, polymorphic: true
+  belongs_to :notifiable, polymorphic: true
+
+  scope :were_not_read, -> { where(was_read: false) }
  
   def is_a_friend_request?
     return false unless notifiable_type == "Friendship"

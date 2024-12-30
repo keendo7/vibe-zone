@@ -1,11 +1,19 @@
 class NotificationsController < ApplicationController
   before_action :authenticate_user!
+  after_action :mark_as_read, only: :index
 
   def index
-    @notifications = current_user.notifications
-    @new = @notifications.reject(&:was_read)
-    @old = @notifications.select(&:was_read)
+    @pagy, @notifications = pagy_countless(current_user.notifications, items: 20)
 
-    @notifications.each(&:read)
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
+  end
+
+  private
+  
+  def mark_as_read
+    current_user.notifications.were_not_read.each(&:read)
   end
 end
