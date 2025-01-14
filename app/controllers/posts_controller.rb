@@ -111,13 +111,13 @@ class PostsController < ApplicationController
   def content_posts(items, params)
     case params
     when 'newest'
-      return items.reorder(created_at: :desc)
+      return items.of_parents.reorder(created_at: :desc)
     when 'oldest'
-      return items.reorder(created_at: :asc)
+      return items.of_parents.reorder(created_at: :asc)
     when 'most_liked'
-      return items.reorder(likeable_count: :desc)
+      return items.of_parents.reorder(likeable_count: :desc)
     when 'most_popular'
-      return items.reorder(commentable_count: :desc)
+      return items.of_parents.reorder(commentable_count: :desc)
     end
   end
 
