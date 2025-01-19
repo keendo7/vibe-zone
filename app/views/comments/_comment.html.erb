@@ -2,6 +2,6 @@
   <li> <b> <%= link_to "#{comment.commenter.full_name}", user_path(comment.commenter), data: {turbo_frame: "_top"} %> </b> </li>
   <li> <%= comment.content %> </li>
   <li> <%= time_ago_in_words(comment.created_at) %> </li>
-  <li> <%= pluralize(comment.likes.count, "like") %> </li>
+  <li> <%= pluralize(comment.likeable_count, "like") %> </li>
   <%= render partial: "likes/comment_buttons", locals: { comment: comment } %>
 <% end %>

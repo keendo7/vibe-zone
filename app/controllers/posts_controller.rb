@@ -6,11 +6,11 @@ class PostsController < ApplicationController
     posts = current_user.timeline
 
     if params[:query].present?
-      posts = current_user.timeline.search_post(params[:query])
+      posts = posts.search_post(params[:query])
     end
 
     @pagy, @posts = pagy_countless(
-      params[:sort_by] ? content_posts(posts, params[:sort_by]) : posts, 
+      params[:sort_by] ? sort_posts_by(posts, params[:sort_by]) : posts, 
       items: 10
     )
     
@@ -24,14 +24,14 @@ class PostsController < ApplicationController
 
 
   def index
-    posts = Post.all
+    posts = Post.includes(:author).all.descending
 
     if params[:query].present?
-      posts = Post.all.search_post(params[:query])
+      posts = posts.search_post(params[:query])
     end
 
     @pagy, @posts = pagy_countless(
-      params[:sort_by] ? content_posts(posts, params[:sort_by]) : posts, 
+      params[:sort_by] ? sort_posts_by(posts, params[:sort_by]) : posts, 
       items: 10
     )
 
@@ -46,7 +46,7 @@ class PostsController < ApplicationController
   def show
     @comment = @post.comments.build
     @pagy, @comments = pagy_countless(
-      params[:sort_by] ? content_posts(@post.comments, params[:sort_by]) : @post.comments,
+      params[:sort_by] ? sort_content_by(@post.comments, params[:sort_by]) : @post.comments,
       items: 10)
 
     respond_to do |format|
@@ -108,7 +108,7 @@ class PostsController < ApplicationController
     @post = Post.friendly.find(params[:id])
   end
 
-  def content_posts(items, params)
+  def sort_content_by(items, params)
     case params
     when 'newest'
       return items.of_parents.reorder(created_at: :desc)
@@ -118,6 +118,19 @@ class PostsController < ApplicationController
       return items.of_parents.reorder(likeable_count: :desc)
     when 'most_popular'
       return items.of_parents.reorder(commentable_count: :desc)
+    end
+  end
+
+  def sort_posts_by(items, params)
+    case params
+    when 'newest'
+      return items.reorder(created_at: :desc)
+    when 'oldest'
+      return items.reorder(created_at: :asc)
+    when 'most_liked'
+      return items.reorder(likeable_count: :desc)
+    when 'most_popular'
+      return items.reorder(commentable_count: :desc)
     end
   end
 
