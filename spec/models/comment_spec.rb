@@ -21,7 +21,7 @@ RSpec.describe Comment, type: :model do
     context 'when parent comment exists' do
       let!(:parent_comment) { create(:comment) }
       it { expect(described_class.of_parents).to eq([parent_comment]) }
-      it { expect(described_class.of_parents.first.parent_id).to be nil }
+      it { expect(parent_comment.parent_id).to be nil }
     end
   end
 end
