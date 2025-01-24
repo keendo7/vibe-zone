@@ -3,5 +3,5 @@
   <li> <%= comment.content %> </li>
   <li> <%= time_ago_in_words(comment.created_at) %> </li>
   <li> <%= pluralize(comment.likeable_count, "like") %> </li>
-  <%= render partial: "likes/comment_buttons", locals: { comment: comment } %>
+  <%= render partial: "comments/buttons", locals: { comment: comment } %>
 <% end %>

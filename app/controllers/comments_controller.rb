@@ -42,6 +42,7 @@ class CommentsController < ApplicationController
 
   def unlike
     current_user.likes.find_by(likeable: @comment).destroy
+    @comment.reload
     render partial: 'comments/comment', locals: { comment: @comment }
   end
 

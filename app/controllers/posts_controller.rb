@@ -89,13 +89,13 @@ class PostsController < ApplicationController
   def like
     like = current_user.likes.create(likeable: @post)
     notify(@post.author, like)
-    render partial: "likes/post_buttons", locals: { post: @post }
+    render partial: "posts/buttons", locals: { post: @post }
   end
 
   def unlike
     current_user.likes.find_by(likeable: @post).destroy
     @post.reload
-    render partial: "likes/post_buttons", locals: { post: @post }
+    render partial: "posts/buttons", locals: { post: @post }
   end
 
   private
