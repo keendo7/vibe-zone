@@ -2,6 +2,7 @@
   <%= render "form", 
     comment: @comment, 
     commentable_id: @comment.commentable.id, 
-    commentable_type: "#{@comment.commentable.class.name}" %>
+    commentable_type: "#{@comment.commentable.class.name}",
+    parent_id: @comment.parent_id %>
   <%= link_to "Cancel", @comment %>
 <% end %>

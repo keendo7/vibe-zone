@@ -2,7 +2,7 @@
 <h3 id=<%= "comments_count" %> class='text-3xl duration-500 font-bold my-4'>
   <%= pluralize(@post.commentable_count, 'Comment') %>
 </h3>
-<%= render 'comments/form', commentable_id: @post.id, commentable_type: "#{@post.class.name}" %>
+<%= render 'comments/form', commentable_id: @post.id, commentable_type: "#{@post.class.name}", parent_id: nil %>
 
 <div data-controller="sort">
   <form method="get" action="<%= post_path(@post) %>" data-turbo-frame="comments" data-turbo-stream>

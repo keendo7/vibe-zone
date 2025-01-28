@@ -31,7 +31,7 @@ class PostsController < ApplicationController
     end
 
     @pagy, @posts = pagy_countless(
-      params[:sort_by] ? sort_posts_by(posts, params[:sort_by]) : posts, 
+      params[:sort_by] ? sort_by(posts, params[:sort_by]) : posts, 
       items: 10
     )
 
@@ -46,7 +46,7 @@ class PostsController < ApplicationController
   def show
     @comment = @post.comments.build
     @pagy, @comments = pagy_countless(
-      params[:sort_by] ? sort_content_by(@post.comments, params[:sort_by]) : @post.comments,
+      params[:sort_by] ? sort_by(@post.comments.of_parents, params[:sort_by]) : @post.comments.of_parents,
       items: 10)
 
     respond_to do |format|
@@ -108,20 +108,7 @@ class PostsController < ApplicationController
     @post = Post.friendly.find(params[:id])
   end
 
-  def sort_content_by(items, params)
-    case params
-    when 'newest'
-      return items.of_parents.reorder(created_at: :desc)
-    when 'oldest'
-      return items.of_parents.reorder(created_at: :asc)
-    when 'most_liked'
-      return items.of_parents.reorder(likeable_count: :desc)
-    when 'most_popular'
-      return items.of_parents.reorder(commentable_count: :desc)
-    end
-  end
-
-  def sort_posts_by(items, params)
+  def sort_by(items, params)
     case params
     when 'newest'
       return items.reorder(created_at: :desc)
