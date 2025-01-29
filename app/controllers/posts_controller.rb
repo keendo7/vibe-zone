@@ -6,11 +6,11 @@ class PostsController < ApplicationController
     posts = current_user.timeline
 
     if params[:query].present?
-      posts = current_user.timeline.search_post(params[:query])
+      posts = posts.search_post(params[:query])
     end
 
     @pagy, @posts = pagy_countless(
-      params[:sort_by] ? content_posts(posts, params[:sort_by]) : posts, 
+      params[:sort_by] ? sort_posts_by(posts, params[:sort_by]) : posts, 
       items: 10
     )
     
@@ -24,14 +24,14 @@ class PostsController < ApplicationController
 
 
   def index
-    posts = Post.all
+    posts = Post.includes(:author).all.descending
 
     if params[:query].present?
-      posts = Post.all.search_post(params[:query])
+      posts = posts.search_post(params[:query])
     end
 
     @pagy, @posts = pagy_countless(
-      params[:sort_by] ? content_posts(posts, params[:sort_by]) : posts, 
+      params[:sort_by] ? sort_by(posts, params[:sort_by]) : posts, 
       items: 10
     )
 
@@ -46,7 +46,7 @@ class PostsController < ApplicationController
   def show
     @comment = @post.comments.build
     @pagy, @comments = pagy_countless(
-      params[:sort_by] ? content_posts(@post.comments, params[:sort_by]) : @post.comments,
+      params[:sort_by] ? sort_by(@post.comments.of_parents, params[:sort_by]) : @post.comments.of_parents,
       items: 10)
 
     respond_to do |format|
@@ -89,13 +89,13 @@ class PostsController < ApplicationController
   def like
     like = current_user.likes.create(likeable: @post)
     notify(@post.author, like)
-    render partial: "likes/post_buttons", locals: { post: @post }
+    render partial: "posts/buttons", locals: { post: @post }
   end
 
   def unlike
     current_user.likes.find_by(likeable: @post).destroy
     @post.reload
-    render partial: "likes/post_buttons", locals: { post: @post }
+    render partial: "posts/buttons", locals: { post: @post }
   end
 
   private
@@ -108,7 +108,7 @@ class PostsController < ApplicationController
     @post = Post.friendly.find(params[:id])
   end
 
-  def content_posts(items, params)
+  def sort_by(items, params)
     case params
     when 'newest'
       return items.reorder(created_at: :desc)

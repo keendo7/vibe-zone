@@ -11,3 +11,15 @@
 <% if comment.commenter == current_user %>
   <%= button_to "Edit", edit_comment_path(comment), method: :get %>
 <% end %>
+
+<% if comment.parent_id.nil? %>
+  <div data-controller="reply-form">
+    <button type="button" data-action="click->reply-form#toggle">Reply</button>
+    <div class="hidden" data-reply-form-target="content">
+      <%= render 'comments/form', 
+          commentable_id: comment.commentable.id, 
+          commentable_type: "#{comment.commentable.class.name}", 
+          parent_id: comment.id %>
+      </div>
+  </div>
+<% end %>

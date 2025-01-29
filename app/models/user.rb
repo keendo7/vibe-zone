@@ -50,7 +50,7 @@ class User < ApplicationRecord
 
   def timeline
     friend_ids = self.active_friends.pluck(:id)
-    Post.where(author_id: [self.id] + friend_ids)
+    Post.includes(:author).where(author_id: [self.id] + friend_ids).descending
   end
 
   def full_name

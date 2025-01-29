@@ -16,7 +16,11 @@ class Notification < ApplicationRecord
   end
 
   def is_a_comment?
-    notifiable_type == "Comment"
+    notifiable_type == "Comment" && !self.notifiable.is_a_reply?
+  end
+
+  def is_a_reply?
+    notifiable_type == "Comment" && self.notifiable.is_a_reply?
   end
 
   def is_a_like?

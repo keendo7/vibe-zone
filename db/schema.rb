@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_11_224832) do
+ActiveRecord::Schema[7.0].define(version: 2025_01_14_165758) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -50,6 +50,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_11_224832) do
     t.datetime "updated_at", null: false
     t.bigint "commenter_id"
     t.integer "likeable_count", default: 0, null: false
+    t.integer "parent_id"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -123,5 +124,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_11_224832) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "comments", "comments", column: "parent_id"
   add_foreign_key "likes", "users"
 end

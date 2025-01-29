@@ -26,7 +26,7 @@ class CommentsController < ApplicationController
   def create
     @comment = Comment.new(comment_params)
     if @comment.save
-      notify(@comment.commentable.author, @comment)
+      @comment.is_a_reply? ? notify(@comment.parent.commenter, @comment) : notify(@comment.commentable.author, @comment)
       respond_to do |format|
         format.html { redirect_to @comment.commentable, status: :see_other }
         format.turbo_stream
@@ -42,6 +42,7 @@ class CommentsController < ApplicationController
 
   def unlike
     current_user.likes.find_by(likeable: @comment).destroy
+    @comment.reload
     render partial: 'comments/comment', locals: { comment: @comment }
   end
 
@@ -63,7 +64,7 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.require(:comment).permit(:content, :commentable_id, :commentable_type).merge(commenter_id: current_user.id)
+    params.require(:comment).permit(:content, :commentable_id, :commentable_type, :parent_id).merge(commenter_id: current_user.id)
   end
 
   def like_params
