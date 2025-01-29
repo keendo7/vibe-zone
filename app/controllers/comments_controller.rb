@@ -26,7 +26,7 @@ class CommentsController < ApplicationController
   def create
     @comment = Comment.new(comment_params)
     if @comment.save
-      notify(@comment.commentable.author, @comment)
+      @comment.is_a_reply? ? notify(@comment.parent.commenter, @comment) : notify(@comment.commentable.author, @comment)
       respond_to do |format|
         format.html { redirect_to @comment.commentable, status: :see_other }
         format.turbo_stream

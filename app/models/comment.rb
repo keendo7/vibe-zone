@@ -11,7 +11,15 @@ class Comment < ApplicationRecord
 
   scope :of_parents, -> { where(parent: nil) }
 
+  def is_a_reply?
+    !self.parent_id.nil?
+  end
+
   def message
-    " commented on your #{commentable_type.downcase}"
+    if self.is_a_reply?
+      " replied to your comment" 
+    else
+      " commented on your #{commentable_type.downcase}"
+    end
   end
 end
