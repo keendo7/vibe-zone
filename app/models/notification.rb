@@ -4,7 +4,8 @@ class Notification < ApplicationRecord
   belongs_to :notifiable, polymorphic: true
 
   scope :were_not_read, -> { where(was_read: false) }
- 
+  scope :deprecated, -> { where(was_read: true).where('created_at <= ?', 7.days.ago) }
+
   def is_a_friend_request?
     return false unless notifiable_type == "Friendship"
     !self.notifiable.is_mutual

@@ -1,0 +1,5 @@
+:scheduler:
+  :schedule:
+    cleanup_notifications:
+      cron: '0 0 * * * *'
+      class: "CleanupNotificationsJob"
