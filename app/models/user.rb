@@ -61,6 +61,14 @@ class User < ApplicationRecord
     slug
   end
 
+  def received_friendship_request_from?(user)
+    received_friends.include?(user: user)
+  end
+
+  def received_friendship_request_from(user)
+    received_friendships.find_by(user: user)
+  end
+
   def self.from_omniauth(auth)
     return nil if auth.info.email.blank?
 

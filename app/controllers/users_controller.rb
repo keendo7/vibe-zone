@@ -2,23 +2,17 @@ class UsersController < ApplicationController
   before_action :authenticate_user!
 
   def show
-    begin
-      @user = User.friendly.find(params[:id])
-      @pagy, @posts = pagy_countless(@user.authored_posts, items: 10)
-
-      respond_to do |format|
-        format.turbo_stream
-        format.html
-      end
-
-    rescue ActiveRecord::RecordNotFound
-      redirect_to root_path, notice: "User not found"
-      return
-    end
+    @user = User.friendly.find(params[:id])
+    @pagy, @posts = pagy_countless(@user.authored_posts, items: 10)
 
     if @user != current_user
-      @friendship = current_user.friendships.where(friend_id: @user.id).first
+      @friendship = current_user.friendships.find_by(friend: @user)
       @mutual_friends_count = current_user.mutual_friends(@user).count
+    end
+      
+    respond_to do |format|
+      format.turbo_stream
+      format.html
     end
   end
 
