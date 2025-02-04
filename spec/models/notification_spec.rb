@@ -67,9 +67,30 @@ RSpec.describe Notification, type: :model do
       before do
         notification.read
       end
-      
+
       it { expect(notification.was_read).to be true }
     end
   end
 
+  describe ".deprecated" do
+    context 'when notification was created at least 7 days ago and was read' do
+      let!(:notification) { create(:notification, :for_comment, :was_read, sender: user1, user: user2, created_at: 7.days.ago) }
+      it { expect(described_class.deprecated).to eq([notification]) }
+    end
+    
+    context 'when notification was created at least 7 days ago and was not read' do
+      let!(:notification) { create(:notification, :for_comment, sender: user1, user: user2, created_at: 7.days.ago) }
+      it { expect(described_class.deprecated).to eq([]) }
+    end
+
+    context 'when notification was created earlier than 7 days ago and was read' do
+      let!(:notification) { create(:notification, :for_comment, :was_read, sender: user1, user: user2, created_at: 6.days.ago) }
+      it { expect(described_class.deprecated).to eq([]) }
+    end
+
+    context 'when notification was created earlier than 7 days ago and was not read' do
+      let!(:notification) { create(:notification, :for_comment, sender: user1, user: user2, created_at: 6.days.ago) }
+      it { expect(described_class.deprecated).to eq([]) }
+    end
+  end
 end

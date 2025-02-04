@@ -86,3 +86,5 @@ gem 'image_processing', '~> 1.2'
 gem 'activestorage-validator'
 gem 'friendly_id'
 gem "pagy", "~> 8.1"
+
+gem "sidekiq-scheduler", "~> 5.0"
