@@ -62,7 +62,7 @@ class User < ApplicationRecord
   end
 
   def received_friendship_request_from?(user)
-    received_friends.include?(user: user)
+    received_friends.include?(user)
   end
 
   def received_friendship_request_from(user)
