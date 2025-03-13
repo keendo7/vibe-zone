@@ -1,11 +1,9 @@
-<% unless friendship %>
-  <% if current_user.received_friendship_request_from?(user) %>
-    <li> Received friend request! </li>
-    <li> <%= button_to "Accept", user_friendships_path(user), method: :post, data: { turbo: false } %> </li>
-    <li> <%= button_to "Decline", friendship_path(current_user.received_friendship_request_from(user)), method: :delete, data: { turbo: false } %> </li>
-  <% else %>
-    <%= button_to "Send friend request", user_friendships_path(user.id), method: :post, data: { turbo: false } %>
-  <% end %>
-<% else %>
+<% if current_user.received_friendship_request_from?(user) %>
+  <li> Received friend request! </li>
+  <li> <%= button_to "Accept", friendships_path(user_id: user.id), method: :post, data: { turbo: false } %> </li>
+  <li> <%= button_to "Decline", friendship_path(current_user.received_friendship_request_from(user)), method: :delete, data: { turbo: false } %> </li>
+<% elsif current_user.is_friends_with?(user) %>
   <%= button_to "Remove from friends", friendship_path(friendship), method: :delete, data: { turbo: false } %>
+<% else %>
+  <%= button_to "Send friend request", friendships_path(user_id: user.id), method: :post, data: { turbo: false } %>
 <% end %>

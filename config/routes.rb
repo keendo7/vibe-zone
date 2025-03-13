@@ -20,14 +20,14 @@ Rails.application.routes.draw do
       delete "unlike", to: "comments#unlike"
     end
   end
+  resources :friendships, only: [:create, :destroy]
   resources :users, only: [:show, :destroy, :update] do
-    resources :friendships, only: [:index, :create] do
+    resources :friendships, controller: 'user_friendships', only: [:index] do
       collection do
         get :mutual_friends
       end
     end
   end
-  resources :friendships, only: [:destroy]
   resources :notifications, only: [:index]
   get 'details', to: 'users#edit', as: 'details'
   get 'search', to: 'users#search'

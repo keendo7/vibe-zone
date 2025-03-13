@@ -28,15 +28,15 @@ RSpec.describe Friendship, type: :model do
     end
   end
 
-  describe '#is_mutual' do
+  describe '#is_mutual?' do
     context 'when friendship is not mutual' do
       let(:friendship) { create(:friendship, user: user1, friend: user2) }
-      it { expect(friendship.is_mutual).to be false }
+      it { expect(friendship.is_mutual?).to be false }
     end
 
     context 'when friendship is mutual' do
       let(:friendship) { create(:friendship, :for_mutual, user: user1, friend: user2) }
-      it { expect(friendship.is_mutual).to be true }
+      it { expect(friendship.is_mutual?).to be true }
     end
   end
 

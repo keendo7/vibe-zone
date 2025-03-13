@@ -20,6 +20,7 @@ class User < ApplicationRecord
   has_many :friends, through: :friendships
   has_many :received_friendships, class_name: 'Friendship', foreign_key: 'friend_id', dependent: :destroy
   has_many :received_friends, through: :received_friendships, source: 'user'
+  has_many :active_friendships, class_name: 'Friendship', foreign_key: 'user_id', dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :notifications, -> { order(was_read: :asc, created_at: :desc) }, dependent: :destroy
   has_one_attached :avatar
@@ -29,6 +30,7 @@ class User < ApplicationRecord
   validates :avatar, blob: { content_type: AVATAR_CONTENT_TYPES, size: { less_than: 5.megabytes} }
 
   scope :search, ->(query) { where("CONCAT_WS(' ', first_name, last_name) ILIKE ?", "%#{query}%") }
+  scope :active_friendships, -> { friendships.map { |friendship| friendship.is_mutual? } }
   
   def active_friends
     friends.select{ |friend| friend.friends.include?(self) }  
@@ -61,8 +63,12 @@ class User < ApplicationRecord
     slug
   end
 
+  def is_friends_with?(user)
+    friends.include?(user)
+  end
+
   def received_friendship_request_from?(user)
-    received_friends.include?(user)
+    user.pending_friends.include?(self)
   end
 
   def received_friendship_request_from(user)

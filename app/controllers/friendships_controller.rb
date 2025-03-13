@@ -1,25 +1,9 @@
 class FriendshipsController < ApplicationController
   before_action :authenticate_user!
 
-  def index
-    @user = User.friendly.find(params[:user_id])
-    
-    if params[:query].present?
-      @friendships = @user.friendships.search_friend(params[:query])
-    else
-      @friendships = @user.friendships
-    end
-  end
-
-  def mutual_friends
-    @user = User.friendly.find(params[:user_id])
-    @mutuals = current_user.mutual_friends(@user)
-  end
-
   def destroy
     @friendship = Friendship.find(params[:id])
-    Friendship.remove_friendship(@friendship)
-    redirect_back(fallback_location: root_path)
+    redirect_back(fallback_location: root_path) if @friendship.destroy
   end
   
   def create
@@ -37,7 +21,7 @@ class FriendshipsController < ApplicationController
     return unless recipient != current_user
     
     Notification.create(user_id: recipient.id, sender_id: current_user.id, notifiable: friendship)
-    unless friendship.is_mutual
+    unless friendship.is_mutual?
       UserFriendshipRequestJob.perform_async(recipient.id, current_user.id)
     else
       UserFriendshipRequestAcceptedJob.perform_async(recipient.id, current_user.id)
