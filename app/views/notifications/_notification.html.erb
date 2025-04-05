@@ -1,6 +1,8 @@
 <%= turbo_frame_tag dom_id(notification) do %>
   <% if notification.is_a_friend_request? %>
-    <%= render "friendships/friendship_request_notification", notification: notification %>
+    <li> <%= link_to notification.sender.full_name, user_path(notification.sender), data: { turbo: false } %> <%= notification.notifiable.message %> <%= time_ago_in_words(notification.created_at) %> ago </li>
+    <%= accept_request_button(notification.notifiable, :request) %>
+    <%= decline_request_button(notification.notifiable, :request) %>
   <% else %>
     <li> <%= link_to notification.sender.full_name, user_path(notification.sender), data: {turbo: false} %> 
       <%= notification.notifiable.message %> 

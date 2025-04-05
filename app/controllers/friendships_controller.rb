@@ -2,13 +2,18 @@ class FriendshipsController < ApplicationController
   before_action :authenticate_user!
 
   def destroy
-    @friendship = Friendship.find(params[:id])
+    @friendship = current_user.friendships.find(params[:id])
+    redirect_back(fallback_location: root_path) if @friendship.destroy
+  end
+
+  def decline
+    @friendship = current_user.received_friendships.find(params[:id])
     redirect_back(fallback_location: root_path) if @friendship.destroy
   end
   
   def create
     @user = User.friendly.find(params[:user_id])
-    @friendship = current_user.friendships.new(friend_id: @user.id)
+    @friendship = current_user.friendships.build(friend_id: @user.id)
     if @friendship.save
       notify(@user, @friendship)
       redirect_back(fallback_location: root_path)

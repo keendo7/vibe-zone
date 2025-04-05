@@ -1,12 +1,12 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_user, only: [:show]
 
   def show
-    @user = User.friendly.find(params[:id])
     @pagy, @posts = pagy_countless(@user.authored_posts, items: 10)
 
     if @user != current_user
-      @friendship = current_user.friendships.find_by(friend: @user)
+      @status, @friendship = current_user.friendship_status_with(@user)
       @mutual_friends_count = current_user.mutual_friends(@user).count
     end
       

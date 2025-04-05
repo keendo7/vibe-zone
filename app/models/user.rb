@@ -20,7 +20,6 @@ class User < ApplicationRecord
   has_many :friends, through: :friendships
   has_many :received_friendships, class_name: 'Friendship', foreign_key: 'friend_id', dependent: :destroy
   has_many :received_friends, through: :received_friendships, source: 'user'
-  has_many :active_friendships, class_name: 'Friendship', foreign_key: 'user_id', dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :notifications, -> { order(was_read: :asc, created_at: :desc) }, dependent: :destroy
   has_one_attached :avatar
@@ -30,7 +29,6 @@ class User < ApplicationRecord
   validates :avatar, blob: { content_type: AVATAR_CONTENT_TYPES, size: { less_than: 5.megabytes} }
 
   scope :search, ->(query) { where("CONCAT_WS(' ', first_name, last_name) ILIKE ?", "%#{query}%") }
-  scope :active_friendships, -> { friendships.map { |friendship| friendship.is_mutual? } }
   
   def active_friends
     friends.select{ |friend| friend.friends.include?(self) }  
@@ -38,6 +36,21 @@ class User < ApplicationRecord
   
   def pending_friends
     friends.select{ |friend| !friend.friends.include?(self) }  
+  end
+
+  def friendship_status_with(user)
+    if is_friends_with?(user)
+      return :friend, friendships.find_by(friend: user)
+    elsif received_friendship_request_from?(user)
+      return :request, received_friendship_request_from(user)
+    else 
+      return :no_friendship, nil
+    end 
+  end
+
+  def active_friendships
+    friend_ids = active_friends.pluck(:id)
+    friendships.includes(:friend).where(friend_id: friend_ids)
   end
 
   def mutual_friends(user)
@@ -64,11 +77,11 @@ class User < ApplicationRecord
   end
 
   def is_friends_with?(user)
-    friends.include?(user)
+    active_friends.include?(user) || pending_friends.include?(user)
   end
 
-  def received_friendship_request_from?(user)
-    user.pending_friends.include?(self)
+  def received_friendship_request_from?(user) 
+    received_friends.include?(user)
   end
 
   def received_friendship_request_from(user)
