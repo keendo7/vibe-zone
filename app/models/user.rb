@@ -38,6 +38,21 @@ class User < ApplicationRecord
     friends.select{ |friend| !friend.friends.include?(self) }  
   end
 
+  def friendship_status_with(user)
+    if is_friends_with?(user)
+      return :friend, friendships.find_by(friend: user)
+    elsif received_friendship_request_from?(user)
+      return :request, received_friendship_request_from(user)
+    else 
+      return :no_friendship, nil
+    end 
+  end
+
+  def active_friendships
+    friend_ids = active_friends.pluck(:id)
+    friendships.includes(:friend).where(friend_id: friend_ids)
+  end
+
   def mutual_friends(user)
     friendships.select do |friend|
       user.friendships.find_by(friend_id: friend.friend_id)
@@ -61,8 +76,12 @@ class User < ApplicationRecord
     slug
   end
 
-  def received_friendship_request_from?(user)
-    received_friends.include?(user: user)
+  def is_friends_with?(user)
+    active_friends.include?(user) || pending_friends.include?(user)
+  end
+
+  def received_friendship_request_from?(user) 
+    received_friends.include?(user)
   end
 
   def received_friendship_request_from(user)

@@ -8,12 +8,12 @@ class Notification < ApplicationRecord
 
   def is_a_friend_request?
     return false unless notifiable_type == "Friendship"
-    !self.notifiable.is_mutual
+    !self.notifiable.is_mutual?
   end
 
   def is_a_friendship?
     return false unless notifiable_type == "Friendship"
-    self.notifiable.is_mutual
+    self.notifiable.is_mutual?
   end
 
   def is_a_comment?

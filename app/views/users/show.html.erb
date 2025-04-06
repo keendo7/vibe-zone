@@ -6,12 +6,14 @@
   <%= link_to 'Edit details', details_path %>
 <% else %>
   <% if @mutual_friends_count != 0 %>
-    <%= link_to "#{pluralize(@mutual_friends_count, 'mutual friend')}", mutual_friends_user_friendships_path(@user) %>
+    <%= link_to "#{pluralize(@mutual_friends_count, 'mutual friend')}", user_mutual_friends_path(@user) %>
   <% end %>
 <% end %>
 <%= link_to "#{pluralize(@user.active_friends.count, 'friend')}", user_friendships_path(@user) %>
 <% if current_user != @user %>
-  <%= render partial: "friendships/friendship_button", locals: { friendship: @friendship, user: @user } %> 
+  <%= render partial: "friendships/friendship_buttons", 
+    locals: { friendship: @friendship, status: @status, user: @user } 
+  %> 
 <% end %>
 
 <h3> <%= "#{pluralize(@user.authored_posts.count, 'post')}" %> </h3>

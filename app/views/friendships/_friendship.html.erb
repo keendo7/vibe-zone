@@ -1,3 +1,4 @@
 <div id="<%= dom_id friendship %>">
-  <%= link_to "#{friendship.friend.full_name}", user_path(friendship.friend), data: {turbo_frame: "_top"} %> 
+  <%= link_to "#{friendship.friend.full_name}", user_path(friendship.friend), data: {turbo_frame: "_top"} %>
+  <%= unfriend_button(friendship, :friend) if current_user == @user  %>
 </div>

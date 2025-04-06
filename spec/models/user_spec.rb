@@ -137,4 +137,65 @@ RSpec.describe User, type: :model do
       it { expect(user1.mutual_friends(user4)).to eq([]) }
     end
   end
+
+  describe '#friendship_status_with' do
+    let(:user1) { create :user }
+    let(:user2) { create :user }
+
+    context 'user1 and user2 are not friends' do
+      it { expect(user1.friendship_status_with(user2)).to eq([:no_friendship, nil]) }
+      it { expect(user2.friendship_status_with(user1)).to eq([:no_friendship, nil]) }
+    end
+
+    context 'user1 sent friendship request to user2' do
+      let!(:friendship) { create(:friendship, user: user1, friend: user2) }
+
+      it { expect(user1.friendship_status_with(user2)).to eq([:friend, friendship]) }
+      it { expect(user2.friendship_status_with(user1)).to eq([:request, user2.received_friendship_request_from(user1)]) }
+    end
+
+    context 'user1 and user2 are friends' do
+      let!(:friendship1) { create(:friendship, user: user1, friend: user2) }
+      let!(:friendship2) { create(:friendship, user: user2, friend: user1) }
+
+      it { expect(user1.friendship_status_with(user2)).to eq([:friend, friendship1]) }
+      it { expect(user2.friendship_status_with(user1)).to eq([:friend, friendship2]) }
+    end
+  end
+
+  describe '#is_friends_with?' do
+    let(:user1) { create :user }
+    let(:user2) { create :user }
+
+    context 'when user1 and user2 are not friends' do
+      it { expect(user1.is_friends_with?(user2)).to be false }
+      it { expect(user2.is_friends_with?(user1)).to be false }
+    end
+
+    context 'when user1 sent friendship request to user2' do
+      let!(:friendship) { create(:friendship, user: user1, friend: user2) }
+
+      it { expect(user1.is_friends_with?(user2)).to be true }
+      it { expect(user2.is_friends_with?(user1)).to be false }
+    end
+
+    context 'when user1 and user2 are friends' do
+      let!(:friendship1) { create(:friendship, user: user1, friend: user2) }
+      let!(:friendship2) { create(:friendship, user: user2, friend: user1) }
+
+      it { expect(user1.is_friends_with?(user2)).to be true }
+      it { expect(user2.is_friends_with?(user1)).to be true }
+    end
+  end
+
+  describe '#received_friendship_request_from?' do
+    let(:user1) { create :user }
+    let(:user2) { create :user }
+
+    context 'when user1 received friendship request from user2' do
+      let!(:friendship) { create(:friendship, user: user2, friend: user1) }
+
+      it { expect(user1.received_friendship_request_from?(user2)).to be true}
+    end
+  end
 end

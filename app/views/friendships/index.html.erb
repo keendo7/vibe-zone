@@ -1,9 +1,0 @@
-<%= form_with(url: user_friendships_path, method: :get, data: {turbo_frame: "search-results", turbo_action: "advance", controller: "search", action: "input->search#submit"}) do |form| %>
-  <%= form.label :query, "Search user" %>
-  <%= form.text_field :query %>
-  <%= form.submit 'Search' %>
-<% end %>
-
-<%= turbo_frame_tag "search-results" do %>
-  <%= render @friendships %>
-<% end %>
