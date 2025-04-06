@@ -3,9 +3,9 @@ class UserFriendshipsController < FriendshipsController
     @user = User.friendly.find(params[:user_id])
    
     if params[:query].present?
-      @friendships = @user.friendships.search_friend(params[:query])
+      @friendships = @user.active_friendships.search_friend(params[:query])
     else
-      @friendships = @user.friendships
+      @friendships = @user.active_friendships
     end
   end
 

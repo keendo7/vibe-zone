@@ -26,14 +26,12 @@ Rails.application.routes.draw do
     end
   end
   resources :users, only: [:show, :destroy, :update] do
-    resources :friendships, controller: 'user_friendships', only: [:index] do
-      collection do
-        get :mutual_friends
-      end
-    end
+    get :mutual_friends, to: 'user_friendships#mutual_friends'
+    resources :friendships, controller: 'user_friendships', only: [:index]
   end
   resources :notifications, only: [:index]
   get 'details', to: 'users#edit', as: 'details'
   get 'search', to: 'users#search'
   get 'home', to: 'posts#home'
+  get '/users/:id/mutual_friends', to: 'user_friendships#mutual_friends'
 end

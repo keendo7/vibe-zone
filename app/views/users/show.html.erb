@@ -6,7 +6,7 @@
   <%= link_to 'Edit details', details_path %>
 <% else %>
   <% if @mutual_friends_count != 0 %>
-    <%= link_to "#{pluralize(@mutual_friends_count, 'mutual friend')}", mutual_friends_user_friendships_path(@user) %>
+    <%= link_to "#{pluralize(@mutual_friends_count, 'mutual friend')}", user_mutual_friends_path(@user) %>
   <% end %>
 <% end %>
 <%= link_to "#{pluralize(@user.active_friends.count, 'friend')}", user_friendships_path(@user) %>
