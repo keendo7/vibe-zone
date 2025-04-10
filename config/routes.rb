@@ -19,6 +19,8 @@ Rails.application.routes.draw do
       post "like", to: "comments#like"
       delete "unlike", to: "comments#unlike"
     end
+
+    post :replies, on: :member
   end
   resources :friendships, only: [:create, :destroy] do
     member do

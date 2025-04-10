@@ -1,0 +1,17 @@
+<%= turbo_stream.append dom_id(@comment, :replies) do %>
+  <%= render partial: "comments/comment", collection: @replies %>
+<% end %>
+
+<% if @pagy.next.present? %>
+  <%= turbo_stream.update dom_id(@comment, :load_replies) do %>
+    <%= button_to "Load More", replies_comment_path(@comment, page: @pagy.next), data: { turbo_stream: true } %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.remove dom_id(@comment, :load_replies) %>
+<% end %>
+
+<%= turbo_stream.update dom_id(@comment, :toggle_button) do %>
+  <button type="button" data-action="click->toggle#toggle">
+    Toggle Replies
+  </button>
+<% end %>

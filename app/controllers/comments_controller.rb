@@ -34,6 +34,16 @@ class CommentsController < ApplicationController
     end   
   end
 
+  def replies
+    @comment = Comment.find(params[:id])
+    @pagy, @replies = pagy_countless(@comment.replies, items: 10)
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { render partial: "comments/comment", locals: { comment: @comment, replies: @replies, pagy: @pagy } }
+    end
+  end
+
   def like
     like = current_user.likes.create(likeable: @comment)
     notify(@comment.commenter, like)

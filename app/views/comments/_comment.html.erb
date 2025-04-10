@@ -1,12 +1,16 @@
 <%= turbo_frame_tag dom_id(comment) do %>
-  <li> <b> <%= link_to "#{comment.commenter.full_name}", user_path(comment.commenter), data: {turbo_frame: "_top"} %> </b> </li>
-  <li> <%= comment.content %> </li>
-  <li> <%= time_ago_in_words(comment.created_at) %> </li>
-  <li> <%= pluralize(comment.likeable_count, "like") %> </li>
+  <li> <b> <%= link_to comment.commenter.full_name, user_path(comment.commenter), data: { turbo_frame: "_top" } %> </b> </li>
+  <li><%= comment.content %></li>
+  <li><%= time_ago_in_words(comment.created_at) %></li>
+  <li><%= pluralize(comment.likeable_count, "like") %></li>
+
   <%= render partial: "comments/buttons", locals: { comment: comment } %>
-  <% if comment.parent_id.nil? %>
-    <div class="replies">
-      <%= render partial: "comments/comment", collection: comment.replies %>
-    </div>
+
+  <% if comment.parent_id.nil? && comment.replies.any? %>
+    <%= turbo_frame_tag dom_id(comment, :replies) %>
+
+    <%= turbo_frame_tag dom_id(comment, :load_replies) do %>
+      <%= button_to "View Replies", replies_comment_path(comment), data: { turbo_frame: dom_id(comment, :replies) } %>
+    <% end %>
   <% end %>
 <% end %>
