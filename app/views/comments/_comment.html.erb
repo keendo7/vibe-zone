@@ -7,10 +7,17 @@
   <%= render partial: "comments/buttons", locals: { comment: comment } %>
 
   <% if comment.parent_id.nil? && comment.replies.any? %>
-    <%= turbo_frame_tag dom_id(comment, :replies) %>
+    <div class="replies">
+      <div data-controller="toggle-replies">
+        <%= turbo_frame_tag dom_id(comment, :toggle_button) %>
 
-    <%= turbo_frame_tag dom_id(comment, :load_replies) do %>
-      <%= button_to "View Replies", replies_comment_path(comment), data: { turbo_frame: dom_id(comment, :replies) } %>
-    <% end %>
+        <div data-toggle-replies-target="content">
+          <%= turbo_frame_tag dom_id(comment, :replies) %>
+          <%= turbo_frame_tag dom_id(comment, :load_replies) do %>
+            <%= button_to "View Replies", replies_comment_path(comment), data: { turbo_frame: dom_id(comment, :replies) } %>
+          <% end %>
+        </div>
+      </div>
+    </div>
   <% end %>
 <% end %>

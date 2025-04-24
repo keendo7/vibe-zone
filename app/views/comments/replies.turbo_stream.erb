@@ -11,7 +11,7 @@
 <% end %>
 
 <%= turbo_stream.update dom_id(@comment, :toggle_button) do %>
-  <button type="button" data-action="click->toggle#toggle">
-    Toggle Replies
+  <button type="button" data-action="click->toggle-replies#toggle">
+    <span data-toggle-replies-target="label">Hide replies</span>
   </button>
 <% end %>
