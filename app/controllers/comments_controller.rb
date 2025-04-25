@@ -39,8 +39,8 @@ class CommentsController < ApplicationController
     @pagy, @replies = pagy_countless(@comment.replies, items: 10)
 
     respond_to do |format|
+      format.html
       format.turbo_stream
-      format.html { render partial: "comments/comment", locals: { comment: @comment, replies: @replies, pagy: @pagy } }
     end
   end
 

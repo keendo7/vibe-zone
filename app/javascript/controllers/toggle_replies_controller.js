@@ -6,7 +6,7 @@ export default class extends Controller {
   toggle() {
     this.contentTarget.classList.toggle("hidden")
 
-    let text = this.contentTarget.classList.contains("hidden") ? "Show replies" : "Hide replies";
+    let text = this.contentTarget.classList.contains("hidden") ? "View replies" : "Hide replies";
     this.labelTarget.textContent = text;
   }
 }
