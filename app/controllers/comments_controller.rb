@@ -1,9 +1,9 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_comment, only: [:like, :unlike]
-
+  before_action :set_comment, only: [:like, :unlike, :edit, :show]
+  
   def show
-    @comment = Comment.find(params[:id])
+    render partial: "comments/comment", locals: { comment: @comment }
   end
 
   def new
@@ -47,13 +47,13 @@ class CommentsController < ApplicationController
   def like
     like = current_user.likes.create(likeable: @comment)
     notify(@comment.commenter, like)
-    render partial: 'comments/comment', locals: { comment: @comment }
+    render partial: 'comments/like_count', locals: { comment: @comment }
   end
 
   def unlike
     current_user.likes.find_by(likeable: @comment).destroy
     @comment.reload
-    render partial: 'comments/comment', locals: { comment: @comment }
+    render partial: 'comments/like_count', locals: { comment: @comment }
   end
 
   def destroy

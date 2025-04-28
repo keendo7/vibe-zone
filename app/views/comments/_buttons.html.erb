@@ -1,8 +1,4 @@
-<% if comment.likes.exists?(user_id: current_user.id) %>
-  <%= button_to "Unlike", unlike_comment_path(comment), method: :delete %>
-<% else %>
-  <%= button_to "Like", like_comment_path(comment), method: :post %>
-<% end %>
+<%= render partial: "comments/like_count", locals: { comment: comment } %>
 
 <% if (comment.commentable.author == current_user || comment.commenter == current_user) %>
   <%= button_to "Delete", comment_path(comment), method: :delete, data: { turbo: false } %>
@@ -16,7 +12,7 @@
   <div data-controller="reply-form">
     <button type="button" data-action="click->reply-form#toggle">Reply</button>
     <div class="hidden" data-reply-form-target="content">
-      <%= render 'comments/form', 
+      <%= render 'comments/form',
           commentable_id: comment.commentable.id, 
           commentable_type: "#{comment.commentable.class.name}", 
           parent_id: comment.id %>
