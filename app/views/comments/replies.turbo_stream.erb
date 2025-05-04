@@ -9,9 +9,3 @@
 <% else %>
   <%= turbo_stream.remove dom_id(@comment, :load_replies) %>
 <% end %>
-
-<%= turbo_stream.update dom_id(@comment, :toggle_button) do %>
-  <button type="button" data-action="click->toggle-replies#toggle">
-    <span data-toggle-replies-target="label">Hide replies</span>
-  </button>
-<% end %>
