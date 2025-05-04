@@ -10,9 +10,10 @@
       <%= link_to "Hide replies", nil, remote: true, 
         data: {
           controller: "toggle",
-          action: "toggle#hideReplies",
-          toggle_replies_param: "replies_container_#{comment.id}"
-        } 
+          action: "toggle#toggleReplies",
+          toggle_replies_param: "replies_container_#{comment.id}",
+          toggle_target: "link"
+        }
       %>
     </div>
 

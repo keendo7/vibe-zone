@@ -2,8 +2,9 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
 
+static targets = ["link"];
+
   toggleForm(event) {
-    console.log("cock");
     event.preventDefault();
     event.stopPropagation();
     const formId = event.params["form"];
@@ -17,11 +18,18 @@ export default class extends Controller {
     button.classList.toggle("d-none");
   }
 
-  hideReplies(event) {
+  toggleReplies(event) {
     event.preventDefault();
     event.stopPropagation();
     const repliesId = event.params["replies"];
+    console.log(event);
     const replies = document.getElementById(repliesId);
     replies.classList.toggle("d-none");
+
+    if(this.linkTarget.textContent == "Hide replies"){
+      this.linkTarget.textContent = "Show replies";
+    } else {
+      this.linkTarget.textContent = "Hide replies";
+    }
   }
 }
