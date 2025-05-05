@@ -1,18 +1,10 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_comment, only: [:like, :unlike, :edit, :show]
-  
-  def show
-    render partial: "comments/comment", locals: { comment: @comment }
-  end
+  before_action :set_comment, only: [:like, :unlike, :edit]
 
-  def new
-    @comment = Comment.new
-  end
+  def new; end
 
-  def edit
-    @comment = Comment.find(params[:id])
-  end
+  def edit; end
 
   def update
     @comment = Comment.find(params[:id])
