@@ -22,7 +22,6 @@
   </div>
 <% end %>
 
-<% if comment.parent_id.nil? %>
   <%= link_to "Reply", nil, remote: true, class: "btn btn-secondary", 
     data: {
       controller: "toggle",
@@ -36,6 +35,5 @@
         comment: Comment.new,
         commentable_id: comment.commentable.id, 
         commentable_type: "#{comment.commentable.class.name}", 
-        parent_id: comment.id %>
+        parent_id: comment.is_a_reply? ? comment.parent_id : comment.id %>
   </div>
-<% end %>
