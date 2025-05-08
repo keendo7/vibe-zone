@@ -5,7 +5,7 @@ class Comment < ApplicationRecord
   
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :notifications, as: :notifiable, dependent: :destroy
-  has_many :replies, class_name: 'Comment', foreign_key: :parent_id, dependent: :destroy
+  has_many :replies, -> { includes(:commenter, :commentable).order(created_at: :desc) }, class_name: 'Comment', foreign_key: :parent_id, dependent: :destroy
   
   validates :content, length: { in: 1..250 }
 

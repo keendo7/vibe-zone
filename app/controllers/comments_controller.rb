@@ -1,18 +1,10 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_comment, only: [:like, :unlike]
+  before_action :set_comment, only: [:like, :unlike, :edit]
 
-  def show
-    @comment = Comment.find(params[:id])
-  end
+  def new; end
 
-  def new
-    @comment = Comment.new
-  end
-
-  def edit
-    @comment = Comment.find(params[:id])
-  end
+  def edit; end
 
   def update
     @comment = Comment.find(params[:id])
@@ -34,16 +26,26 @@ class CommentsController < ApplicationController
     end   
   end
 
+  def replies
+    @comment = Comment.find(params[:id])
+    @pagy, @replies = pagy_countless(@comment.replies, items: 10)
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
+  end
+
   def like
     like = current_user.likes.create(likeable: @comment)
     notify(@comment.commenter, like)
-    render partial: 'comments/comment', locals: { comment: @comment }
+    render partial: 'comments/like_count', locals: { comment: @comment }
   end
 
   def unlike
     current_user.likes.find_by(likeable: @comment).destroy
     @comment.reload
-    render partial: 'comments/comment', locals: { comment: @comment }
+    render partial: 'comments/like_count', locals: { comment: @comment }
   end
 
   def destroy

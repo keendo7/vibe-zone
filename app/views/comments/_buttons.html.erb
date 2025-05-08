@@ -1,25 +1,39 @@
-<% if comment.likes.exists?(user_id: current_user.id) %>
-  <%= button_to "Unlike", unlike_comment_path(comment), method: :delete %>
-<% else %>
-  <%= button_to "Like", like_comment_path(comment), method: :post %>
-<% end %>
+<%= render partial: "comments/like_count", locals: { comment: comment } %>
 
 <% if (comment.commentable.author == current_user || comment.commenter == current_user) %>
   <%= button_to "Delete", comment_path(comment), method: :delete, data: { turbo: false } %>
 <% end %>
 
 <% if comment.commenter == current_user %>
-  <%= button_to "Edit", edit_comment_path(comment), method: :get %>
-<% end %>
+  <%= link_to "Edit", nil, remote: true, class: "btn btn-secondary",
+    data: {
+      controller: "toggle",
+      action: "toggle#toggleForm",
+      toggle_form_param: "edit-comment-#{comment.id}"
+    }
+  %>
 
-<% if comment.parent_id.nil? %>
-  <div data-controller="reply-form">
-    <button type="button" data-action="click->reply-form#toggle">Reply</button>
-    <div class="hidden" data-reply-form-target="content">
-      <%= render 'comments/form', 
-          commentable_id: comment.commentable.id, 
-          commentable_type: "#{comment.commentable.class.name}", 
-          parent_id: comment.id %>
-      </div>
+  <div id="edit-comment-<%= comment.id %>" class="d-none">
+    <%= render 'comments/form',
+        comment: comment,
+        commentable_id: comment.commentable.id, 
+        commentable_type: "#{comment.commentable.class.name}", 
+        parent_id: comment.parent_id %>
   </div>
 <% end %>
+
+  <%= link_to "Reply", nil, remote: true, class: "btn btn-secondary", 
+    data: {
+      controller: "toggle",
+      action: "toggle#toggleForm",
+      toggle_form_param: "reply-comment-#{comment.id}"
+    }
+  %>
+
+  <div id="reply-comment-<%= comment.id %>" class="d-none">
+    <%= render 'comments/form',
+        comment: Comment.new,
+        commentable_id: comment.commentable.id, 
+        commentable_type: "#{comment.commentable.class.name}", 
+        parent_id: comment.is_a_reply? ? comment.parent_id : comment.id %>
+  </div>
