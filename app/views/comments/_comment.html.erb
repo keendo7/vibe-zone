@@ -1,7 +1,12 @@
 <%= turbo_frame_tag dom_id(comment) do %>
   <li> <b> <%= link_to comment.commenter.full_name, user_path(comment.commenter), data: { turbo_frame: "_top" } %> </b> </li>
   <li><%= comment.content %></li>
-  <li><%= time_ago_in_words(comment.created_at) %></li>
+  <% if (comment.updated_at - comment.created_at) > 1 %>
+    <li><%= time_ago_in_words(comment.created_at) %> ago (edited <%= time_ago_in_words(comment.updated_at) %> ago)</li>
+  <% else %>
+    <li><%= time_ago_in_words(comment.created_at) %> ago </li>
+  <% end %>
+  
 
   <%= render partial: "comments/buttons", locals: { comment: comment } %>
 
