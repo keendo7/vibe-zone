@@ -1,6 +1,7 @@
 <div class="new-post-form">
   <%= form_with(model: @post, data: { turbo: false }) do |form| %>
     <%= form.text_area :content %>
+    <%= form.file_field :image %>
     <%= form.submit %>
   <% end %>
 </div>
