@@ -83,7 +83,7 @@ gem 'figaro'
 gem 'gravtastic'
 gem "sidekiq", "~> 7.2"
 gem 'image_processing', '~> 1.2'
-gem 'activestorage-validator'
+gem 'active_storage_validations'
 gem 'friendly_id'
 gem "pagy", "~> 8.1"
 

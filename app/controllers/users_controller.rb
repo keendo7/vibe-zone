@@ -26,7 +26,8 @@ class UsersController < ApplicationController
       purge_avatar if params[:user][:purge_avatar] == '1'
       redirect_to @user
     else
-      flash[:alert] = @user.errors.full_messages.join(', ')
+      flash.now[:alert] = @user.errors.full_messages.join(', ')
+      @user.reload
       render :edit, status: :unprocessable_entity
     end
   end
