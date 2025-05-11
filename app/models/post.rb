@@ -1,7 +1,7 @@
 class Post < ApplicationRecord
   extend FriendlyId
 
-  IMAGE_CONTENT_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/bmp"].freeze
+  IMAGE_CONTENT_TYPES = ["image/jpeg", "image/gif", "image/webp", "image/png", "image/bmp"].freeze
 
   friendly_id :post_identifier, use: :slugged
   belongs_to :author, class_name: 'User'
@@ -13,7 +13,7 @@ class Post < ApplicationRecord
   end
 
   validates :content, length: { in: 3..200 }
-  validates :image, blob: { content_type: IMAGE_CONTENT_TYPES, size: { less_than: 5.megabytes} }
+  validates :image, content_type: IMAGE_CONTENT_TYPES, size: { less_than: 5.megabytes}
   
   scope :search_post, ->(query) { where("content ILIKE ?", "%#{query}%" ) }
   scope :descending, -> { order(created_at: :desc) }

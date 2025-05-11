@@ -4,7 +4,7 @@ class User < ApplicationRecord
   include Gravtastic
   extend FriendlyId
 
-  AVATAR_CONTENT_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/bmp"].freeze
+  AVATAR_CONTENT_TYPES = ["image/jpeg", "image/png", "image/bmp"].freeze
 
   gravtastic
   friendly_id :full_name, use: :sequentially_slugged
@@ -26,7 +26,7 @@ class User < ApplicationRecord
 
   validates :first_name, :last_name, presence: true, format: {with: /\A\D{2,}\z/ }
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates :avatar, blob: { content_type: AVATAR_CONTENT_TYPES, size: { less_than: 5.megabytes} }
+  validates :avatar, content_type: AVATAR_CONTENT_TYPES, size: { less_than: 5.megabytes}
 
   scope :search, ->(query) { where("CONCAT_WS(' ', first_name, last_name) ILIKE ?", "%#{query}%") }
   
