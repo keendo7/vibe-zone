@@ -1,5 +1,10 @@
 <div class="new-post-form">
+  <% if flash[:alert]%>
+    <span class='alert'><%= flash[:alert] %></span>
+  <% end %>
+
   <%= form_with(model: @post, data: { turbo: false }) do |form| %>
+    <%= invisible_captcha %>
     <%= form.text_area :content %>
     <%= form.file_field :image %>
     <%= form.submit %>
