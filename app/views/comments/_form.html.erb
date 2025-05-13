@@ -1,4 +1,5 @@
 <%= form_with model: comment, data: { turbo: false } do |f| %>
+  <%= invisible_captcha %>
   <%= f.hidden_field :commentable_id, value: commentable_id %>
   <%= f.hidden_field :commentable_type, value: commentable_type %>
   <%= f.hidden_field :parent_id, value: parent_id %>
