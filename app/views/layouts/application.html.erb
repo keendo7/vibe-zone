@@ -11,6 +11,7 @@
   </head>
 
   <body>
+    <%= flash[:error] %>
     <% if user_signed_in? %>
       <%= render 'layouts/topnav' %>
     <% end %>

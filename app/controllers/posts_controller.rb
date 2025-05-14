@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post, only: [:show, :like, :unlike]
+  invisible_captcha only: [:create, :update]
 
   def home
     posts = current_user.timeline
@@ -58,7 +59,12 @@ class PostsController < ApplicationController
   def create
     @post = current_user.authored_posts.new(post_params)
     @post.image.attach(params[:post][:image])
-    redirect_to @post if @post.save
+    if @post.save
+      redirect_to @post
+    else
+      flash[:alert] = @post.errors.full_messages.join(', ')
+      redirect_back fallback_location: root_path
+    end
   end
 
   def edit
