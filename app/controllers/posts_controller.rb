@@ -11,7 +11,7 @@ class PostsController < ApplicationController
     end
 
     @pagy, @posts = pagy_countless(
-      params[:sort_by] ? sort_posts_by(posts, params[:sort_by]) : posts, 
+      params[:sort_by] ? sort_by(posts, params[:sort_by]) : posts, 
       items: 10
     )
     
