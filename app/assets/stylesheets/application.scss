@@ -44,3 +44,11 @@ ul {
   border: 1px solid black;
   border-radius: 50%;
 }
+
+.image {
+  width: auto;
+  height: 200px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}

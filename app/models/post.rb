@@ -8,9 +8,7 @@ class Post < ApplicationRecord
   has_many :comments, -> { includes(:commenter).order(created_at: :desc) }, as: :commentable, dependent: :destroy
   has_many :notifications, as: :notifiable, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
-  has_one_attached :image do |attachable|
-    attachable.variant :display, resize_to_limit: [250, 250]
-  end
+  has_one_attached :image
 
   validates :content, length: { in: 3..200 }
   validates :image, content_type: IMAGE_CONTENT_TYPES, size: { less_than: 5.megabytes}
@@ -20,6 +18,22 @@ class Post < ApplicationRecord
 
   def to_param
     slug
+  end
+
+  def image_variant
+    return image if image.content_type.in?(["image/gif", "image/webp"])
+
+    image.variant(
+      format: :webp,
+      resize_to_limit: [250, 250],
+      saver: {
+        subsample_mode: "on",
+        strip: true,
+        interlace: true,
+        lossless: true,
+        quality: 80
+      }
+    ).processed
   end
 
   private

@@ -3,7 +3,7 @@
   <li> <b> <%= post.author.full_name %> </b> </li>
   <li> added <%= time_ago_in_words(post.created_at) %> ago </li>
   <li> <%= post.content %> </li>
-  <%= image_tag(post.image, loading: "lazy") if post.image.attached? %>
+  <%= image_tag(post.image_variant, class: "image") if post.image.attached? %>
 
   <%= render partial: "posts/buttons", locals: { post: post } %>
   <% if post.author == current_user %>
