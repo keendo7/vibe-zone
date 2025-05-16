@@ -1,4 +1,4 @@
-<%= turbo_stream_from :notifications_list %>
+<%= turbo_stream_from current_user, "notifications_list" %>
 
 <%= turbo_frame_tag :notifications do %>
   <%= render @notifications %>

@@ -6,7 +6,7 @@ class Notification < ApplicationRecord
   scope :unread, -> { where(was_read: false) }
   scope :deprecated, -> { where(was_read: true).where('created_at <= ?', 7.days.ago) }
 
-  broadcasts_to ->(notification) { "notifications_list" }, inserts_by: :prepend
+  broadcasts_to ->(notification) { [notification.user, "notifications_list"] }, inserts_by: :prepend
 
   def is_a_friend_request?
     return false unless notifiable_type == "Friendship"
