@@ -3,8 +3,10 @@ class Notification < ApplicationRecord
   belongs_to :sender, class_name: 'User'
   belongs_to :notifiable, polymorphic: true
 
-  scope :were_not_read, -> { where(was_read: false) }
+  scope :unread, -> { where(was_read: false) }
   scope :deprecated, -> { where(was_read: true).where('created_at <= ?', 7.days.ago) }
+
+  broadcasts_to ->(notification) { "notifications_list" }, inserts_by: :prepend
 
   def is_a_friend_request?
     return false unless notifiable_type == "Friendship"

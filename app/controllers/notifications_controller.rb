@@ -14,6 +14,6 @@ class NotificationsController < ApplicationController
   private
   
   def mark_as_read
-    current_user.notifications.were_not_read.each(&:read)
+    current_user.notifications.unread.each(&:read)
   end
 end
