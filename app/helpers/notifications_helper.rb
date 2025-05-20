@@ -19,9 +19,7 @@ module NotificationsHelper
     end
   end
 
-  def notifications_count(user)
-    count = user.new_notifications_count
-
+  def notifications_count(count)
     if count >= 1 && count < 10
       "(#{count})"
     elsif count >= 10

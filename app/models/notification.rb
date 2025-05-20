@@ -6,7 +6,10 @@ class Notification < ApplicationRecord
   scope :unread, -> { where(was_read: false) }
   scope :deprecated, -> { where(was_read: true).where('created_at <= ?', 7.days.ago) }
 
-  broadcasts_to ->(notification) { [notification.user, "notifications_list"] }, inserts_by: :prepend
+  broadcasts_to ->(notification) { [notification.user, "notifications_count"] }, inserts_by: :prepend
+  
+  after_create_commit { broadcast_notifications_count_create }
+  after_destroy_commit { broadcast_notifications_count_destroy }
 
   def is_a_friend_request?
     return false unless notifiable_type == "Friendship"
@@ -33,5 +36,33 @@ class Notification < ApplicationRecord
   def read
     self.was_read = true
     save
+  end
+
+  private
+
+  def broadcast_notifications_count_destroy
+    return if user.nil? || !user.persisted?
+
+    broadcast_replace_to [user, "notifications_count"],
+                          target: "notifications_title", 
+                          partial: "shared/notifications_title", 
+                          locals: { new_notifications_count: user.new_notifications_count }
+
+    broadcast_replace_to [user, "notifications_count"],
+                          target: "notifications_link",
+                          partial: "shared/notifications_link",
+                          locals: { new_notifications_count: user.new_notifications_count }
+  end
+
+  def broadcast_notifications_count_create
+    broadcast_replace_later_to [user, "notifications_count"],
+                          target: "notifications_title", 
+                          partial: "shared/notifications_title", 
+                          locals: { new_notifications_count: user.new_notifications_count }
+
+    broadcast_replace_later_to [user, "notifications_count"],
+                          target: "notifications_link",
+                          partial: "shared/notifications_link",
+                          locals: { new_notifications_count: user.new_notifications_count }
   end
 end

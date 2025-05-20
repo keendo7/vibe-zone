@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>VibeBook</title>
+    <% notifications_count = user_signed_in? ? current_user.new_notifications_count.to_i : 0 %>
+    <title id="notifications_title"><%= "(#{notifications_count}) " if notifications_count.positive? %>Vibezone</title>
+    <%= favicon_link_tag asset_path("vz_logo.png") %>
     <meta name="viewport" content="width=device-width,initial-scale=1", charset="utf-8">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -13,6 +15,7 @@
   <body>
     <%= flash[:error] %>
     <% if user_signed_in? %>
+      <%= turbo_stream_from current_user, "notifications_count" %>
       <%= render 'layouts/topnav' %>
     <% end %>
     <%= yield %>
