@@ -93,4 +93,26 @@ RSpec.describe Notification, type: :model do
       it { expect(described_class.deprecated).to eq([]) }
     end
   end
+
+  describe 'callbacks' do
+    context 'on create' do
+      let!(:notification) { build(:notification, :for_comment, sender: user1, user: user2) }
+
+      it 'calls broadcast_notifications_count_create' do
+        allow(notification).to receive(:broadcast_notifications_count_create)
+        notification.save!
+        expect(notification).to have_received(:broadcast_notifications_count_create)
+      end
+    end
+
+    context 'on destroy' do
+      let!(:notification) { create(:notification, :for_comment, sender: user1, user: user2) }
+
+      it 'calls broadcast_notifications_count_destroy' do
+        allow(notification).to receive(:broadcast_notifications_count_destroy)
+        notification.destroy
+        expect(notification).to have_received(:broadcast_notifications_count_destroy)
+      end
+    end
+  end
 end
