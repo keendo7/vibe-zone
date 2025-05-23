@@ -78,6 +78,7 @@ gem "devise", "~> 4.9"
 gem 'bootstrap', '~> 5.3.2'
 gem 'sass-rails'
 gem 'omniauth-facebook'
+gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection'
 gem 'figaro'
 gem 'gravtastic'

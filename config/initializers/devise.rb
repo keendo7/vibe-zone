@@ -304,7 +304,8 @@ Devise.setup do |config|
   # Note: These might become the new default in future versions of Devise.
   config.responder.error_status = :unprocessable_entity
   config.responder.redirect_status = :see_other
-  config.omniauth :facebook, ENV["APP_ID"], ENV["APP_SECRET"], scope: 'email', info_fields: 'email,name'  
+  config.omniauth :facebook, ENV["APP_ID"], ENV["APP_SECRET"], scope: 'email', info_fields: 'email,name'
+  config.omniauth :google_oauth2, ENV["GOOGLE_CLIENT_ID"], ENV["GOOGLE_CLIENT_SECRET"]
   # ==> Configuration for :registerable
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
