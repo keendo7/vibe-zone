@@ -12,7 +12,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: %i[facebook]
+         :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: %i[facebook google_oauth2]
   
   has_many :authored_posts, -> { order(created_at: :desc) }, foreign_key: 'author_id', class_name: 'Post', dependent: :destroy
   has_many :created_comments, foreign_key: 'commenter_id', class_name: 'Comment', dependent: :destroy

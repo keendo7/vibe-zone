@@ -211,6 +211,11 @@ GEM
     omniauth-facebook (10.0.0)
       bigdecimal
       omniauth-oauth2 (>= 1.2, < 3)
+    omniauth-google-oauth2 (1.2.1)
+      jwt (>= 2.9.2)
+      oauth2 (~> 2.0)
+      omniauth (~> 2.0)
+      omniauth-oauth2 (~> 1.8)
     omniauth-oauth2 (1.8.0)
       oauth2 (>= 1.4, < 3)
       omniauth (~> 2.0)
@@ -383,6 +388,7 @@ DEPENDENCIES
   jbuilder
   letter_opener
   omniauth-facebook
+  omniauth-google-oauth2
   omniauth-rails_csrf_protection
   pagy (~> 8.1)
   pg (~> 1.1)
