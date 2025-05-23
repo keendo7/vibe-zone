@@ -89,10 +89,8 @@ class User < ApplicationRecord
   end
 
   def self.from_omniauth(auth)
-    return nil if auth.info.email.blank?
-
     find_or_create_by(provider: auth.provider, uid: auth.uid) do |user|
-      user.email = auth.info.email
+      user.email = auth.info.email || "#{auth.uid}@#{auth.provider}.com"
       user.password = Devise.friendly_token[0, 20]
       user.first_name = auth.info.name.split(" ")[0]
       user.last_name = auth.info.name.split(" ")[1] 
@@ -100,8 +98,6 @@ class User < ApplicationRecord
       filename = File.basename(url.path)
       file = URI.open(url)
       user.avatar.attach(io: file, filename: filename)
-
-      user.save!
     end
   end
 
