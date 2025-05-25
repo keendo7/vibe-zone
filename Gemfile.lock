@@ -130,6 +130,8 @@ GEM
     ffi (1.17.0-x86_64-linux-gnu)
     figaro (1.2.0)
       thor (>= 0.14.0, < 2)
+    font-awesome-sass (6.7.2)
+      sassc (~> 2.0)
     friendly_id (5.5.1)
       activerecord (>= 4.0.0)
     fugit (1.11.1)
@@ -380,6 +382,7 @@ DEPENDENCIES
   devise (~> 4.9)
   factory_bot_rails
   figaro
+  font-awesome-sass
   friendly_id
   gravtastic
   image_processing (~> 1.2)
