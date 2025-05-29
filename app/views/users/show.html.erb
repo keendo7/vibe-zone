@@ -1,6 +1,16 @@
 <h1><b>Name: </b><%= @user.full_name %> </h1>
 <h3><b>Member since: </b><%= @user.created_at.to_date %> </h3>
-<%= image_tag user_avatar(@user, 150), class: "avatar" %>
+
+<div class="avatar_container" data-controller="user-avatar">
+  <div class="avatar_upload_container">
+    <%= file_field_tag "imageUpload", accept: ".png, .jpeg, .jpg", data: { action: "change->user-avatar#uploadAvatar" } %>
+    <label for="imageUpload" class="upload-file-block">
+      <i class="fas fa-camera upload-button"></i>
+    </label>
+  </div>
+  <%= image_tag user_avatar(@user, 150), id: "avatar" %>
+</div>
+
 <% if current_user == @user %>
   <%= button_to 'Delete', user_path, method: :delete, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
   <%= link_to 'Edit details', details_path %>

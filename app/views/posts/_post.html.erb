@@ -1,5 +1,5 @@
 <%= turbo_frame_tag dom_id(post) do %>  
-  <li> <%= image_tag user_avatar(post.author, 50), class: "avatar" %> </li> 
+  <li> <%= image_tag user_avatar(post.author, 50), id: "avatar" %> </li> 
   <li> <b> <%= post.author.full_name %> </b> </li>
   <li> added <%= time_ago_in_words(post.created_at) %> ago </li>
   <li> <%= post.content %> </li>

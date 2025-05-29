@@ -4,7 +4,7 @@ class User < ApplicationRecord
   include Gravtastic
   extend FriendlyId
 
-  AVATAR_CONTENT_TYPES = ["image/jpeg", "image/png", "image/bmp"].freeze
+  AVATAR_CONTENT_TYPES = ["image/jpeg", "image/png"].freeze
 
   gravtastic
   friendly_id :full_name, use: :sequentially_slugged

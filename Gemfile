@@ -77,6 +77,7 @@ end
 gem "devise", "~> 4.9"
 gem 'bootstrap', '~> 5.3.2'
 gem 'sass-rails'
+gem 'font-awesome-sass'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection'
