@@ -32,6 +32,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def update_avatar
+    current_user.avatar.attach(params[:user][:avatar])
+  end
+
   def search
     @users = User.search(params[:query])
   end
