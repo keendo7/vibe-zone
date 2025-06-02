@@ -2,12 +2,14 @@
 <h3><b>Member since: </b><%= @user.created_at.to_date %> </h3>
 
 <div class="avatar_container" data-controller="user-avatar">
-  <div class="avatar_upload_container">
-    <%= file_field_tag "imageUpload", accept: ".png, .jpeg, .jpg", data: { action: "change->user-avatar#uploadAvatar" } %>
-    <label for="imageUpload" class="upload-file-block">
-      <i class="fas fa-camera upload-button"></i>
-    </label>
-  </div>
+  <% if current_user == @user %>
+    <div class="avatar_upload_container">
+      <%= file_field_tag "imageUpload", accept: ".png, .jpeg, .jpg", data: { action: "change->user-avatar#uploadAvatar" } %>
+      <label for="imageUpload" class="upload-file-block">
+        <i class="fas fa-camera upload-button"></i>
+      </label>
+    </div>
+  <% end %>
   <%= image_tag user_avatar(@user, 150), id: "avatar" %>
 </div>
 
