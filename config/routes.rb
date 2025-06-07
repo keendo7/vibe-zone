@@ -37,4 +37,5 @@ Rails.application.routes.draw do
   get 'home', to: 'posts#home'
   get '/users/:id/mutual_friends', to: 'user_friendships#mutual_friends'
   patch 'update_avatar', to: 'users#update_avatar'
+  patch 'update_banner', to: 'users#update_banner'
 end

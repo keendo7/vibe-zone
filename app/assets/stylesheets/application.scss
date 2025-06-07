@@ -38,6 +38,10 @@ ul {
   border: 1px solid black;
 }
 
+.jumbotron {
+  background-color: red;
+}
+
 .hidden {
   display: none;
 }
@@ -93,6 +97,10 @@ ul {
 }
 
 .avatar_container input {
+  display: none;
+}
+
+.banner_container .dropdown-menu input {
   display: none;
 }
 

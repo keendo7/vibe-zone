@@ -36,6 +36,10 @@ class UsersController < ApplicationController
     current_user.avatar.attach(params[:user][:avatar])
   end
 
+  def update_banner
+    current_user.banner.attach(params[:user][:banner])
+  end
+
   def search
     @users = User.search(params[:query])
   end
@@ -56,6 +60,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :avatar)
+    params.require(:user).permit(:first_name, :last_name, :avatar, :banner)
   end
 end
