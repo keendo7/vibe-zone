@@ -38,8 +38,8 @@ ul {
   border: 1px solid black;
 }
 
-.jumbotron {
-  background-color: red;
+#dropdownMenu2 {
+  position: absolute;
 }
 
 .hidden {
@@ -98,6 +98,19 @@ ul {
 
 .avatar_container input {
   display: none;
+}
+
+.banner_container {
+  position: relative;
+  width: 100%;
+  height: 50vh;
+  overflow: hidden;
+}
+
+.banner_container #banner {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 
 .banner_container .dropdown-menu input {

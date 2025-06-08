@@ -10,5 +10,33 @@ export default class extends Controller {
       alert("Maximum file size is 5MB. Please choose a smaller file.");
       return;
     }
+
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      document.getElementById('banner').src = reader.result;
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+      this.saveBanner(file);
+    }
+  }
+
+  async saveBanner(file) {
+    const formData = new FormData();
+    formData.append('user[banner]', file);
+
+    try {
+      await fetch("/update_banner", {
+        method: 'PATCH',
+        body: formData,
+        headers: {
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+      });
+    } catch (error) {
+      console.error('Error saving avatar:', error);
+    }
   }
 }

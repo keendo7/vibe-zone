@@ -1,5 +1,5 @@
 <div class="d-flex flex-column justify-content-center align-items-center">
-  <div class="banner_container" data-controller="user-banner">
+  <div class="banner_container d-flex flex-column align-items-end justify-content-end" data-controller="user-banner" style: "background-color:black;">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <i class="fas fa-camera upload-button"></i>
     </button>
@@ -10,6 +10,7 @@
         <button class="dropdown-item" type="button">Remove banner</button>
       <% end %>
     </div>
+    <%= image_tag @user.banner, class: 'img-fluid', id: "banner" %> 
   </div>
 
   <div class="avatar_container" data-controller="user-avatar">
