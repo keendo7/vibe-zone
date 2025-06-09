@@ -36,6 +36,11 @@ class UsersController < ApplicationController
     current_user.avatar.attach(params[:user][:avatar])
   end
 
+  def remove_banner
+    current_user.banner.purge
+    redirect_to current_user
+  end
+
   def update_banner
     current_user.banner.attach(params[:user][:banner])
   end

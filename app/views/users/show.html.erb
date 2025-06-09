@@ -7,10 +7,10 @@
       <%= file_field_tag "file", accept: ".png, .jpeg, .jpg", data: { action: "change->user-banner#uploadBanner" } %>
       <label for="file" class="dropdown-item" type="button">Upload from files</label>
       <% if @user.banner.attached? %>
-        <button class="dropdown-item" type="button">Remove banner</button>
+        <%= link_to "Remove banner", remove_banner_path, class: "dropdown-item", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
       <% end %>
     </div>
-    <%= image_tag @user.banner, class: 'img-fluid', id: "banner" %> 
+    <%= user_banner(@user) %>
   </div>
 
   <div class="avatar_container" data-controller="user-avatar">
