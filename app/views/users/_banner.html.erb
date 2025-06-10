@@ -1,0 +1,15 @@
+<div class="banner_container d-flex flex-column align-items-end justify-content-end" data-controller="user-banner">
+  <% if user == current_user %>
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i class="fas fa-camera upload-button"></i>
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenu2"> 
+      <%= file_field_tag "file", accept: ".png, .jpeg, .jpg", data: { action: "change->user-banner#uploadBanner" } %>
+      <label for="file" class="dropdown-item" type="button">Upload from files</label>
+      <% if @user.banner.attached? %>
+        <%= link_to "Remove banner", remove_banner_path, class: "dropdown-item", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+      <% end %>
+    </div>
+  <% end %>
+  <%= user_banner(@user) %>
+</div>

@@ -22,8 +22,10 @@ class User < ApplicationRecord
   has_many :received_friends, through: :received_friendships, source: 'user'
   has_many :likes, dependent: :destroy
   has_many :notifications, -> { order(was_read: :asc, created_at: :desc) }, dependent: :destroy
-  has_one_attached :avatar
 
+  has_one_attached :avatar
+  has_one_attached :banner
+  
   validates :first_name, :last_name, presence: true, format: {with: /\A\D{2,}\z/ }
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :avatar, content_type: AVATAR_CONTENT_TYPES, size: { less_than: 5.megabytes}
