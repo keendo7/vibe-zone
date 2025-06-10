@@ -9,9 +9,9 @@ module UserHelper
 
   def user_banner(user)
     if user.banner.attached?
-      image_tag user.banner, id: "banner", class: "img-fluid"
+      image_tag user.banner, class: "img-fluid", id: "banner"
     else
-      content_tag :div, '', class: 'w-100 h-100 bg-dark bg-gradient', id: "banner", class: "img-fluid"
+      image_tag "default_banner.jpg", class: "img-fluid", id: "banner"
     end
   end
 end
