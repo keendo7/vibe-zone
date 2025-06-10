@@ -1,28 +1,38 @@
 <%= render partial: "comments/like_count", locals: { comment: comment } %>
 
-<% if (comment.commentable.author == current_user || comment.commenter == current_user) %>
-  <%= button_to "Delete", comment_path(comment), method: :delete, data: { turbo: false } %>
-<% end %>
+<div class="dropdown">
+  <button style="border: none; background: transparent; outline: none;" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa-solid fa-ellipsis-vertical"></i> 
+  </button>
 
-<% if comment.commenter == current_user %>
-  <%= link_to "Edit", nil, remote: true, class: "btn btn-secondary",
-    data: {
-      controller: "toggle",
-      action: "toggle#toggleForm",
-      toggle_form_param: "edit-comment-#{comment.id}"
-    }
-  %>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <% if comment.commenter == current_user %>
+      <%= link_to "Edit", nil, remote: true, class: "dropdown-item",
+        data: {
+          controller: "toggle",
+          action: "toggle#toggleForm",
+          toggle_form_param: "edit-comment-#{comment.id}"
+        }
+      %>
+    <% end %>
 
-  <div id="edit-comment-<%= comment.id %>" class="d-none">
-    <%= render 'comments/form',
-        comment: comment,
-        commentable_id: comment.commentable.id, 
-        commentable_type: "#{comment.commentable.class.name}", 
-        parent_id: comment.parent_id %>
+    <% if (comment.commentable.author == current_user || comment.commenter == current_user) %>
+      <%= button_to "Delete", comment_path(comment), method: :delete, class: "dropdown-item", data: { turbo: false } %>
+    <% end %>
   </div>
-<% end %>
+</div>
 
-  <%= link_to "Reply", nil, remote: true, class: "btn btn-secondary", 
+<div id="edit-comment-<%= comment.id %>" class="d-none">
+  <%= render 'comments/form',
+      comment: comment,
+      commentable_id: comment.commentable.id, 
+      commentable_type: "#{comment.commentable.class.name}", 
+      parent_id: comment.parent_id %>
+</div>
+
+  
+
+  <%= link_to "Reply", nil, remote: true, 
     data: {
       controller: "toggle",
       action: "toggle#toggleForm",
