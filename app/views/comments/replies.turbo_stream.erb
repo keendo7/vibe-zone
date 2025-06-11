@@ -4,7 +4,7 @@
 
 <% if @pagy.next.present? %>
   <%= turbo_stream.update dom_id(@comment, :load_replies) do %>
-    <%= button_to "Load More", replies_comment_path(@comment, page: @pagy.next), data: { turbo_stream: true } %>
+    <%= button_to "Load More", replies_comment_path(@comment, page: @pagy.next), class: "round-btn blank", data: { turbo_stream: true } %>
   <% end %>
 <% else %>
   <%= turbo_stream.remove dom_id(@comment, :load_replies) %>

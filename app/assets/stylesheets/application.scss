@@ -33,6 +33,26 @@ ul {
   padding: 0;
 }
 
+.round-btn {
+  border: none;
+  border-radius: 50px;
+  padding: 10px;
+  transition: background-color 0.3s;
+}
+
+.blank {
+  background-color: transparent;
+  outline: none;
+}
+
+.round-btn.blank:hover {
+  background-color: rgba(107, 107, 107, 0.2);
+}
+
+.round-btn.blank:active {
+  background-color: rgba(192, 192, 192, 0.2);
+}
+
 #avatar {
   border-radius: 50%;
   border: 1px solid black;

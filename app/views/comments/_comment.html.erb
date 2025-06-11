@@ -12,7 +12,7 @@
 
   <% if comment.parent_id.nil? && comment.replies.any? %>
     <div id="toggle-replies-button-<%= comment.id %>" class="d-none">
-      <%= link_to "Hide replies", nil, remote: true, 
+      <%= button_to "Hide replies", nil, remote: true, class: "round-btn blank",
         data: {
           controller: "toggle",
           action: "toggle#toggleReplies",
@@ -25,7 +25,7 @@
     <div class="replies" id="replies_container_<%= comment.id %>">
       <%= turbo_frame_tag dom_id(comment, :replies) %>
       <%= turbo_frame_tag dom_id(comment, :load_replies) do %>
-        <%= button_to "View replies", replies_comment_path(comment),
+        <%= button_to "View replies", replies_comment_path(comment), class: "round-btn blank",
           data: { 
             turbo_frame: dom_id(comment, :replies),
             controller: "toggle",

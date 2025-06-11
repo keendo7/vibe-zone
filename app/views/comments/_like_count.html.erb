@@ -1,8 +1,12 @@
 <%= turbo_frame_tag dom_id(comment, :like_count) do %>
   <%= pluralize(comment.likeable_count, "like") %>
   <% if comment.likes.exists?(user_id: current_user.id) %>
-    <%= button_to "Unlike", unlike_comment_path(comment), method: :delete, data: {turbo_stream: true} %>
+    <%= button_to unlike_comment_path(comment), class: "round-btn blank", method: :delete do %>
+      <i class="fa-solid fa-heart fa-2x text-danger"></i>
+    <% end %>
   <% else %>
-    <%= button_to "Like", like_comment_path(comment), method: :post, data: {turbo_stream: true} %>
+    <%= button_to like_comment_path(comment), class: "round-btn blank", method: :post do %>
+      <i class="fa-regular fa-heart fa-2x text-danger"></i>
+    <% end %>
   <% end %>
 <% end %>
