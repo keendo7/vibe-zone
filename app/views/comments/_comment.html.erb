@@ -1,17 +1,19 @@
 <%= turbo_frame_tag dom_id(comment) do %>
-  <div class="d-flex flex-row gap-2">
+  <div class="d-flex flex-row gap-2" style="width: 700px;">
     <%= image_tag user_avatar(comment.commenter, 50), id: "avatar" %>
 
-    <div class="d-flex flex-column">
-      <div class="d-flex flex-row align-items-center gap-1">
-        <b> <%= link_to comment.commenter.full_name, user_path(comment.commenter), data: { turbo_frame: "_top" } %> </b>
-              
-        <% if (comment.updated_at - comment.created_at) > 1 %>
-          <%= time_ago_in_words(comment.created_at) %> ago (edited <%= time_ago_in_words(comment.updated_at) %> ago)
-        <% else %>
-          <%= time_ago_in_words(comment.created_at) %> ago
-        <% end %>
-          <%= render partial: "comments/dropdown", locals: { comment: comment } %>
+    <div class="d-flex flex-column w-100">
+      <div class="d-flex flex-row align-items-center justify-content-between">
+        <div class="gap-1">
+          <b> <%= link_to comment.commenter.full_name, user_path(comment.commenter), data: { turbo_frame: "_top" } %> </b>     
+          <% if (comment.updated_at - comment.created_at) > 1 %>
+            <%= time_ago_in_words(comment.created_at) %> ago (edited <%= time_ago_in_words(comment.updated_at) %> ago)
+          <% else %>
+            <%= time_ago_in_words(comment.created_at) %> ago
+          <% end %>
+        </div>
+        
+        <%= render partial: "comments/dropdown", locals: { comment: comment } %>
       </div>
       
       <%= comment.content %>
@@ -41,24 +43,28 @@
               commentable_id: comment.commentable.id, 
               commentable_type: "#{comment.commentable.class.name}", 
               parent_id: comment.parent_id %>
-        </div>
+        </div> 
+      </div>
+    </div>
+  </div> 
 
-        <% if comment.parent_id.nil? && comment.replies.any? %>
-          <div id="toggle-replies-button-<%= comment.id %>" class="d-none">
-            <%= button_to "#{pluralize(comment.replies.count, 'reply')}", nil, remote: true, class: "round-btn blank",
-              data: {
-                controller: "toggle",
-                action: "toggle#toggleReplies",
-                toggle_replies_param: "replies_container_#{comment.id}",
-                toggle_target: "link"
-              }
-            %>
-          </div>
-          <div class="replies" id="replies_container_<%= comment.id %>">
-            <%= turbo_frame_tag dom_id(comment, :replies) %>
-            <%= turbo_frame_tag dom_id(comment, :load_replies) do %>
-              <%= button_to "#{pluralize(comment.replies.count, 'reply')}", replies_comment_path(comment), class: "round-btn blank",
-                data: { 
+  <div style="margin-left:50px">
+    <% if comment.parent_id.nil? && comment.replies.any? %>
+      <div id="toggle-replies-button-<%= comment.id %>" class="d-none">
+        <%= button_to "#{pluralize(comment.replies.count, 'reply')}", nil, remote: true, class: "round-btn blank",
+                data: {
+                  controller: "toggle",
+                  action: "toggle#toggleReplies",
+                  toggle_replies_param: "replies_container_#{comment.id}",
+                  toggle_target: "link"
+                }
+        %>
+      </div>
+      <div class="replies" id="replies_container_<%= comment.id %>">
+        <%= turbo_frame_tag dom_id(comment, :replies) %>
+        <%= turbo_frame_tag dom_id(comment, :load_replies) do %>
+          <%= button_to "#{pluralize(comment.replies.count, 'reply')}", replies_comment_path(comment), class: "round-btn blank",
+            data: { 
                   turbo_frame: dom_id(comment, :replies),
                   controller: "toggle",
                   action: "toggle#showButton",
@@ -66,8 +72,6 @@
                 } %>
             <% end %>
           </div>
-        <% end %> 
-      </div>
-    </div>
-  </div> 
+    <% end %> 
+  </div>
 <% end %>
