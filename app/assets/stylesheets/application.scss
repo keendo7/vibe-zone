@@ -36,7 +36,7 @@ ul {
 .round-btn {
   border: none;
   border-radius: 50px;
-  padding: 10px;
+  padding: 6px;
   transition: background-color 0.3s;
 }
 
@@ -56,6 +56,8 @@ ul {
 #avatar {
   border-radius: 50%;
   border: 1px solid black;
+  width: 50px;
+  height: 50px;
 }
 
 #dropdownMenu2 {
@@ -64,10 +66,6 @@ ul {
 
 .hidden {
   display: none;
-}
-
-.replies {
-  margin-left: 30px;
 }
 
 .avatar_container {
