@@ -25,11 +25,5 @@ static targets = ["link"];
     console.log(event);
     const replies = document.getElementById(repliesId);
     replies.classList.toggle("d-none");
-
-    if(this.linkTarget.textContent == "Hide replies"){
-      this.linkTarget.textContent = "Show replies";
-    } else {
-      this.linkTarget.textContent = "Hide replies";
-    }
   }
 }
