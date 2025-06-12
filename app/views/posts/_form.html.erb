@@ -7,7 +7,7 @@
     <%= form_with(model: @post, data: { turbo: false }) do |form| %>
       <%= invisible_captcha %>
       <div class="d-flex flex-row justify-content-center">
-        <%= form.text_area :content, size: "25x5", placeholder: "Whats on your mind today?" %>
+        <%= form.text_area :content, size: "25x5", placeholder: "What's on your mind today?" %>
       </div>
       <div class="d-flex flex-column align-items-center">
         <%= form.file_field :image, class: "form-control w-75 mx-auto" %>

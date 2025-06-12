@@ -4,8 +4,10 @@
 
   <div class="mb-3">
     <%= form_with(url: posts_path, method: :get, data: {turbo_frame: "posts", turbo_action: "advance", controller: "search", action: "input->search#submit"}) do |form| %>
-      <%= form.text_field :query %>
-      <%= form.submit 'Search' %>
+      <%= form.text_field :query, placeholder: "Search post..." %>
+      <%= form.button nil do %>
+        <i class="fa-solid fa-magnifying-glass"></i>
+     <% end %>
     <% end %>
   </div>
 

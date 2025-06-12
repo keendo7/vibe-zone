@@ -2,13 +2,16 @@
   <h3> Welcome <%= "#{current_user.first_name}" %>! </h3>
   <%= render "posts/form" %>
 
-  <%= form_with(url: root_path, method: :get, data: {turbo_frame: "posts", turbo_action: "advance", controller: "search", action: "input->search#submit"}) do |form| %>
-    <%= form.label :query, "Search" %>
-    <%= form.text_field :query %>
-    <%= form.submit 'Search' %>
-  <% end %>
+  <div class="mb-3">
+    <%= form_with(url: root_path, method: :get, data: {turbo_frame: "posts", turbo_action: "advance", controller: "search", action: "input->search#submit"}) do |form| %>
+      <%= form.text_field :query, placeholder: "Search post..." %>
+      <%= form.button nil do %>
+        <i class="fa-solid fa-magnifying-glass"></i>
+      <% end %>
+    <% end %>
+  </div>
 
-  <div data-controller="sort">
+  <div data-controller="sort" class="mb-3">
     <form method="get" action="<%= root_path %>" data-turbo-frame="posts" data-turbo-stream>
       <label for="sort_by">Sort by:</label>
       <select name="sort_by" data-action="sort#update" data-sort-target="select">
