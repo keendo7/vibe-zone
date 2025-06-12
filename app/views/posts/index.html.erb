@@ -1,22 +1,27 @@
-<h3> Welcome <%= "#{current_user.first_name}" %>! </h3>
-<%= render "posts/form" %>
+<div class="d-flex flex-column align-items-center"> 
+  <h3> Welcome <%= "#{current_user.first_name}" %>! </h3>
+  <%= render "posts/form" %> 
 
-<%= form_with(url: posts_path, method: :get, data: {turbo_frame: "posts", turbo_action: "advance", controller: "search", action: "input->search#submit"}) do |form| %>
-  <%= form.label :query, "Search" %>
-  <%= form.text_field :query %>
-  <%= form.submit 'Search' %>
-<% end %>
+  <div class="mb-3">
+    <%= form_with(url: posts_path, method: :get, data: {turbo_frame: "posts", turbo_action: "advance", controller: "search", action: "input->search#submit"}) do |form| %>
+      <%= form.text_field :query, placeholder: "Search post..." %>
+      <%= form.button nil do %>
+        <i class="fa-solid fa-magnifying-glass"></i>
+     <% end %>
+    <% end %>
+  </div>
 
-<div data-controller="sort">
-  <form method="get" action="<%= posts_path %>" data-turbo-frame="posts" data-turbo-stream>
-    <label for="sort_by">Sort by:</label>
-    <select name="sort_by" data-action="sort#update" data-sort-target="select">
-      <option value="newest" <%= 'selected' if params[:sort_by] == 'newest' %>>Newest</option>
-      <option value="oldest" <%= 'selected' if params[:sort_by] == 'oldest' %>>Oldest</option>
-      <option value="most_liked" <%= 'selected' if params[:sort_by] == 'most_liked' %>>Most liked</option>
-      <option value="most_popular" <%= 'selected' if params[:sort_by] == 'most_popular' %>>Most popular</option>
-    </select>
-  </form>
+  <div data-controller="sort" class="mb-3">
+    <form method="get" action="<%= posts_path %>" data-turbo-frame="posts" data-turbo-stream>
+      <label for="sort_by">Sort by:</label>
+      <select name="sort_by" data-action="sort#update" data-sort-target="select">
+        <option value="newest" <%= 'selected' if params[:sort_by] == 'newest' %>>Newest</option>
+        <option value="oldest" <%= 'selected' if params[:sort_by] == 'oldest' %>>Oldest</option>
+        <option value="most_liked" <%= 'selected' if params[:sort_by] == 'most_liked' %>>Most liked</option>
+        <option value="most_popular" <%= 'selected' if params[:sort_by] == 'most_popular' %>>Most popular</option>
+      </select>
+    </form>
+  </div>
 </div>
 
 <%= turbo_frame_tag :posts, class: "d-flex flex-column align-items-center" do %>

@@ -1,4 +1,6 @@
 <%= turbo_frame_tag dom_id(@post) do %>
   <%= render "form", post: @post %>
-  <%= link_to "Cancel", @post %>
+  <%= link_to @post do %>
+    <i class="fa-solid fa-circle-xmark"></i>
+  <% end %>
 <% end %>
