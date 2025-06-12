@@ -1,26 +1,36 @@
-<%= turbo_frame_tag dom_id(post) do %>  
-  <li> <%= image_tag user_avatar(post.author, 50), id: "avatar" %> </li> 
-  <li> <b> <%= post.author.full_name %> </b> </li>
-  <li> added <%= time_ago_in_words(post.created_at) %> ago </li>
-  <li> <%= post.content %> </li>
-  <%= image_tag(post.image_variant, class: "image") if post.image.attached? %>
+<%= turbo_frame_tag dom_id(post) do %>
+  <div style="max-width: 700px;"
+    <div class="d-flex flex-row gap-2 w-100">
+      <%= image_tag user_avatar(post.author, 50), id: "avatar" %>
+        <div class="d-flex flex-column w-100">
+          <div class="d-flex flex-row align-items-center justify-content-between">
+            <div class="gap-1">
+              <b> <%= link_to post.author.full_name, user_path(post.author), data: { turbo: false } %> </b>
+              added <%= time_ago_in_words(post.created_at) %> ago
+            </div>
 
-  <%= render partial: "posts/buttons", locals: { post: post } %>
-  
-  <% if post.author == current_user %>
-    <div class="dropdown">
-      <button style="border: none; background: transparent; outline: none;" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fa-solid fa-ellipsis-vertical"></i> 
-      </button>
+            <% if post.author == current_user %>
+              <div class="dropdown">
+                <button style="border: none; background: transparent; outline: none;" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa-solid fa-ellipsis-vertical"></i> 
+                </button>
 
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <%= button_to "Delete", post_path(post), class: "dropdown-item", method: :delete, data: { turbo: "false" } %>
-        <%= button_to "Edit", edit_post_path(post), class: "dropdown-item", method: :get %>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <%= button_to "Delete", post_path(post), class: "dropdown-item", method: :delete, data: { turbo: "false" } %>
+                  <%= button_to "Edit", edit_post_path(post), class: "dropdown-item", method: :get %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <div class="d-flex flex-column">
+            <%= post.content %>
+            <%= image_tag(post.image_variant, class: "image") if post.image.attached? %>
+          </div>
+          <%= render partial: "posts/buttons", locals: { post: post } %>
+          <% unless current_page?(post_path(post)) %>
+            <%= link_to "#{pluralize(post.commentable_count, 'comment')}", post_path(post), data: { turbo: "false" } %>
+          <% end %>
       </div>
     </div>
-  <% end %>
-
-  <% unless current_page?(post_path(post)) %>
-    <%= link_to "#{pluralize(post.commentable_count, 'comment')}", post_path(post), data: { turbo: "false" } %>
-  <% end %>
+  </div>
 <% end %>
