@@ -4,5 +4,7 @@
 <% end %>
 
 <%= turbo_frame_tag "friendships" do %>
-  <%= render @friendships %> 
+  <div class="w-100 row row-cols-3 align-items-center">
+    <%= render @friendships %> 
+  </div>
 <% end %>

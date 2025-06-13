@@ -8,7 +8,8 @@ module ApplicationHelper
       'Unfriend',
       friendship_path(friendship),
       method: :delete,
-      data: { turbo: false }
+      data: { turbo: false },
+      class: 'btn btn-danger round-btn p-2'
     )
   end
 
@@ -19,7 +20,8 @@ module ApplicationHelper
       'Befriend',
       friendships_path(user_id: user.id),
       method: :post,
-      data: { turbo: false }
+      data: { turbo: false }, 
+      class: 'btn btn-primary round-btn p-2'
     )
   end
 
@@ -30,7 +32,8 @@ module ApplicationHelper
       "Accept",
       friendships_path(user_id: friendship.user.id),
       method: :post, 
-      data: { turbo: false }
+      data: { turbo: false },
+      class: 'btn btn-success round-btn p-2'
     )
   end
 
@@ -41,7 +44,8 @@ module ApplicationHelper
       "Decline",
       decline_friendship_path(friendship),
       method: :delete, 
-      data: { turbo: false }
+      data: { turbo: false },
+      class: 'btn btn-danger round-btn p-2'
     )
   end
 end
