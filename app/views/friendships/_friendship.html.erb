@@ -1,4 +1,8 @@
-<div id="<%= dom_id friendship %>">
+<div id="<%= dom_id friendship %>", class="d-flex flex-column align-items-center mt-4">
+  <%= link_to user_path(friendship.friend), data: {turbo_frame: "_top"} do %>
+    <%= image_tag user_avatar(friendship.friend), id: 'm-avatar' %>
+  <% end %>
   <%= link_to "#{friendship.friend.full_name}", user_path(friendship.friend), data: {turbo_frame: "_top"} %>
+    <span style="text-align: center; margin-bottom: 5px;">friended <%= time_ago_in_words(friendship.created_at) %> ago</span>
   <%= unfriend_button(friendship, :friend) if current_user == @user  %>
 </div>
