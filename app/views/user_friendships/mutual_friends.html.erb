@@ -1,3 +1,6 @@
-<div class="w-100 row row-cols-3 align-items-center">
-  <%= render partial: 'friendship', collection: @mutuals %>
+<div class="d-flex flex-column w-100 align-items-center">
+  <h2 class="text-2xl font-semibold mb-4">You and <%= @user.first_name %> share <%= pluralize(@mutuals.count, "mutual friend") %> </h2>
+  <div class="w-100 row row-cols-3 align-items-center">
+    <%= render partial: 'friendship', collection: @mutuals %>
+  </div>
 </div>

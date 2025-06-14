@@ -1,5 +1,9 @@
 <div class="d-flex flex-column w-100 align-items-center">
-  <h2 class="text-2xl font-semibold mb-4"> <%= "#{@user.first_name}'s friends" %> </h2>
+  <% unless @user == current_user %>
+    <h2 class="text-2xl font-semibold mb-4"> <%= "#{@user.first_name}'s friends" %> </h2>
+  <% else %>
+    <h2 class="text-2xl font-semibold mb-4"> <%= "Your friends" %> </h2>
+  <% end %>
   <%= form_with(url: user_friendships_path, method: :get, data: {turbo_frame: "friendships", turbo_action: "advance", controller: "search", action: "input->search#submit"}) do |form| %>
     <%= form.text_field :query, placeholder: "Search user...", class: "mb-2" %>
   <% end %>
