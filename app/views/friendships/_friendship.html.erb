@@ -1,4 +1,4 @@
-<div id="<%= dom_id friendship %>", class="d-flex flex-column align-items-center mt-2">
+<div id="<%= dom_id friendship %>", class="d-flex flex-column align-items-center mt-4">
   <%= link_to user_path(friendship.friend), data: {turbo_frame: "_top"} do %>
     <%= image_tag user_avatar(friendship.friend), id: 'm-avatar' %>
   <% end %>

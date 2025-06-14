@@ -1,7 +1,9 @@
-<%= form_with(url: user_friendships_path, method: :get, data: {turbo_frame: "friendships", turbo_action: "advance", controller: "search", action: "input->search#submit"}) do |form| %>
-  <%= form.label :query, "Search user" %>
-  <%= form.text_field :query %>
-<% end %>
+<div class="d-flex flex-column w-100 align-items-center">
+  <h2 class="text-2xl font-semibold mb-4"> <%= "#{@user.first_name}'s friends" %> </h2>
+  <%= form_with(url: user_friendships_path, method: :get, data: {turbo_frame: "friendships", turbo_action: "advance", controller: "search", action: "input->search#submit"}) do |form| %>
+    <%= form.text_field :query, placeholder: "Search user...", class: "mb-2" %>
+  <% end %>
+</div>
 
 <%= turbo_frame_tag "friendships" do %>
   <div class="w-100 row row-cols-3 align-items-center">
