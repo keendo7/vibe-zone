@@ -1,9 +1,8 @@
 <div class="d-flex flex-column justify-content-center align-items-center">
-    <%= render partial: "users/banner", locals: { user: @user } %>
-    <div style="position: relative; z-index: 1; margin-top: -100px;">
-      <%= render partial: "users/avatar_container", locals: { user: @user } %>
-    </div>
-  
+  <%= render partial: "users/banner", locals: { user: @user } %>
+  <div style="position: relative; z-index: 1; margin-top: -100px;">
+    <%= render partial: "users/avatar_container", locals: { user: @user } %>
+  </div>
   <h1> <%= @user.full_name %> </h1>
 
   <% if current_user == @user %>
