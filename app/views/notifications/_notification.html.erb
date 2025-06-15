@@ -1,20 +1,31 @@
-<%= turbo_frame_tag dom_id(notification) do %>
-  <% if notification.is_a_friend_request? %>
-    <li> <%= link_to notification.sender.full_name, user_path(notification.sender), data: { turbo: false } %> <%= notification.notifiable.message %> <%= time_ago_in_words(notification.created_at) %> ago </li>
-    <%= accept_request_button(notification.notifiable, :request) %>
-    <%= decline_request_button(notification.notifiable, :request) %>
-  <% else %>
-    <li> <%= link_to notification.sender.full_name, user_path(notification.sender), data: {turbo: false} %> 
-      <%= notification.notifiable.message %> 
-      <%= time_ago_in_words(notification.created_at) %> ago 
-    </li>
-    <% unless notification.is_a_friendship? %> 
-      <li> 
-        <%= link_to (
-          truncate content(notification).squish, length: 30, separator: /\s/, omission: "..."),
-          notifiable_link(notification), data: {turbo: false}
-        %> 
-      </li>
-    <% end %>
-  <% end %>
+<%= turbo_frame_tag dom_id(notification), class: "w-100 d-flex justify-content-center mb-2" do %>
+  <div class="w-100", style="max-width: 600px;">
+    <div class="d-flex flex-row gap-1">
+      <div class="notification-status d-flex align-items-center <%= 'unread' unless notification.was_read? %>">
+        <span class="notification-dot">●</span>      
+      </div>
+      <div class="user_avatar d-flex align-items-center">
+        <%= image_tag user_avatar(notification.sender, 100), id: 'avatar' %>
+      </div>
+      <div class="d-flex flex-column justify-content-center">
+        <div class="d-flex gap-1">
+          <b> <%= link_to notification.sender.full_name, user_path(notification.sender), data: { turbo: false } %> </b> 
+          <%= notification.notifiable.message %> <%= time_ago_in_words(notification.created_at) %> ago
+        </div>
+        <% if notification.is_a_friend_request? %>
+          <div class="d-flex gap-2">
+            <%= accept_request_button(notification.notifiable, :request) %>
+            <%= decline_request_button(notification.notifiable, :request) %>
+          </div>
+        <% else %>
+          <% unless notification.is_a_friendship? %> 
+            <%= link_to (
+              truncate content(notification).squish, length: 30, separator: /\s/, omission: "..."),
+              notifiable_link(notification), data: {turbo: false}
+            %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
 <% end %>
