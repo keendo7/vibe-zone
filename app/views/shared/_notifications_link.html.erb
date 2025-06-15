@@ -1,1 +1,4 @@
-<%= link_to "Notifications#{notifications_count(new_notifications_count)}", notifications_path, id: "notifications_link" %>
+<%= link_to notifications_path, id: "notifications_link" do %>
+  <i class="fa-solid fa-bell"></i>
+  <span class="badge bg-danger"><%="#{notifications_count(new_notifications_count)}"%></span>
+<% end %>

@@ -21,9 +21,9 @@ module NotificationsHelper
 
   def notifications_count(count)
     if count >= 1 && count < 10
-      "(#{count})"
+      "#{count}"
     elsif count >= 10
-      return "(9+)"
+      return "9+"
     end
   end
 end
