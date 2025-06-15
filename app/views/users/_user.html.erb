@@ -1,0 +1,9 @@
+<div class="d-flex flex-column align-items-center mt-4">
+  <%= link_to user_path(user), data: { turbo: false } do %>
+    <%= image_tag user_avatar(user, 150), id: "m-avatar" %>
+  <% end %>
+  <div class="d-flex flex-column align-items-center">
+    <b> <%= link_to "#{user.full_name}", user_path(user), data: { turbo: false } %> </b>
+    Joined <%= time_ago_in_words(user.created_at) %> ago
+  </div>
+</div>
