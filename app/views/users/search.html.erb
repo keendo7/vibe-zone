@@ -1,3 +1,12 @@
-<% @users.each do |user| %>
-  <%= link_to "#{user.full_name}", user_path(user) %>
+<% if @users.any? %>
+  <h2 style="text-align: center;"> <%= "#{@users.count} users found" %> </h2>
+  <div class="w-100 row row-cols-3 align-items-center">
+    <%= render @users %>
+  </div>
+<% else %>
+  <div class="d-flex justify-content-center align-items-center" style="height: 60vh;">
+    <div class="text-center text-muted">
+      <h2>No users found</h2>
+    </div>
+  </div>
 <% end %>
