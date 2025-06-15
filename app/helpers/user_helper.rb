@@ -1,7 +1,9 @@
 module UserHelper
+  include Rails.application.routes.url_helpers
+
   def user_avatar(user, size=50)
     if user.avatar.attached?
-      user.avatar.variant(resize_to_fill: [size, nil])
+      url_for(user.avatar.variant(resize_to_fill: [size, nil]).processed)
     else
       user.gravatar_url
     end
