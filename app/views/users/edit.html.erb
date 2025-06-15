@@ -1,20 +1,31 @@
-<% if flash[:alert]%>
-  <span class='alert'><%= flash[:alert] %></span>
-<% end %>
+<div class="d-flex flex-column align-items-center">
+  <h2 style="text-align: center;"> Edit details </h2>
 
-<%= form_with model: @user do |form| %>
-  <%= form.file_field :avatar %>
-
-  <%= form.label :first_name %>
-  <%= form.text_field :first_name %>
-
-  <%= form.label :last_name %>
-  <%= form.text_field :last_name %>
-
-  <% if current_user.avatar.attached? %>
-    <%= form.check_box :purge_avatar %>
-    Use Gravatar as profile image
+  <% if flash[:alert]%>
+    <span class='alert'><%= flash[:alert] %></span>
   <% end %>
 
-  <%= form.submit "Submit" %>
-<% end %>
+  <%= render partial: "users/avatar_container", locals: { user: current_user } %>
+
+    <%= form_with model: @user do |form| %>
+      <div class="d-flex flex-column">
+        <%= form.label :first_name %>
+        <%= form.text_field :first_name, class: "form-control" %>
+
+        <%= form.label :last_name %>
+        <%= form.text_field :last_name, class: "form-control" %>
+
+        <%= form.label :email %>
+        <%= form.text_field :email, class: "form-control" %>
+
+        <% if current_user.avatar.attached? %>
+          <div class="d-flex gap-1">
+            <%= form.check_box :purge_avatar %>
+            Use Gravatar as profile image
+          </div>
+        <% end %>
+
+        <%= form.submit "Submit", class: "btn btn-primary mt-3" %>
+      </div>
+    <% end %>
+</div>
