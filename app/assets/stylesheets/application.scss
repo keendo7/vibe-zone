@@ -137,6 +137,20 @@ ul {
   display: none;
 }
 
+.notification-status {
+  width: 1em;
+  text-align: center;
+}
+
+.notification-status .notification-dot {
+  visibility: hidden;
+  color: blue;
+}
+
+.notification-status.unread .notification-dot {
+  visibility: visible;
+}
+
 .image {
   width: 100px;
   height: auto;

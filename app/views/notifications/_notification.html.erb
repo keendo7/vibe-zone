@@ -1,12 +1,8 @@
 <%= turbo_frame_tag dom_id(notification), class: "w-100 d-flex justify-content-center mb-2" do %>
   <div class="w-100", style="max-width: 600px;">
     <div class="d-flex flex-row gap-1">
-      <div class="notification_status d-flex align-items-center">
-        <% unless notification.was_read? %>
-          <span style="color: blue">●</span>      
-        <% else %>
-          <span style="visibility: hidden;">●</span>
-        <% end %>
+      <div class="notification-status d-flex align-items-center <%= 'unread' unless notification.was_read? %>">
+        <span class="notification-dot">●</span>      
       </div>
       <div class="user_avatar d-flex align-items-center">
         <%= image_tag user_avatar(notification.sender, 100), id: 'avatar' %>
