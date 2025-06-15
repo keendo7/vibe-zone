@@ -1,17 +1,6 @@
 <div class="d-flex flex-column justify-content-center align-items-center">
   <%= render partial: "users/banner", locals: { user: @user } %>
-
-  <div class="avatar_container" data-controller="user-avatar">
-    <% if current_user == @user %>
-      <div class="avatar_upload_container">
-        <%= file_field_tag "imageUpload", accept: ".png, .jpeg, .jpg", data: { action: "change->user-avatar#uploadAvatar" } %>
-        <label for="imageUpload" class="upload-file-block">
-          <i class="fas fa-camera upload-button"></i>
-        </label>
-      </div>
-    <% end %>
-    <%= image_tag user_avatar(@user, 150), id: "avatar" %>
-  </div>
+  <%= render partial: "users/avatar_container", locals: { user: @user } %>
 
   <h1> <%= @user.full_name %> </h1>
 

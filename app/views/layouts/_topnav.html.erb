@@ -24,7 +24,7 @@
       <% end %>
 
       <button class="btn dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <%= image_tag user_avatar(current_user), id: "avatar" %>
+        <%= image_tag user_avatar(current_user), class: "rounded-circle", width: 40, height: 40 %>
       </button>
       <div class="dropdown-menu" aria-labelledby="userMenu">
         <%= link_to "Show profile", user_path(current_user), class: "dropdown-item" %>
