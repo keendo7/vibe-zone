@@ -1,4 +1,4 @@
-<%= link_to notifications_path, id: "notifications_link" do %>
-  <i class="fa-solid fa-bell"></i>
+<%= link_to notifications_path, class: "btn btn-light round-btn", id: "notifications_link" do %>
+  <i class="fa-solid fa-bell fs-1 text-dark"></i>
   <span class="badge bg-danger"><%="#{notifications_count(new_notifications_count)}"%></span>
 <% end %>
