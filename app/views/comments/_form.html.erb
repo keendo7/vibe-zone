@@ -1,8 +1,12 @@
-<%= form_with model: comment, data: { turbo: false } do |f| %>
-  <%= invisible_captcha %>
-  <%= f.hidden_field :commentable_id, value: commentable_id %>
-  <%= f.hidden_field :commentable_type, value: commentable_type %>
-  <%= f.hidden_field :parent_id, value: parent_id %>
-  <%= f.text_area :content %>
-  <%= f.submit class: "btn btn-primary round-btn" %>
-<% end %>
+<div class="d-flex flex-column mb-4"> 
+  <%= form_with model: comment, data: { turbo: false } do |f| %>
+    <%= invisible_captcha %>
+    <%= f.hidden_field :commentable_id, value: commentable_id %>
+    <%= f.hidden_field :commentable_type, value: commentable_type %>
+    <%= f.hidden_field :parent_id, value: parent_id %>
+    <div class="d-flex flex-column align-items-center">
+      <%= f.text_area :content, size: "30x3", class: "mb-2" %>
+      <%= f.submit class: "btn btn-primary round-btn" %>
+    </div>
+  <% end %>
+</div>

@@ -1,5 +1,5 @@
 <%= turbo_frame_tag dom_id(comment) do %>
-  <div class="d-flex flex-row gap-2" style="width: 700px;">
+  <div class="d-flex flex-row gap-2">
     <%= image_tag user_avatar(comment.commenter, 50), id: "avatar" %>
 
     <div class="d-flex flex-column w-100">
@@ -28,7 +28,7 @@
             }
         %>
       </div>
-      <div class="d-flex flex-column">
+      <div class="d-flex flex-column", style="align-self: start;">
         <div id="reply-comment-<%= comment.id %>" class="d-none">
           <%= render 'comments/form',
               comment: Comment.new,

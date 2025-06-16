@@ -1,21 +1,26 @@
 <%= render @post %>
-<h3 id=<%= "comments_count" %> class='text-3xl duration-500 font-bold my-4'>
-  <%= pluralize(@post.commentable_count, 'Comment') %>
-</h3>
-<%= render 'comments/form', comment: Comment.new, commentable_id: @post.id, commentable_type: "#{@post.class.name}", parent_id: nil %>
 
-<div data-controller="sort">
-  <form method="get" action="<%= post_path(@post) %>" data-turbo-frame="comments" data-turbo-stream>
-    <label for="sort_by">Sort by:</label>
-    <select name="sort_by" data-action="sort#update" data-sort-target="select">
-      <option value="newest" <%= 'selected' if params[:sort_by] == 'newest' %>>Newest</option>
-      <option value="oldest" <%= 'selected' if params[:sort_by] == 'oldest' %>>Oldest</option>
-      <option value="most_liked" <%= 'selected' if params[:sort_by] == 'most_liked' %>>Most liked</option>
-    </select>
-  </form>
+<div class="d-flex flex-column align-items-center">
+  <h3 id=<%= "comments_count" %> class='text-3xl duration-500 font-bold my-4'>
+    <%= pluralize(@post.commentable_count, 'Comment') %>
+  </h3>
+  <%= render 'comments/form', comment: Comment.new, commentable_id: @post.id, commentable_type: "#{@post.class.name}", parent_id: nil %>
+
+  <div data-controller="sort">
+    <form method="get" action="<%= post_path(@post) %>" data-turbo-frame="comments" data-turbo-stream>
+      <label for="sort_by">Sort by:</label>
+      <select name="sort_by" data-action="sort#update" data-sort-target="select">
+        <option value="newest" <%= 'selected' if params[:sort_by] == 'newest' %>>Newest</option>
+        <option value="oldest" <%= 'selected' if params[:sort_by] == 'oldest' %>>Oldest</option>
+        <option value="most_liked" <%= 'selected' if params[:sort_by] == 'most_liked' %>>Most liked</option>
+      </select>
+    </form>
+  </div>
+
+  <%= turbo_frame_tag :comments, style: "width: 700px;" do %>
+    <div class="d-flex flex-column align-items-center mt-2">
+      <%== pagy_bootstrap_nav(@pagy) if @pagy.pages > 1 %>
+    </div>
+    <%= render @comments %>
+  <% end %>
 </div>
-
-<%= turbo_frame_tag :comments do %>
-  <%== pagy_bootstrap_nav(@pagy) if @pagy.pages > 1 %>
-  <%= render @comments %>
-<% end %>
