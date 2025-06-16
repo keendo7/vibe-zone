@@ -28,6 +28,36 @@ ul {
   padding: 0;
 }
 
+.oauth-btn {
+  width: 100%;
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+  font-size: 1rem;
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.oauth-btn.facebook {
+  background-color: #3b5998;
+  color: #fff;
+}
+.oauth-btn.facebook:hover {
+  background-color: #2d4373; // darker Facebook blue
+}
+
+// Google button
+.oauth-btn.google {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  color: #333;
+}
+.oauth-btn.google:hover {
+  background-color: #e6e6e6; // light gray
+  color: #000;
+}
+
 .round-btn {
   border: none;
   border-radius: 33px;
