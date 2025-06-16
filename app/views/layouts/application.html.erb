@@ -12,7 +12,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="h-100 w-100">
+  <body class="h-100 w-100 bg-body-secondary">
     <%= flash[:error] %>
     <% if user_signed_in? %>
       <%= turbo_stream_from current_user, "notifications_count" %>

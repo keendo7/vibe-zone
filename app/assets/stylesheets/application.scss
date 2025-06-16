@@ -15,6 +15,15 @@
  @import 'bootstrap';
  @import 'font-awesome';
 
+header {
+  height: 50px;
+  background-color: #563d7c;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 a {
   text-decoration: none;
 }
@@ -84,6 +93,16 @@ ul {
 
 .round-btn.blank:active {
   background-color: rgba(192, 192, 192, 0.2);
+}
+
+.nav-icon {
+  color: #fff;
+  opacity: 0.7;
+  transition: 0.3s;
+}
+
+.nav-icon:hover {
+  opacity: 1;
 }
 
 #avatar {
