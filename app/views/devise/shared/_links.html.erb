@@ -19,7 +19,15 @@
 <% end %>
 
 <%- if devise_mapping.omniauthable? %>
-  <%- resource_class.omniauth_providers.each do |provider| %>
-    <%= button_to "Sign in with #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider), data: { turbo: false } %><br />
-  <% end %>
+  <div class="d-grid gap-3 mb-4">
+    <%= button_to user_facebook_omniauth_authorize_path, class: "btn oauth-btn facebook", data: { turbo: false } do %>
+      <i class="fa-brands fa-square-facebook me-2 fs-5"></i>
+      Login with Facebook
+    <% end %>
+
+    <%= button_to user_google_oauth2_omniauth_authorize_path, class: "btn oauth-btn google", data: { turbo: false } do %>
+      <i class="fa-brands fa-google me-2 fs-5"></i>
+      Login with Google
+    <% end %>
+  </div>
 <% end %>
