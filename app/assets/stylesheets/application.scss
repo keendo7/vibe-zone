@@ -75,6 +75,12 @@ ul {
   color: #000;
 }
 
+.user-page {
+  max-width: 900px;
+  margin: 0 auto;
+  width: auto;
+}
+
 .round-btn {
   border: none;
   border-radius: 33px;
@@ -121,6 +127,7 @@ ul {
 
 #dropdownMenu2 {
   position: absolute;
+  z-index: 1;
 }
 
 .hidden {
@@ -182,6 +189,7 @@ ul {
   width: 100%;
   height: 40vh;
   overflow: hidden;
+  z-index: 0;
 }
 
 .banner_container #banner {

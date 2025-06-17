@@ -1,29 +1,33 @@
-<div class="d-flex flex-column justify-content-center align-items-center">
-  <%= render partial: "users/banner", locals: { user: @user } %>
-  <div style="position: relative; z-index: 1; margin-top: -100px;">
-    <%= render partial: "users/avatar_container", locals: { user: @user } %>
-  </div>
-  <h1> <%= @user.full_name %> </h1>
+<div class="user-page">  
+  <div class="d-flex flex-column justify-content-center align-items-center">
+    <%= render partial: "users/banner", locals: { user: @user } %>
+    <div style="position: relative; z-index: 1; margin-top: -100px;">
+      <%= render partial: "users/avatar_container", locals: { user: @user } %>
+    </div>
+    <h1> <%= @user.full_name %> </h1>
 
-  <% if current_user == @user %>
-    <%= button_to 'Delete', user_path, method: :delete, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
-    <%= link_to 'Edit details', details_path %>
-  <% else %>
-    <% if @mutual_friends_count != 0 %>
-      <%= link_to "#{pluralize(@mutual_friends_count, 'mutual friend')}", user_mutual_friends_path(@user) %>
+    <% if current_user == @user %>
+      <div class="d-flex align-items-center gap-4">
+        <%= button_to 'Delete', user_path, method: :delete, class: "btn btn-danger", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
+        <%= link_to 'Edit details', details_path, class: "btn btn-primary" %>
+      </div>
+    <% else %>
+      <% if @mutual_friends_count != 0 %>
+        <%= link_to "#{pluralize(@mutual_friends_count, 'mutual friend')}", user_mutual_friends_path(@user) %>
+      <% end %>
     <% end %>
-  <% end %>
-    <%= link_to "#{pluralize(@user.active_friends.count, 'friend')}", user_friendships_path(@user) %>
-  <% if current_user != @user %>
-    <%= render partial: "friendships/friendship_buttons", 
-      locals: { friendship: @friendship, status: @status, user: @user } 
-    %> 
-  <% end %>
+      <%= link_to "#{pluralize(@user.active_friends.count, 'friend')}", user_friendships_path(@user) %>
+    <% if current_user != @user %>
+      <%= render partial: "friendships/friendship_buttons", 
+        locals: { friendship: @friendship, status: @status, user: @user } 
+      %> 
+    <% end %>
 
-  <h3> <%= "#{pluralize(@user.authored_posts.count, 'post')}" %> </h3>
+    <h3> <%= "#{pluralize(@user.authored_posts.count, 'post')}" %> </h3>
 
-  <%= turbo_frame_tag :posts, class: "d-flex flex-column align-items-center w-100" do %>
-    <%== pagy_bootstrap_nav(@pagy) if @pagy.pages > 1 %>
-    <%= render @posts %>
-  <% end %>
+    <%= turbo_frame_tag :posts, class: "d-flex flex-column align-items-center w-100" do %>
+      <%== pagy_bootstrap_nav(@pagy) if @pagy.pages > 1 %>
+      <%= render @posts %>
+    <% end %>
+  </div>
 </div>
