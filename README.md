@@ -36,3 +36,13 @@ A social media experience built with Ruby on Rails.
   - User's notifications that are older than 7 days get deleted every week through a cron job
 - Tests
   - Written with Rspec
+
+## Images
+
+![image1](app/assets/images/1.png)
+
+![image2](app/assets/images/2.png)
+
+![image3](app/assets/images/3.png)
+
+![image4](app/assets/images/4.png)
