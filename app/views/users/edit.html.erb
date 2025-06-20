@@ -1,22 +1,32 @@
-<div class="d-flex flex-column align-items-center">
-  <h2 style="text-align: center;"> Edit details </h2>
+<div style="max-width: 600px; margin: 25px auto;">
+  <div class="d-flex flex-column align-items-center gap-3">
+    <h2 style="text-align: center;"> Edit details </h2>
 
-  <% if flash[:alert]%>
-    <span class='alert'><%= flash[:alert] %></span>
-  <% end %>
+    <% if flash[:alert]%>
+      <span class='alert'><%= flash[:alert] %></span>
+    <% end %>
 
-  <%= render partial: "users/avatar_container", locals: { user: current_user } %>
+  
+    <div class="mb-3">
+      <%= render partial: "users/avatar_container", locals: { user: current_user } %>
+    </div>
 
     <%= form_with model: @user do |form| %>
-      <div class="d-flex flex-column">
-        <%= form.label :first_name %>
-        <%= form.text_field :first_name, class: "form-control" %>
+      <div class="d-flex flex-column gap-2">
+        <div>
+          <%= form.label :first_name %>
+          <%= form.text_field :first_name, class: "form-control" %>
+        </div>
 
-        <%= form.label :last_name %>
-        <%= form.text_field :last_name, class: "form-control" %>
+        <div>
+          <%= form.label :last_name %>
+          <%= form.text_field :last_name, class: "form-control" %>
+        </div>
 
-        <%= form.label :email %>
-        <%= form.text_field :email, class: "form-control" %>
+        <div>
+          <%= form.label :email %>
+          <%= form.text_field :email, class: "form-control" %>
+        </div>
 
         <% if current_user.avatar.attached? %>
           <div class="d-flex gap-1">
@@ -28,4 +38,7 @@
         <%= form.submit "Submit", class: "btn btn-primary mt-3" %>
       </div>
     <% end %>
+
+    <%= button_to "Destroy account", user_path(current_user), class: "btn btn-danger", method: :delete, data: { turbo_confirm: "Are you sure?" } %>
+  </div>
 </div>
