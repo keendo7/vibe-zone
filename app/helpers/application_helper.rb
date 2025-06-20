@@ -9,7 +9,7 @@ module ApplicationHelper
       friendship_path(friendship),
       method: :delete,
       data: { turbo: false },
-      class: 'btn btn-danger round-btn p-2'
+      class: 'btn btn-danger p-2'
     )
   end
 
@@ -21,7 +21,7 @@ module ApplicationHelper
       friendships_path(user_id: user.id),
       method: :post,
       data: { turbo: false }, 
-      class: 'btn btn-primary round-btn p-2'
+      class: 'btn btn-primary p-2'
     )
   end
 
@@ -33,7 +33,7 @@ module ApplicationHelper
       friendships_path(user_id: friendship.user.id),
       method: :post, 
       data: { turbo_frame: "_top" },
-      class: 'btn btn-success round-btn p-2'
+      class: 'btn btn-success p-2'
     )
   end
 
@@ -45,7 +45,7 @@ module ApplicationHelper
       decline_friendship_path(friendship),
       method: :delete, 
       data: { turbo_frame: "_top" },
-      class: 'btn btn-danger round-btn p-2'
+      class: 'btn btn-danger p-2'
     )
   end
 end
