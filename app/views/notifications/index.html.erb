@@ -1,8 +1,7 @@
-<%= turbo_frame_tag :notifications, class: "d-flex flex-column align-items-center" do %>
-  <%= render @notifications %>
-<% end %>
-
-<%= turbo_frame_tag :pagination, 
-      src: notifications_path(format: :turbo_stream), 
-      loading: :lazy  
-%>
+<div class="my-4">  
+  <%= turbo_frame_tag "page_handler" %>
+  <%= turbo_frame_tag "notifications" do %>
+    <%= render @notifications %>
+  <% end %>
+  <%= render "pager", pagy: @pagy %>
+</div>
