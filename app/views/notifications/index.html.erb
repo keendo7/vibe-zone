@@ -1,5 +1,7 @@
-<%= turbo_frame_tag "page_handler" %>
-<%= turbo_frame_tag "notifications" do %>
-  <%= render @notifications %>
-<% end %>
-<%= render "pager", pagy: @pagy %>
+<div class="my-4">  
+  <%= turbo_frame_tag "page_handler" %>
+  <%= turbo_frame_tag "notifications" do %>
+    <%= render @notifications %>
+  <% end %>
+  <%= render "pager", pagy: @pagy %>
+</div>
