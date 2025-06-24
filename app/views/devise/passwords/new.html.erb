@@ -1,16 +1,21 @@
-<h2>Forgot your password?</h2>
-
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+<div class="min-vh-100 d-flex flex-lg-row flex-column justify-content-lg-around justify-content-center bg-svg px-3 gap-4"> 
+  <div class="d-flex flex-column justify-content-center align-items-lg-start align-items-center">
+    <h1 class="display-1">Vibezone</h1>
+    <p class="blockquote text-center">Come hang out and <b>vibe</b> with your friends!</p>
   </div>
 
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions" %>
-  </div>
-<% end %>
+  <div class="d-flex flex-column justify-content-center align-items-center">
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
 
-<%= render "devise/shared/links" %>
+      <div class="field">
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email", class: "form-control" %> </br>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Send reset link", class: "btn btn-primary w-100" %>
+      </div></br>
+    <% end %>
+    <%= link_to "Cancel", new_session_path(resource_name) %>
+  </div>
+</div>
