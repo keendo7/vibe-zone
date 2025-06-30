@@ -22,7 +22,6 @@ static targets = ["link"];
     event.preventDefault();
     event.stopPropagation();
     const repliesId = event.params["replies"];
-    console.log(event);
     const replies = document.getElementById(repliesId);
     replies.classList.toggle("d-none");
   }

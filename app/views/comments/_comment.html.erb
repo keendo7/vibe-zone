@@ -1,5 +1,5 @@
 <%= turbo_frame_tag dom_id(comment) do %>
-  <div class="d-flex flex-row gap-2">
+  <div class="d-flex flex-row gap-2 rounded bg-white shadow p-3 mb-2">
     <%= image_tag user_avatar(comment.commenter, 50), id: "avatar" %>
 
     <div class="d-flex flex-column w-100">
@@ -49,29 +49,15 @@
   </div> 
 
   <div style="margin-left:50px">
-    <% if comment.parent_id.nil? && comment.replies.any? %>
+    
       <div id="toggle-replies-button-<%= comment.id %>" class="d-none">
         <%= button_to "#{pluralize(comment.replies.count, 'reply')}", nil, remote: true, class: "round-btn blank",
                 data: {
                   controller: "toggle",
                   action: "toggle#toggleReplies",
                   toggle_replies_param: "replies_container_#{comment.id}",
-                  toggle_target: "link"
                 }
         %>
       </div>
-      <div class="replies" id="replies_container_<%= comment.id %>">
-        <%= turbo_frame_tag dom_id(comment, :replies) %>
-        <%= turbo_frame_tag dom_id(comment, :load_replies) do %>
-          <%= button_to "#{pluralize(comment.replies.count, 'reply')}", replies_comment_path(comment), class: "round-btn blank",
-            data: { 
-                  turbo_frame: dom_id(comment, :replies),
-                  controller: "toggle",
-                  action: "toggle#showButton",
-                  toggle_button_param: "toggle-replies-button-#{comment.id}"
-                } %>
-            <% end %>
-          </div>
-    <% end %> 
   </div>
 <% end %>
