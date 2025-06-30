@@ -2,27 +2,26 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
 
-static targets = ["link"];
-
-  toggleForm(event) {
+  toggleElement(event, paramKey) {
     event.preventDefault();
     event.stopPropagation();
-    const formId = event.params["form"];
-    const form = document.getElementById(formId);
-    form.classList.toggle("d-none");
+    const elementId = event.params[paramKey];
+    const element = document.getElementById(elementId);
+    element.classList.toggle("d-none");
   }
 
-  showButton(event) {
+  showToggleButton(event) {
+    event.target.classList.add("hidden");
     const buttonId = event.params["button"];
     const button = document.getElementById(buttonId);
     button.classList.toggle("d-none");
   }
 
+  toggleForm(event) {
+    this.toggleElement(event, "form");
+  }
+
   toggleReplies(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    const repliesId = event.params["replies"];
-    const replies = document.getElementById(repliesId);
-    replies.classList.toggle("d-none");
+    this.toggleElement(event, "replies");
   }
 }
