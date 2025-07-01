@@ -1,13 +1,16 @@
 <%= turbo_frame_tag dom_id(comment) do %>
-  <div class="d-flex flex-row gap-2 rounded bg-white shadow p-3 mb-2">
+  <div class="d-flex flex-row gap-2 rounded bg-body-secondary p-3 mb-2">
     <%= image_tag user_avatar(comment.commenter, 50), id: "avatar" %>
 
     <div class="d-flex flex-column w-100">
       <div class="d-flex flex-row align-items-center justify-content-between">
-        <div class="gap-1">
+        <div class="d-flex gap-1">
           <b> <%= link_to comment.commenter.full_name, user_path(comment.commenter), data: { turbo_frame: "_top" } %> </b>     
           <% if (comment.updated_at - comment.created_at) > 1 %>
-            <%= time_ago_in_words(comment.created_at) %> ago (edited <%= time_ago_in_words(comment.updated_at) %> ago)
+            <%= time_ago_in_words(comment.created_at) %> ago
+            <p title="Edited <%= time_ago_in_words(comment.updated_at) %> ago" class="mb-0">
+              *
+            </p>
           <% else %>
             <%= time_ago_in_words(comment.created_at) %> ago
           <% end %>
