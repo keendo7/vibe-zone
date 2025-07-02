@@ -1,4 +1,4 @@
-<%= turbo_frame_tag dom_id(post), class: "w-100 p-3 d-flex justify-content-center shadow mb-3 bg-white" do %>
+<%= turbo_frame_tag dom_id(post), class: "w-100 p-3 d-flex justify-content-center shadow mb-3 bg-white rounded" do %>
   <div class="w-100", style="max-width: 900px;">
     <div class="d-flex flex-row gap-2">
       <%= image_tag user_avatar(post.author, 50), id: "avatar" %>

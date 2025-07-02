@@ -6,11 +6,11 @@
     <div class="like_icon">
       <% if comment.likes.exists?(user_id: current_user.id) %>
         <%= button_to unlike_comment_path(comment), class: "round-btn blank", method: :delete do %>
-          <i class="fa-solid fa-heart fa-2x text-danger"></i>
+          <i class="fa-solid fa-heart fa-xl text-danger"></i>
         <% end %>
       <% else %>
         <%= button_to like_comment_path(comment), class: "round-btn blank", method: :post do %>
-          <i class="fa-regular fa-heart fa-2x text-danger"></i>
+          <i class="fa-regular fa-heart fa-xl text-danger"></i>
         <% end %>
       <% end %>
     </div>
