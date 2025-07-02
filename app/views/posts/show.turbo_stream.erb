@@ -1,4 +1,11 @@
-<%= turbo_stream.update :comments do %>  
-  <%== pagy_bootstrap_nav(@pagy) if @pagy.pages > 1 %>
-  <%= render @comments %>
+<%= turbo_stream.update :comments do %>
+  <div class="d-flex justify-content-center">
+    <%== pagy_bootstrap_nav(@pagy) if @pagy.pages > 1 %>
+  </div>
+  <% @comments.each do |comment| %>
+    <%= render comment %>
+    <% if comment.parent_id.nil? && comment.replies.any? %>
+      <%= render partial: "comments/replies", locals: { comment: comment } %>
+    <% end %>
+  <% end %>
 <% end %>

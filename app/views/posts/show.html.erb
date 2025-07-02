@@ -4,9 +4,7 @@
   <div class="d-flex flex-column align-items-center gap-3">
     <%= render 'comments/form', comment: Comment.new, commentable_id: @post.id, commentable_type: "#{@post.class.name}", parent_id: nil %>
 
-    <div class="d-flex align-items-center justify-content-between w-100">
-      <%== pagy_bootstrap_nav(@pagy) if @pagy.pages > 1 %>
-
+    <div class="d-flex align-items-center justify-content-end w-100">
       <div data-controller="sort">
         <form method="get" action="<%= post_path(@post) %>" data-turbo-frame="comments" data-turbo-stream>
           <select name="sort_by" class="form-select" data-action="sort#update" data-sort-target="select">
@@ -19,13 +17,16 @@
     </div>
 
     <% if @comments.any? %>
-      <%= turbo_frame_tag :comments, class: "w-100 p-3 bg-white rounded shadow" do %>
+      <%= turbo_frame_tag :comments, class: "d-flex flex-column w-100 p-3 bg-white rounded shadow justify-content-center" do %>
         <% @comments.each do |comment| %>
           <%= render comment %>
           <% if comment.parent_id.nil? && comment.replies.any? %>
             <%= render partial: "comments/replies", locals: { comment: comment } %>
           <% end %>
         <% end %>
+        <div class="d-flex justify-content-center">
+          <%== pagy_bootstrap_nav(@pagy) if @pagy.pages > 1 %>
+        </div>
       <% end %>
     <% end %>
   </div>
