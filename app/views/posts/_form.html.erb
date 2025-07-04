@@ -3,16 +3,19 @@
     <span class='alert'><%= flash[:alert] %></span>
   <% end %>
 
-  <div class="d-flex flex-column mb-4">
-    <%= form_with(model: @post, data: { turbo: false }) do |form| %>
-      <%= invisible_captcha %>
-      <div class="d-flex flex-row justify-content-center">
-        <%= form.text_area :content, size: "25x5", placeholder: "What's on your mind today?" %>
-      </div>
-      <div class="d-flex flex-column align-items-center">
-        <%= form.file_field :image, class: "form-control w-75 mx-auto" %>
-        <%= form.submit class: "btn btn-primary round-btn mt-2" %>
-      </div>
-    <% end %>
+  <div class="d-flex bg-white rounded p-2 gap-2">
+    <%= image_tag user_avatar(current_user), id: "avatar" %>
+    <div class="d-flex flex-column">
+      <%= form_with(model: @post, data: { turbo: false }) do |form| %>
+        <%= invisible_captcha %>
+        <div class="d-flex flex-row justify-content-center mb-3">
+          <%= form.text_area :content, placeholder: "What's on your mind today?", class: "form-control border-0", data: { controller: "form-textarea", action: "input->form-textarea#resize", form_textarea_target: "input"} %>
+        </div>
+        <div class="d-flex align-items-center justify-content-between">
+          <%= form.file_field :image, class: "form-control w-50" %>
+          <%= form.submit class: "btn btn-primary round-btn" %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
