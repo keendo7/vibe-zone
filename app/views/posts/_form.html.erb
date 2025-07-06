@@ -3,7 +3,7 @@
     <span class='alert'><%= flash[:alert] %></span>
   <% end %>
 
-  <div class="d-flex bg-white rounded p-2 gap-2">
+  <div class="d-flex bg-white rounded shadow p-2 gap-2 mb-4">
     <%= image_tag user_avatar(current_user), id: "avatar" %>
     <div class="d-flex flex-column">
       <%= form_with(model: @post, data: { turbo: false }) do |form| %>

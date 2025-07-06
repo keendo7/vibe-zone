@@ -75,7 +75,9 @@ ul {
   color: #000;
 }
 
-.user-page {
+.container {
+  display: flex;
+  flex-direction: column;
   max-width: 900px;
   margin: 0 auto;
   width: auto;
