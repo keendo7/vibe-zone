@@ -21,15 +21,14 @@ export default class extends Controller {
     
     if (length >= 3 && length <= 200) {
       this.counterTarget.innerText = `${length}/200`;
-      this.counterTarget.classList.remove("text-danger");
+      this.counterTarget.classList.remove("text-danger", "fw-bold");
       this.submitTarget.classList.remove("disabled");
     } else if (length > 200) {
       this.submitTarget.classList.add("disabled");
-      this.counterTarget.classList.add("text-danger");
+      this.counterTarget.classList.add("text-danger", "fw-bold");
       this.counterTarget.innerText = `${length}/200`;
     } else {
       this.submitTarget.classList.add("disabled");
-      this.counterTarget.classList.remove("text-danger");
       this.counterTarget.innerText = "";
     }
   }
