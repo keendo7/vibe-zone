@@ -19,7 +19,9 @@
         <%= render partial: "comments/dropdown", locals: { comment: comment } %>
       </div>
       
-      <%= comment.content %>
+      <div class="d-flex text-break">
+        <%= comment.content %>
+      </div>
       
       <div class="d-flex flex-row gap-1 align-items-center">
         <%= render partial: "comments/like_count", locals: { comment: comment } %>
