@@ -17,7 +17,7 @@
         </div>
       </div>
 
-      <%= turbo_frame_tag :comments, class: "d-flex flex-column w-100 p-3 bg-white rounded shadow justify-content-center" do %>
+      <%= turbo_frame_tag :comments, class: "d-flex flex-column w-100 py-md-3 py-2 px-md-3 px-2 bg-white rounded shadow justify-content-center" do %>
         <% @comments.each do |comment| %>
           <%= render comment %>
           <% if comment.parent_id.nil? && comment.replies.any? %>
