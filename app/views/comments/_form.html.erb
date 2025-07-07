@@ -1,11 +1,12 @@
-<div class="d-flex flex-column mb-4"> 
-  <%= form_with model: comment, data: { turbo: false } do |f| %>
+<div class="d-flex bg-white rounded shadow p-2 mb-4 gap-2 w-sm-75 w-100">
+  <%= image_tag user_avatar(current_user), id: "avatar" %>
+  <%= form_with model: comment, class: "w-100", data: { turbo: false, controller: "form" } do |f| %>
     <%= invisible_captcha %>
     <%= f.hidden_field :commentable_id, value: commentable_id %>
     <%= f.hidden_field :commentable_type, value: commentable_type %>
     <%= f.hidden_field :parent_id, value: parent_id %>
-    <div class="d-flex flex-column align-items-center">
-      <%= f.text_area :content, size: "30x3", class: "mb-2" %>
+    <div class="d-flex flex-column align-items-end">
+      <%= f.text_area :content, class: "form-control border-0 mb-2", placeholder: "Write a comment..." %>
       <%= f.submit class: "btn btn-primary round-btn" %>
     </div>
   <% end %>
