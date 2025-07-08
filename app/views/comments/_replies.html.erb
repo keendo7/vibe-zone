@@ -1,4 +1,4 @@
-<div id="replies_container_<%= comment.id %>" style="margin-left:50px;">
+<div id="replies_container_<%= comment.id %>" class="ms-4">
   <%= turbo_frame_tag dom_id(comment, :replies) %>
   <%= turbo_frame_tag dom_id(comment, :load_replies) %>
 </div>
