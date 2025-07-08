@@ -6,8 +6,11 @@
     <%= f.hidden_field :commentable_type, value: commentable_type %>
     <%= f.hidden_field :parent_id, value: parent_id %>
     <div class="d-flex flex-column align-items-end">
-      <%= f.text_area :content, class: "form-control border-0 mb-2", placeholder: "Write a comment..." %>
-      <%= f.submit class: "btn btn-primary round-btn" %>
+      <%= f.text_area :content, class: "form-control border-0 mb-2", placeholder: "Write a comment...", data: { action: "input->form#resize input->form#count", form_target: "input" } %>
+      <div class="d-flex align-items-center gap-2">
+        <span data-form-target="counter"></span>
+        <%= f.submit class: "btn btn-primary round-btn disabled", data: { form_target: "submit" } %>
+      </div>
     </div>
   <% end %>
 </div>
