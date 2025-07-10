@@ -7,14 +7,12 @@
         <div class="d-flex align-items-center">
           <div class="d-flex flex-sm-row flex-column gap-sm-1">
             <b> <%= link_to comment.commenter.full_name, user_path(comment.commenter), data: { turbo_frame: "_top" } %> </b>
-            <div class="fw-light">   
+            <div class="fw-light d-flex"> ∙
               <% if (comment.updated_at - comment.created_at) > 1 %>
-                <div class="d-flex">
-                  <%= time_ago_in_words(comment.created_at) %> ago
-                  <p title="Edited <%= time_ago_in_words(comment.updated_at) %> ago" class="mb-0">
-                    *
-                  </p>
-                </div>
+                <%= time_ago_in_words(comment.created_at) %> ago
+                <p title="Edited <%= time_ago_in_words(comment.updated_at) %> ago" class="mb-0">
+                  *
+                </p>
               <% else %>
                 <%= time_ago_in_words(comment.created_at) %> ago
               <% end %>

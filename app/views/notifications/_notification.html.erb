@@ -1,6 +1,6 @@
 <%= turbo_frame_tag dom_id(notification), class: "w-100 d-flex justify-content-center mb-2" do %>
   <div class="w-100 bg-white p-2 shadow rounded", style="max-width: 600px;">
-    <div class="d-flex flex-row gap-1">
+    <div class="d-flex flex-row gap-2">
       <div class="notification-status d-flex align-items-center <%= 'unread' unless notification.was_read? %>">
         <span class="notification-dot">●</span>      
       </div>
@@ -10,9 +10,9 @@
         <% end %>
       </div>
       <div class="d-flex flex-column justify-content-center">
-        <div class="d-flex gap-1">
+        <div class="d-flex flex-sm-row flex-column gap-sm-1">
           <b> <%= link_to notification.sender.full_name, user_path(notification.sender), data: { turbo: false } %> </b> 
-          <%= notification.notifiable.message %> <%= time_ago_in_words(notification.created_at) %> ago
+          <%= notification.notifiable.message %>
         </div>
         <% if notification.is_a_friend_request? %>
           <div class="d-flex gap-2">
@@ -27,6 +27,9 @@
             %>
           <% end %>
         <% end %>
+      </div>
+      <div class="d-flex flex-column ms-auto">
+        <%= time_ago_in_words(notification.created_at, locale: "en_abbrev") %>
       </div>
     </div>
   </div>
