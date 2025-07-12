@@ -16,9 +16,11 @@
             <% end %>
           </div>
         </div>
-        <div class="d-flex flex-column text-break fs-5">
+        <div class="d-flex text-break fs-5">
           <%= post.content %>
-          <%= image_tag(post.image_variant, class: "image") if post.image.attached? %>
+        </div>
+        <div>
+          <%= image_tag(post.image_variant, class: "image", loading: "lazy") if post.image.attached? %> 
         </div>
         <%= render partial: "posts/buttons", locals: { post: post } %>
         <% unless current_page?(post_path(post)) %>
