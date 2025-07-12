@@ -11,7 +11,7 @@ class Post < ApplicationRecord
   has_one_attached :image
 
   validates :content, length: { in: 3..200 }
-  validates :image, content_type: IMAGE_CONTENT_TYPES, size: { less_than: 5.megabytes}
+  validates :image, content_type: IMAGE_CONTENT_TYPES, size: { less_than: 5.megabytes }
   
   scope :search_post, ->(query) { where("content ILIKE ?", "%#{query}%" ) }
   scope :descending, -> { order(created_at: :desc) }
@@ -21,11 +21,10 @@ class Post < ApplicationRecord
   end
 
   def image_variant
-    return image if image.content_type.in?(["image/gif", "image/webp"])
-
     image.variant(
       format: :webp,
-      resize_to_limit: [250, 250],
+      resize_to_limit: [800, 800],
+      loader: {n: -1},
       saver: {
         subsample_mode: "on",
         strip: true,

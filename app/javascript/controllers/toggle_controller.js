@@ -2,6 +2,8 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
 
+  static targets = ["image"]
+
   toggleElement(event, paramKey) {
     event.preventDefault();
     event.stopPropagation();
@@ -23,5 +25,9 @@ export default class extends Controller {
 
   toggleReplies(event) {
     this.toggleElement(event, "replies");
+  }
+
+  toggleImageSize(event) {
+    event.target.classList.toggle("image-small");
   }
 }
