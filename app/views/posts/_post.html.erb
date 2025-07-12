@@ -20,7 +20,7 @@
           <%= post.content %>
         </div>
         <div>
-          <%= image_tag(post.image_variant, class: "image image-small", loading: "lazy", data: { controller: "toggle", action: "click->toggle#toggleImageSize", toggle_target: "image" }) if post.image.attached? %> 
+          <%= image_tag(post.image_variant, class: "image image-small", loading: "lazy", data: { controller: "toggle", action: "click->toggle#toggleImageSize" }) if post.image.attached? %> 
         </div>
         <%= render partial: "posts/buttons", locals: { post: post } %>
         <% unless current_page?(post_path(post)) %>
