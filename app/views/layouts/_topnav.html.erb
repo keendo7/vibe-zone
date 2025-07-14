@@ -12,14 +12,16 @@
       <% end %>
     </div>
     
-    <div class="d-flex gap-3 align-items-center">
-      <%= link_to posts_path, title: "Posts" do %>
-        <i class="fa-solid fa-newspaper nav-icon"></i>
-      <% end %> 
-      <%= link_to notifications_path, id: "notifications_link", title: "Notifications", class: "position-relative" do %>
-        <i class="fa-solid fa-bell nav-icon"></i>
-        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><%="#{notifications_count(current_user.new_notifications_count)}"%></span>
-      <% end %>
+    <div class="d-flex gap-sm-3 gap-2 align-items-center">
+      <div class="d-flex gap-3 align-items-center">
+        <%= link_to posts_path, title: "Posts" do %>
+          <i class="fa-solid fa-newspaper fs-5 nav-icon"></i>
+        <% end %> 
+        <%= link_to notifications_path, id: "notifications_link", title: "Notifications", class: "position-relative" do %>
+          <i class="fa-solid fa-bell fs-5 nav-icon"></i>
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><%="#{notifications_count(current_user.new_notifications_count)}"%></span>
+        <% end %>
+      </div>
 
       <button class="d-flex align-items-center btn dropdown-toggle text-white border-0 p-2" type="button" id="userMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <%= image_tag user_avatar(current_user), class: "rounded-circle", width: 40, height: 40 %>
