@@ -30,7 +30,7 @@
 }
 
 header {
-  height: 50px;
+  height: 60px;
   background-color: #563d7c;
   font-size: 16px;
   display: flex;
@@ -231,6 +231,25 @@ ul {
 
 .notification-status.unread .notification-dot {
   visibility: visible;
+}
+
+.search-container {
+  position: relative;
+}
+
+.search-input {
+  height: 45px;
+  border-radius: 30px;
+  padding-left: 35px;
+  border: none;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  color: #888;
 }
 
 .image {
