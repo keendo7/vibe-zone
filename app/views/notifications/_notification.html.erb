@@ -11,8 +11,10 @@
       </div>
       <div class="d-flex flex-column justify-content-center">
         <div class="d-flex flex-sm-row flex-column gap-sm-1">
-          <b> <%= link_to notification.sender.full_name, user_path(notification.sender), data: { turbo: false } %> </b> 
-          <%= notification.notifiable.message %>
+          <span>
+            <b> <%= link_to notification.sender.full_name, user_path(notification.sender), data: { turbo: false } %> </b> 
+            <%= notification.notifiable.message %>
+          </span>
         </div>
         <% if notification.is_a_friend_request? %>
           <div class="d-flex gap-2">
@@ -20,10 +22,10 @@
             <%= decline_request_button(notification.notifiable, :request) %>
           </div>
         <% else %>
-          <% unless notification.is_a_friendship? %> 
+          <% unless notification.is_a_friendship? %>
             <%= link_to (
               truncate content(notification).squish, length: 30, separator: /\s/, omission: "..."),
-              notifiable_link(notification), data: {turbo: false}
+              notifiable_link(notification), data: {turbo: false}, class: "text-break"
             %>
           <% end %>
         <% end %>
