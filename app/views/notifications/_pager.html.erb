@@ -1,12 +1,14 @@
 <div id="pager" class="text-center">
-  <% if pagy.next %>
-    <%= link_to(
-      "Load more notifications",
-      notifications_path(page: pagy.next),
-      class: "btn btn-primary",
-      data: {
-        turbo_frame: "page_handler"
-      }
-    ) %>
-  <% end %>
+  <div>
+    <% if pagy.next %>
+      <%= link_to(
+        "Load more notifications",
+        notifications_path(page: pagy.next),
+        class: "btn btn-primary",
+        data: {
+          turbo_stream: ""
+        }
+      ) %>
+    <% end %>
+  </div>
 </div>
