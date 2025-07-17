@@ -1,9 +1,11 @@
-<div class="d-flex flex-column align-items-center mt-4">
-  <%= link_to user_path(user), data: { turbo: false } do %>
-    <%= image_tag user_avatar(user, 150), id: "m-avatar" %>
-  <% end %>
-  <div class="d-flex flex-column align-items-center">
-    <b> <%= link_to "#{user.full_name}", user_path(user), data: { turbo: false } %> </b>
-    Joined <%= time_ago_in_words(user.created_at) %> ago
+<div class="col mb-2">
+  <div class="d-flex flex-column align-items-center p-3 m-1 gap-1 h-100 bg-white rounded shadow">
+    <%= link_to user_path(user), data: { turbo: false } do %>
+      <%= image_tag user_avatar(user, 150), id: "m-avatar" %>
+    <% end %>
+    <div class="d-flex flex-column align-items-center text-center text-break">
+      <b> <%= link_to "#{user.full_name}", user_path(user), data: { turbo: false } %> </b>
+      Joined <%= time_ago_in_words(user.created_at) %> ago
+    </div>
   </div>
 </div>
