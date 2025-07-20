@@ -48,7 +48,7 @@ class UsersController < ApplicationController
   def search
     users = User.search(params[:query])
 
-    @pagy, @users = pagy_countless(users, items: 10)
+    @pagy, @users = pagy_countless(users, items: 15)
   end
 
   def destroy

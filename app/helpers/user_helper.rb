@@ -11,7 +11,7 @@ module UserHelper
 
   def user_banner(user)
     if user.banner.attached?
-      image_tag user.banner, id: 'banner', class: 'img-fluid'
+      image_tag user.banner, id: 'banner', class: 'img-fluid', loading: "lazy"
     else
       image_tag "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7", class: 'bg-dark bg-gradient', id: 'banner'
     end

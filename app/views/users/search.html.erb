@@ -1,9 +1,10 @@
 <div class="d-flex flex-column align-items-center p-3">  
   <% if @users.any? %>
     <h2 class="text-center"> Search results </h2>
-    <div class="row row-cols-md-3 row-cols-2 g-3">
+    <div id="users" class="row g-3 w-100 mb-3">
       <%= render @users %>
     </div>
+    <%= render "pager", pagy: @pagy %>
   <% else %>
     <div class="d-flex justify-content-center align-items-center" style="height: 60vh;">
       <div class="text-center text-muted">
