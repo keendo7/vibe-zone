@@ -29,6 +29,15 @@
   }
 }
 
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
 header {
   height: 60px;
   background-color: #563d7c;
@@ -94,7 +103,6 @@ ul {
   flex-direction: column;
   max-width: 900px;
   margin: 0 auto;
-  width: auto;
   padding: 0;
 }
 
@@ -270,4 +278,18 @@ ul {
 
 .image-small:hover, .image:hover {
   filter: brightness(70%);
+}
+
+.empty-state--only-child {
+  display: none;
+
+  &:only-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    opacity: 0.5;
+    height: 100%;
+  }
 }

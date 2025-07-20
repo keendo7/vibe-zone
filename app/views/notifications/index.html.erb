@@ -1,7 +1,7 @@
-<div class="my-4">  
-  <%= turbo_frame_tag "page_handler" %>
-  <div id="notifications">
+<div class="p-3 flex-grow-1">
+  <%= turbo_frame_tag :notifications do %>
+    <%= render partial: "shared/empty_state", locals: { elements: "notifications" } %>
     <%= render @notifications %>
-  </div>
+  <% end %>
   <%= render "pager", pagy: @pagy %>
 </div>
