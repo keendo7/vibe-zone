@@ -1,12 +1,15 @@
-<% if @users.any? %>
-  <h2 style="text-align: center;"> <%= "#{@users.count} users found" %> </h2>
-  <div class="w-100 row row-cols-3 align-items-center">
-    <%= render @users %>
-  </div>
-<% else %>
-  <div class="d-flex justify-content-center align-items-center" style="height: 60vh;">
-    <div class="text-center text-muted">
-      <h2>No users found</h2>
+<div class="d-flex flex-column align-items-center p-3">  
+  <% if @users.any? %>
+    <h2 class="text-center"> Search results </h2>
+    <div id="users" class="row g-3 w-100 mb-3">
+      <%= render @users %>
     </div>
-  </div>
-<% end %>
+    <%= render "pager", pagy: @pagy %>
+  <% else %>
+    <div class="d-flex justify-content-center align-items-center" style="height: 60vh;">
+      <div class="text-center text-muted">
+        <h2>No users found</h2>
+      </div>
+    </div>
+  <% end %>
+</div>

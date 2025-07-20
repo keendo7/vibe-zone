@@ -30,7 +30,7 @@ class User < ApplicationRecord
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :avatar, content_type: AVATAR_CONTENT_TYPES, size: { less_than: 5.megabytes}
 
-  scope :search, ->(query) { where("CONCAT_WS(' ', first_name, last_name) ILIKE ?", "%#{query}%") }
+  scope :search, ->(query) { where("CONCAT_WS(' ', first_name, last_name) ILIKE ?", "%#{query}%").order(created_at: :desc) }
   
   def active_friends
     friends.select{ |friend| friend.friends.include?(self) }  

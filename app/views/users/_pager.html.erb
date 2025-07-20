@@ -1,0 +1,14 @@
+<div id="pager">
+  <div>
+    <% if pagy.next %>
+      <%= link_to(
+        "Load more",
+        search_path(page: pagy.next),
+        class: "btn btn-primary",
+        data: {
+          turbo_stream: ""
+        }
+      ) %>
+    <% end %>
+  </div>
+</div>
