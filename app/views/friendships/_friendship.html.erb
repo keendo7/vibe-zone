@@ -14,7 +14,7 @@
         <span> Friended <%= time_ago_in_words(friendship.created_at) %> ago </span>
       </div>
       <div class="ms-auto text-nowrap">
-        <%= unfriend_button(friendship, :friend) if current_user == @user %>
+        <%= unfriend_button(friendship, :friend) if friendship.user == current_user %>
       </div>
     </div>
   </div>

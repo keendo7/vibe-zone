@@ -56,9 +56,8 @@ class User < ApplicationRecord
   end
 
   def mutual_friends(user)
-    friendships.select do |friend|
-      user.friendships.find_by(friend_id: friend.friend_id)
-    end
+    mutual_ids = active_friends.pluck(:id) & user.active_friends.pluck(:id)
+    friendships.where(friend_id: mutual_ids)
   end
 
   def new_notifications_count

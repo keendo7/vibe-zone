@@ -11,6 +11,11 @@ class UserFriendshipsController < FriendshipsController
 
   def mutual_friends
     @user = User.friendly.find(params[:user_id])
-    @mutuals = current_user.mutual_friends(@user)
+
+    if params[:query].present?
+      @pagy, @mutuals = pagy_countless(current_user.mutual_friends(@user).search_friend(params[:query]), items: 15)
+    else
+      @pagy, @mutuals = pagy_countless(current_user.mutual_friends(@user), items: 15)
+    end
   end
 end
