@@ -1,0 +1,14 @@
+<div id="pager" class="text-center">
+  <div>
+    <% if pagy.next %>
+      <%= link_to(
+        "Load more",
+        user_friendships_path(page: pagy.next),
+        class: "btn btn-primary",
+        data: {
+          turbo_stream: ""
+        }
+      ) %>
+    <% end %>
+  </div>
+</div>
