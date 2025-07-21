@@ -1,16 +1,18 @@
-<div class="d-flex flex-column w-100 align-items-center">
+<div class="d-flex flex-column align-items-center flex-grow-1 p-3">  
   <% unless @user == current_user %>
-    <h2 class="text-2xl font-semibold mb-4"> <%= "#{@user.first_name}'s friends" %> </h2>
+    <h2 class="text-2xl font-semibold"> <%= "#{@user.first_name}'s friends" %> </h2>
   <% else %>
-    <h2 class="text-2xl font-semibold mb-4"> <%= "Your friends" %> </h2>
+    <h2 class="text-2xl font-semibold"> <%= "Your friends" %> </h2>
   <% end %>
-  <%= form_with(url: user_friendships_path, method: :get, data: {turbo_frame: "friendships", turbo_action: "advance", controller: "search", action: "input->search#submit"}) do |form| %>
-    <%= form.text_field :query, placeholder: "Search user...", class: "mb-2" %>
+  <%= form_with(url: user_friendships_path, method: :get, data: {turbo_frame: "friendships_container", turbo_action: "advance", controller: "search", action: "input->search#submit"}) do |form| %>
+    <%= form.text_field :query, placeholder: "Search user...", class: "mb-5 form-control" %>
+  <% end %>
+
+  <%= turbo_frame_tag :friendships_container, class: "d-flex flex-column align-items-center w-100 flex-grow-1" do %>
+    <div id="friendships" class="row g-3 w-100 mb-3">
+      <%= render partial: "shared/empty_state", locals: { elements: "users" } %>
+      <%= render @friendships %>
+    </div>
+    <%= render "pager", pagy: @pagy %>
   <% end %>
 </div>
-
-<%= turbo_frame_tag "friendships" do %>
-  <div class="w-100 row row-cols-3 align-items-center">
-    <%= render @friendships %> 
-  </div>
-<% end %>
