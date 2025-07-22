@@ -28,9 +28,11 @@
           <% if current_user == @user %>
             <%= link_to 'Edit details', details_path, class: "btn btn-primary" %>
           <% else %>
-            <%= render partial: "friendships/friendship_buttons", 
-                    locals: { friendship: @friendship, status: @status, user: @user } 
-            %> 
+            <div class="d-flex gap-1">
+              <%= render partial: "friendships/friendship_buttons", 
+                locals: { friendship: @friendship, status: @status, user: @user } 
+              %>
+            </div>
           <% end %>
         </div>
       </div>

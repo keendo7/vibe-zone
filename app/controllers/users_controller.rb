@@ -64,6 +64,8 @@ class UsersController < ApplicationController
 
   def set_user
     @user = User.friendly.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_back(fallback_location: root_path, alert: "User doesn't exist")
   end
 
   def user_params
