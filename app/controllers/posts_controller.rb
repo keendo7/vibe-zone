@@ -113,6 +113,8 @@ class PostsController < ApplicationController
 
   def set_post
     @post = Post.friendly.find(params[:id])
+  rescue
+    redirect_to(root_path, alert: "Post doesn't exist")
   end
 
   def sort_by(items, params)

@@ -8,6 +8,7 @@ class Comment < ApplicationRecord
   has_many :replies, -> { includes(:commenter, :commentable).order(created_at: :asc) }, class_name: 'Comment', foreign_key: :parent_id, dependent: :destroy
   
   validates :content, length: { in: 1..250 }
+  validate :parent_exists, if: -> { parent_id.present? }
 
   scope :of_parents, -> { where(parent: nil) }
 
@@ -21,5 +22,11 @@ class Comment < ApplicationRecord
     else
       " commented on your #{commentable_type.downcase}"
     end
+  end
+
+  private
+
+  def parent_exists 
+    errors.add(:parent_id, "comment may have been deleted.") unless Comment.exists?(parent_id)
   end
 end

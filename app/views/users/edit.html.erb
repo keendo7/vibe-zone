@@ -1,11 +1,7 @@
 <div style="max-width: 600px; margin: 25px auto;">
   <div class="d-flex flex-column align-items-center gap-2">
     <h2> Edit details </h2>
-
-    <% if flash[:alert]%>
-      <span class='alert'><%= flash[:alert] %></span>
-    <% end %>
-
+    
     <div class="mb-3">
       <%= render partial: "users/avatar_container", locals: { user: current_user } %>
     </div>
