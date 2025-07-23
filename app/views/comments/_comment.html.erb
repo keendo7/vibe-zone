@@ -58,9 +58,11 @@
         </div>
       </div>
 
-      <div class="d-flex flex-column">
-        <%= render partial: "comments/dropdown", locals: { comment: comment } %>
-      </div>
+      <% if (comment.commentable.author == current_user || comment.commenter == current_user) %>
+        <div class="d-flex flex-column">
+            <%= render partial: "comments/dropdown", locals: { comment: comment } %>
+        </div>
+      <% end %>
     </div>
     <div class="d-flex flex-column">
       <div id="reply-comment-<%= comment.id %>" class="d-none">
