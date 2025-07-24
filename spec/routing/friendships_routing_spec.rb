@@ -2,20 +2,16 @@ require 'rails_helper'
 
 RSpec.describe FriendshipsController, type: :routing do
   describe 'routing' do
-    xit 'routes to #index' do
-      expect(get: 'users/1/friendships', user_id: '1').to route_to('friendships#index', user_id: '1')
-    end
-
-    xit 'routes to #create' do
-      expect(post: 'users/1/friendships', user_id: '1').to route_to('friendships#create', user_id: '1')
+    it 'routes to #create' do
+      expect(post: 'friendships').to route_to('friendships#create')
     end
 
     it 'routes to #destroy' do
-      expect(delete: 'friendships/1', id: '1').to route_to('friendships#destroy', id: '1')
+      expect(delete: 'friendships/1').to route_to('friendships#destroy', id: '1')
     end
 
-    xit 'routes to #mutual_friends' do
-      expect(get: 'users/1/friendships/mutual_friends', user_id: '1').to route_to('friendships#mutual_friends', user_id: '1')
+    it 'routes to #decline' do
+      expect(delete: 'friendships/1/decline').to route_to('friendships#decline', id: '1')
     end
   end
 end
