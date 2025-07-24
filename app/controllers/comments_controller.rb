@@ -24,7 +24,10 @@ class CommentsController < ApplicationController
         format.html { redirect_to @comment.commentable, status: :see_other }
         format.turbo_stream
       end
-    end   
+    else
+      flash[:alert] = @comment.errors.full_messages.join(', ')
+      redirect_back fallback_location: root_path
+    end
   end
 
   def replies
@@ -64,6 +67,8 @@ class CommentsController < ApplicationController
 
   def set_comment
     @comment = Comment.find(params[:id])
+  rescue
+    redirect_to(root_path, alert: "Something went wrong")
   end
 
   def comment_params
