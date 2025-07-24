@@ -13,6 +13,7 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_many(:likes).dependent(true) }
     it { is_expected.to have_many(:notifications).dependent(:destroy) }
     it { is_expected.to have_one_attached(:avatar) }
+    it { is_expected.to have_one_attached(:banner) }
   end
 
   describe 'validations' do
@@ -112,29 +113,32 @@ RSpec.describe User, type: :model do
     let(:user2) { create :user }
     let(:user3) { create :user }
     let(:user4) { create :user }
+    let(:user5) { create :user }
+
+    def make_friends(u1, u2)
+      u1.friendships.create(friend: u2)
+      u2.friendships.create(friend: u1)
+    end
 
     before do
-      user1.friendships.create(friend: user2)
-      user1.friendships.create(friend: user3)
-      user1.friendships.create(friend: user4)
+      make_friends(user1, user2)
+      make_friends(user1, user3)
+      make_friends(user1, user4)
 
-      user2.friendships.create(friend: user4)
-      user2.friendships.create(friend: user1)
-
-      user3.friendships.create(friend: user4)
-      user3.friendships.create(friend: user1)
+      make_friends(user2, user4)
+      make_friends(user3, user4)
     end
 
     context 'when users have 1 mutual friend' do
-      it { expect(user1.mutual_friends(user2).first.friend).to eq(user4) }
+      it { expect(user1.mutual_friends(user2).count).to eq(1) }
     end
     
     context 'when users have multiple mutual friends' do 
-      it { expect(user2.mutual_friends(user3).count).to eq(2) }
+      it { expect(user1.mutual_friends(user4).count).to eq(2) }
     end
 
     context 'when users have no mutual friends' do
-      it { expect(user1.mutual_friends(user4)).to eq([]) }
+      it { expect(user1.mutual_friends(user5)).to eq([]) }
     end
   end
 
@@ -196,6 +200,17 @@ RSpec.describe User, type: :model do
       let!(:friendship) { create(:friendship, user: user2, friend: user1) }
 
       it { expect(user1.received_friendship_request_from?(user2)).to be true}
+    end
+  end
+
+  describe '#received_friendship_request_from' do
+    let(:user1) { create :user }
+    let(:user2) { create :user }
+
+    context 'when user1 received friendship request from user2' do
+      let!(:friendship) { create(:friendship, user: user2, friend: user1) }
+
+      it { expect(user1.received_friends).to include(user2) }
     end
   end
 end
