@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_post, only: [:show, :like, :unlike]
+  before_action :set_post, only: [:show, :like, :unlike, :destroy]
   invisible_captcha only: [:create, :update]
 
   def home
@@ -22,7 +22,6 @@ class PostsController < ApplicationController
       format.turbo_stream
     end
   end
-
 
   def index
     posts = Post.includes(:author).all.descending
@@ -81,15 +80,12 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @post = Post.friendly.find(params[:id])
     @post.destroy
-    case URI(request.referer).path
-      when '/posts'
-        redirect_to posts_path
-      when '/'
-        redirect_to root_path
-      else
-        redirect_to user_path(current_user)
+
+    if URI(request.referer).path == post_path(@post)
+      redirect_to(root_path, notice: "Post was successfully deleted")
+    else
+      redirect_back(fallback_location: root_path, notice: "Post was successsfully deleted")
     end
   end
 
