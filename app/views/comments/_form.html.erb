@@ -1,7 +1,6 @@
 <div class="d-flex bg-white rounded shadow p-2 mb-4 gap-2 w-sm-75 w-100">
   <%= image_tag user_avatar(current_user), id: "avatar" %>
   <%= form_with model: comment, class: "w-100", data: { turbo: false, controller: "form" } do |f| %>
-    <%= invisible_captcha %>
     <%= f.hidden_field :commentable_id, value: commentable_id %>
     <%= f.hidden_field :commentable_type, value: commentable_type %>
     <%= f.hidden_field :parent_id, value: parent_id %>

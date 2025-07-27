@@ -1,7 +1,6 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_comment, only: [:like, :unlike, :edit]
-  invisible_captcha only: [:create, :update]
 
   def new; end
 

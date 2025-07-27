@@ -89,5 +89,4 @@ gem 'image_processing', '~> 1.2'
 gem 'active_storage_validations'
 gem 'friendly_id'
 gem "pagy", "~> 8.1"
-gem 'invisible_captcha'
 gem "sidekiq-scheduler", "~> 5.0"
