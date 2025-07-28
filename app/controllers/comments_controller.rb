@@ -1,17 +1,13 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_comment, only: [:like, :unlike, :edit]
-
-  def new; end
-
-  def edit; end
+  before_action :set_comment, only: [:like, :unlike, :destroy, :replies]
 
   def update
     @comment = Comment.find(params[:id])
     if @comment.update(comment_params)
       redirect_to @comment.commentable
     else
-      render :edit, status: :unprocessable_entity
+      redirect_to @comment.commentable, status: :see_other
     end
   end
 
@@ -30,36 +26,44 @@ class CommentsController < ApplicationController
   end
 
   def replies
-    @comment = Comment.find(params[:id])
     @pagy, @replies = pagy_countless(@comment.replies, items: 10)
-
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
   end
 
   def like
     like = current_user.likes.create(likeable: @comment)
-    notify(@comment.commenter, like)
-    render partial: 'comments/like_count', locals: { comment: @comment }
+    notify(@comment.commenter, like) if like.persisted?
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace(
+          dom_id(@comment, :like_count),
+          partial: "comments/like_count",
+          locals: { comment: @comment }
+        )
+      }  
+      format.html { render partial: 'comments/like_count', locals: { comment: @comment } }
+    end
   end
 
   def unlike
-    current_user.likes.find_by(likeable: @comment).destroy
+    current_user.likes.find_by(likeable: @comment)&.destroy
     @comment.reload
-    render partial: 'comments/like_count', locals: { comment: @comment }
+    
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace(
+        dom_id(@comment, :like_count),
+        partial: "comments/like_count",
+        locals: { comment: @comment }
+      )
+    }  
+      format.html { render partial: 'comments/like_count', locals: { comment: @comment } }
+    end
   end
 
   def destroy
-    @comment = Comment.find(params[:id])
     @commentable = @comment.commentable
     @comment.destroy
 
-    respond_to do |format|
-      format.html { redirect_to @commentable, status: :see_other }
-      format.turbo_stream
-    end
+    redirect_to @commentable, status: :see_other
   end
 
   private
@@ -67,7 +71,7 @@ class CommentsController < ApplicationController
   def set_comment
     @comment = Comment.find(params[:id])
   rescue
-    redirect_to(root_path, alert: "Something went wrong")
+    redirect_back(fallback_location: root_path, alert: "Comment doesn't exist")
   end
 
   def comment_params

@@ -66,19 +66,11 @@
     </div>
     <div class="d-flex flex-column">
       <div id="reply-comment-<%= comment.id %>" class="d-none">
-        <%= render 'comments/form',
-            comment: Comment.new,
-            commentable_id: comment.commentable.id, 
-            commentable_type: "#{comment.commentable.class.name}", 
-            parent_id: comment.is_a_reply? ? comment.parent_id : comment.id %>
+        <%= reply_comment_form(comment) %>
       </div>
 
       <div id="edit-comment-<%= comment.id %>" class="d-none">
-        <%= render 'comments/form',
-            comment: comment,
-            commentable_id: comment.commentable.id, 
-            commentable_type: "#{comment.commentable.class.name}", 
-            parent_id: comment.parent_id %>
+        <%= edit_comment_form(comment) %>
       </div> 
     </div>
   </div>

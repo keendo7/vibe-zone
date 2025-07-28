@@ -90,7 +90,7 @@ class PostsController < ApplicationController
 
   def like
     like = current_user.likes.create(likeable: @post)
-    notify(@post.author, like)
+    notify(@post.author, like) if like.persisted?
 
     respond_to do |format|
       format.turbo_stream { render turbo_stream: turbo_stream.replace(

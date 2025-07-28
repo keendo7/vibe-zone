@@ -3,5 +3,6 @@ FactoryBot.define do
     association :commenter, factory: :user
     association :commentable, factory: :post
     content { 'content' }
+    parent_id { nil }
   end
 end
