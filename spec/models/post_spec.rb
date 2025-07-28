@@ -16,8 +16,8 @@ RSpec.describe Post, type: :model do
   end
 
   describe '.search_post' do
-    let!(:post1) { FactoryBot.create(:post, content: 'post1') }
-    let!(:post2) { FactoryBot.create(:post, content: 'post2') }
+    let!(:post1) { create(:post, content: 'post1') }
+    let!(:post2) { create(:post, content: 'post2') }
     
     context 'with query which returns all posts' do
       it { expect(described_class.search_post('post')).to eq([post1, post2]) }
