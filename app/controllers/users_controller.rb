@@ -4,12 +4,8 @@ class UsersController < ApplicationController
 
   def show
     @pagy, @posts = pagy_countless(@user.authored_posts, items: 10)
-
-    if @user != current_user
-      @status, @friendship = current_user.friendship_status_with(@user)
-      @mutual_friends_count = current_user.mutual_friends(@user).count
-    end
-      
+    set_friendship_data if @user != current_user
+    
     respond_to do |format|
       format.turbo_stream
       format.html
@@ -23,7 +19,6 @@ class UsersController < ApplicationController
   def update
     @user = current_user
     if @user.update(user_params)
-      purge_avatar if params[:user][:purge_avatar] == '1'
       redirect_to @user
     else
       flash.now[:alert] = @user.errors.full_messages.join(', ')
@@ -33,7 +28,33 @@ class UsersController < ApplicationController
   end
 
   def update_avatar
-    current_user.avatar.attach(params[:user][:avatar])
+    @user = current_user
+    @user.avatar.attach(params[:avatar])
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace(
+        dom_id(@user, :avatar),
+        partial: "users/avatar_container",
+        locals: { user: @user }
+        )
+      }
+      format.html { redirect_back(fallback_location: root_path) }
+    end
+  end
+
+  def remove_avatar
+    @user = current_user
+    @user.avatar.purge
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace(
+        dom_id(@user, :avatar),
+        partial: "users/avatar_container",
+        locals: { user: @user }
+        )
+      }
+      format.html { redirect_back(fallback_location: root_path) }
+    end
   end
 
   def remove_banner
@@ -58,14 +79,15 @@ class UsersController < ApplicationController
 
   private
 
-  def purge_avatar
-    @user.avatar.purge
-  end
-
   def set_user
     @user = User.friendly.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     redirect_back(fallback_location: root_path, alert: "User doesn't exist")
+  end
+
+  def set_friendship_data
+    @status, @friendship = current_user.friendship_status_with(@user)
+    @mutual_friends_count = current_user.mutual_friends(@user).count
   end
 
   def user_params

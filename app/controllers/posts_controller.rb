@@ -1,7 +1,6 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_post, only: [:show, :like, :unlike]
-  invisible_captcha only: [:create, :update]
+  before_action :set_post, only: [:show, :like, :unlike, :destroy]
 
   def home
     posts = current_user.timeline
@@ -22,7 +21,6 @@ class PostsController < ApplicationController
       format.turbo_stream
     end
   end
-
 
   def index
     posts = Post.includes(:author).all.descending
@@ -81,28 +79,43 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @post = Post.friendly.find(params[:id])
     @post.destroy
-    case URI(request.referer).path
-      when '/posts'
-        redirect_to posts_path
-      when '/'
-        redirect_to root_path
-      else
-        redirect_to user_path(current_user)
+
+    if referer_path == post_path(@post)
+      redirect_to root_path, notice: "Post was successfully deleted"
+    else
+      redirect_back fallback_location: root_path, notice: "Post was successfully deleted"
     end
   end
 
   def like
     like = current_user.likes.create(likeable: @post)
-    notify(@post.author, like)
-    render partial: "posts/buttons", locals: { post: @post }
+    notify(@post.author, like) if like.persisted?
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace(
+          dom_id(@post, :likes),
+          partial: "posts/buttons",
+          locals: { post: @post }
+        )
+      }  
+      format.html { render partial: "posts/buttons", locals: { post: @post } }
+    end
   end
 
   def unlike
-    current_user.likes.find_by(likeable: @post).destroy
+    current_user.likes.find_by(likeable: @post)&.destroy
     @post.reload
-    render partial: "posts/buttons", locals: { post: @post }
+    
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace(
+          dom_id(@post, :likes),
+          partial: "posts/buttons",
+          locals: { post: @post }
+        )
+      }
+      format.html { render partial: "posts/buttons", locals: { post: @post } }
+    end
   end
 
   private

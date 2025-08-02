@@ -37,5 +37,6 @@ Rails.application.routes.draw do
   get 'home', to: 'posts#home'
   delete 'remove_banner', to: 'users#remove_banner'
   patch 'update_avatar', to: 'users#update_avatar'
+  delete 'remove_avatar', to: 'users#remove_avatar'
   patch 'update_banner', to: 'users#update_banner'
 end

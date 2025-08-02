@@ -54,6 +54,7 @@ group :development, :test do
   gem 'byebug'
   gem "factory_bot_rails"
   gem 'rspec-rails', '~> 6.1.0'
+  gem 'rails-controller-testing'
 end
 
 group :development do
@@ -88,5 +89,4 @@ gem 'image_processing', '~> 1.2'
 gem 'active_storage_validations'
 gem 'friendly_id'
 gem "pagy", "~> 8.1"
-gem 'invisible_captcha'
 gem "sidekiq-scheduler", "~> 5.0"

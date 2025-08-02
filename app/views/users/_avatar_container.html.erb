@@ -1,11 +1,24 @@
-<div class="avatar_container" data-controller="user-avatar">
-  <% if current_user == @user %>
-    <div class="avatar_upload_container">
-      <%= file_field_tag "imageUpload", accept: ".png, .jpeg, .jpg", data: { action: "change->user-avatar#uploadAvatar" } %>
-      <label for="imageUpload" class="upload-file-block">
-        <i class="fas fa-camera upload-button"></i>
-      </label>
+<%= turbo_frame_tag dom_id(user, :avatar), class: 'd-flex align-items-end justify-content-end' do %>  
+  <div class="avatar_container" data-controller="user-avatar">
+    <% if current_user == user %>
+      <%= form_tag(update_avatar_path, multipart: true, method: :patch, data: { turbo_stream: true }) do %>
+        <div class="avatar_upload_container">
+          <%= file_field_tag "avatar", accept: ".png, .jpeg, .jpg", data: { action: "change->user-avatar#uploadAvatar" } %>
+          <label for="avatar" class="upload-file-block">
+            <i class="fas fa-camera upload-button"></i>
+          </label>
+          <%= submit_tag "Upload", style: "display: none;" %>
+        </div>
+      <% end %>
+    <% end %>
+    <%= image_tag user_avatar(user, 150), id: "avatar" %>
+  </div>
+
+  <% if user.avatar.attached? %>
+    <div class="position-absolute">
+      <%= button_to remove_avatar_path, class: "btn btn-dark round-btn px-2", method: :delete do %>
+        <i class="fa-solid fa-xl fa-trash"></i>
+      <% end %>
     </div>
   <% end %>
-  <%= image_tag user_avatar(@user, 150), id: "avatar" %>
-</div>
+<% end %>

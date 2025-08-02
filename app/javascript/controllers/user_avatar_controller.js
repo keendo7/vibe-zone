@@ -11,32 +11,6 @@ export default class extends Controller {
       return;
     }
 
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      document.getElementById('avatar').src = reader.result;
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-      this.saveAvatar(file);
-    }
-  }
-
-  async saveAvatar(file) {
-    const formData = new FormData();
-    formData.append('user[avatar]', file);
-
-    try {
-      await fetch("/update_avatar", {
-        method: 'PATCH',
-        body: formData,
-        headers: {
-          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        }
-      });
-    } catch (error) {
-      console.error('Error saving avatar:', error);
-    }
+    event.target.form.requestSubmit();
   }
 }
