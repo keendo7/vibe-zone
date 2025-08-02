@@ -3,11 +3,11 @@
     <%= render partial: "users/banner", locals: { user: @user } %>
     <div class="w-100 mb-3 d-flex flex-column shadow p-3 bg-white">
       <div class="d-flex flex-column flex-md-row align-items-center mx-4">
-        <div class="d-flex gap-4">
+        <div class="d-flex flex-md-row flex-column gap-md-4 align-items-center">
           <div style="z-index: 1; margin-top: -50px;">
-            <%= render partial: "users/avatar_container", locals: { user: @user } %>
+            <%= render partial: 'users/avatar_container', locals: { user: @user } %>
           </div>
-          <div class="d-flex flex-column justify-content-center">
+          <div class="d-flex flex-column justify-content-center align-items-md-start align-items-center">
             <h1 style="margin-bottom: 0px;"> <%= @user.full_name %> </h1>
             <div class="d-flex gap-1">
               <%= link_to "#{pluralize(@user.active_friends.count, 'friend')}", user_friendships_path(@user) %>
