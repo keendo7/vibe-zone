@@ -34,10 +34,9 @@ RSpec.describe FriendshipsController, type: :controller do
     context 'with incorrect params' do
       let!(:params) { { id: -1 } }
 
-      it 'redirects back with alert' do
-        request.env['HTTP_REFERER'] = user_path(friend1)
+      it 'redirects to root_path with alert' do
         delete_request
-        expect(response).to redirect_to(user_path(friend1))
+        expect(response).to redirect_to(root_path)
         expect(flash[:alert]).to eq("Something went wrong")
       end
     end
@@ -82,10 +81,9 @@ RSpec.describe FriendshipsController, type: :controller do
         expect { delete_request }.to_not change(Friendship, :count)
       end
 
-      it "redirects back with alert" do
-        request.env['HTTP_REFERER'] = user_path(user1)
+      it "redirects to root_path with alert" do
         delete_request
-        expect(response).to redirect_to(user_path(user1))
+        expect(response).to redirect_to(root_path)
         expect(flash[:alert]).to eq 'Something went wrong'
       end
 
@@ -146,11 +144,10 @@ RSpec.describe FriendshipsController, type: :controller do
         }
       end
       
-      it 'redirects back with alert' do
-        request.env['HTTP_REFERER'] = user_path(friend1)
+      it 'redirects to root_path with alert' do
         post_request
-        expect(response).to redirect_to(user_path(friend1))
-        expect(flash[:alert]).to eq("Something went wrong")
+        expect(response).to redirect_to(root_path)
+        expect(flash[:alert]).to eq("User doesn't exist")
       end
 
       it "doesn't change user's friendship count" do

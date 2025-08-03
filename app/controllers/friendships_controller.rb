@@ -2,34 +2,35 @@ class FriendshipsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_user, only: [:create]
 
-  def destroy
-    @friendship = current_user.friendships.find(params[:id])
-    redirect_back(fallback_location: root_path) if @friendship.destroy
-  rescue ActiveRecord::RecordNotFound
-    redirect_back(fallback_location: root_path, alert: 'Something went wrong')
-  end
-
-  def decline
-    @friendship = current_user.received_friendships.find(params[:id])
-    redirect_back(fallback_location: root_path) if @friendship.destroy
-  rescue ActiveRecord::RecordNotFound
-    redirect_back(fallback_location: root_path, alert: 'Something went wrong')
-  end
-  
   def create
     @friendship = current_user.friendships.build(friend_id: @user.id)
+    
     if @friendship.save
       notify(@user, @friendship)
       redirect_back(fallback_location: root_path)
     end
   end
 
+  def destroy
+    @friendship = current_user.friendships.find(params[:id])
+    redirect_back(fallback_location: root_path) if @friendship.destroy
+  rescue ActiveRecord::RecordNotFound
+    redirect_to(root_path, alert: 'Something went wrong')
+  end
+
+  def decline
+    @friendship = current_user.received_friendships.find(params[:id])
+    redirect_back(fallback_location: root_path) if @friendship.destroy
+  rescue ActiveRecord::RecordNotFound
+    redirect_to(root_path, alert: 'Something went wrong')
+  end
+  
   private
 
   def set_user
     @user = User.friendly.find(params[:user_id])
   rescue ActiveRecord::RecordNotFound
-    redirect_back(fallback_location: root_path, alert: 'Something went wrong')
+    redirect_to(root_path, alert: "User doesn't exist")
   end
 
   def notify(recipient, friendship)

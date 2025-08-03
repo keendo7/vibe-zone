@@ -32,7 +32,7 @@ module ApplicationHelper
       "Accept",
       friendships_path(user_id: friendship.user.id),
       method: :post, 
-      data: { turbo_frame: "_top" },
+      data: { turbo: false, controller: "authentic" },
       class: 'btn btn-success p-2'
     )
   end
@@ -42,9 +42,9 @@ module ApplicationHelper
 
     button_to(
       "Decline",
-      decline_friendship_path(friendship),
-      method: :delete, 
-      data: { turbo_frame: "_top" },
+      decline_friendship_path(friendship.id),
+      method: :delete,
+      data: { turbo: false, controller: "authentic" },
       class: 'btn btn-danger p-2'
     )
   end
