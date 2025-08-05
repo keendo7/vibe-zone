@@ -60,7 +60,7 @@
 
       <% if (comment.commentable.author == current_user || comment.commenter == current_user) %>
         <div class="d-flex flex-column">
-            <%= render partial: "comments/dropdown", locals: { comment: comment } %>
+          <%= render partial: "comments/dropdown", locals: { comment: comment } %>
         </div>
       <% end %>
     </div>
