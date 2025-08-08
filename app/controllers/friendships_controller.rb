@@ -15,14 +15,14 @@ class FriendshipsController < ApplicationController
     @friendship = current_user.friendships.find(params[:id])
     redirect_back(fallback_location: root_path) if @friendship.destroy
   rescue ActiveRecord::RecordNotFound
-    redirect_to(root_path, alert: 'Something went wrong')
+    redirect_to(root_path, alert: t('errors.friendship.not_found'))
   end
 
   def decline
     @friendship = current_user.received_friendships.find(params[:id])
     redirect_back(fallback_location: root_path) if @friendship.destroy
   rescue ActiveRecord::RecordNotFound
-    redirect_to(root_path, alert: 'Something went wrong')
+    redirect_to(root_path, alert: t('errors.friendship.not_found'))
   end
   
   private
@@ -30,7 +30,7 @@ class FriendshipsController < ApplicationController
   def set_user
     @user = User.friendly.find(params[:user_id])
   rescue ActiveRecord::RecordNotFound
-    redirect_to(root_path, alert: "User doesn't exist")
+    redirect_to(root_path, alert: t('errors.user.not_found'))
   end
 
   def notify(recipient, friendship)
