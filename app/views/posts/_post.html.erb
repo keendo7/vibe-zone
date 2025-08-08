@@ -23,7 +23,7 @@
           <%= image_tag(post.image_variant, class: "image image-small", loading: "lazy", data: { controller: "toggle", action: "click->toggle#toggleImageSize" }) if post.image.attached? %> 
         </div>
         <%= render partial: "posts/buttons", locals: { post: post } %>
-        <% unless current_page?(post_path(post)) %>
+        <% unless request.path == post_path(post) %>
           <%= link_to "#{pluralize(post.commentable_count, 'comment')}", post_path(post), data: { turbo: "false" } %>
         <% end %>
       </div>
@@ -35,10 +35,8 @@
           </button>
 
           <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <%= button_to "Delete", post_path(post), class: "dropdown-item", method: :delete, data: { turbo: "false" } %>
-            <% if current_page?(post_path(post)) %>
-              <%= button_to "Edit", edit_post_path(post), class: "dropdown-item", method: :get %>
-            <% end %>
+            <%= button_to "Delete", post_path(post), class: "dropdown-item", method: :delete, data: { turbo_frame: "false" } %>
+            <%= link_to "Edit", edit_post_path(post), class: "dropdown-item", data: { turbo_frame: "modal" } %>
           </div>
         </div>
       <% end %>
