@@ -14,5 +14,13 @@
         <% end %>
       <% end %>
     </div>
+    <div class="post_comments_count">
+      <%= post.commentable_count %>
+    </div>
+    <div class="post_comments_button">
+      <%= link_to post_path(post), class: "round-btn blank", data: { turbo: "false" } do %>
+        <i class="fa-regular fa-comment fa-xl"></i>
+      <% end %>
+    </div>
   </div>
 <% end %>
