@@ -16,9 +16,9 @@
     <% if user_signed_in? %>
       <%= turbo_stream_from current_user, "notifications_count" %>
       <%= render 'layouts/topnav' %>
-      <div class="d-flex flex-column align-items-center justify-content-center">
+      <%= turbo_frame_tag "flash", class: "position-fixed bottom-0 end-0 p-3" do %>        
         <%= render 'layouts/flash' %>
-      </div>
+      <% end %>
       <div class="modal fade" tabindex="-1" data-controller="modal" data-action="turbo:frame-load->modal#open turbo:submit-end->modal#close">
         <div class="modal-dialog">
           <div class="modal-content">

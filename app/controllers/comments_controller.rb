@@ -1,9 +1,8 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_comment, only: [:like, :unlike, :destroy, :replies]
+  before_action :set_comment, only: [:like, :unlike, :destroy, :replies, :update]
 
   def update
-    @comment = Comment.find(params[:id])
     if @comment.update(comment_params)
       redirect_to @comment.commentable
     else
@@ -71,7 +70,13 @@ class CommentsController < ApplicationController
   def set_comment
     @comment = Comment.find(params[:id])
   rescue
-    redirect_back(fallback_location: root_path, alert: "Comment doesn't exist")
+    respond_to do |format|
+      format.turbo_stream { 
+        flash.now[:alert] = "Comment doesn't exist"
+        render turbo_stream: turbo_stream.update("flash", partial: "layouts/flash")
+      }
+      format.html { redirect_back(fallback_location: root_path, alert: "Comment doesn't exist") }
+    end
   end
 
   def comment_params
