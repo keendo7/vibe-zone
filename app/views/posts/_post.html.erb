@@ -32,7 +32,7 @@
           </button>
 
           <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <%= button_to "Delete", post_path(post), class: "dropdown-item", method: :delete, data: { turbo_frame: "false" } %>
+            <%= button_to "Delete", post_path(post), class: "dropdown-item", method: :delete, data: { turbo: false } %>
             <%= link_to "Edit", edit_post_path(post), class: "dropdown-item", data: { turbo_frame: "modal" } %>
           </div>
         </div>

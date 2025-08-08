@@ -1,5 +1,8 @@
 <% flash.each do |type, message| %>
-  <div class="<%= flash_class(type) %> mt-3">
-    <%= message %>
+  <div class="<%= flash_class(type) %> alert-dismissible fade show d-flex justify-content-between align-items-center">
+    <div class="me-3">
+      <%= message %>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 <% end %>

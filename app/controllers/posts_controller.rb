@@ -63,8 +63,6 @@ class PostsController < ApplicationController
     end
   end
 
-  def edit; end
-
   def update
     @post = Post.friendly.find(params[:id])
     if @post.update(post_params)
@@ -124,9 +122,15 @@ class PostsController < ApplicationController
   end
 
   def set_post
-    @post = Post.friendly.find(params[:id])
+  @post = Post.friendly.find(params[:id])
   rescue
-    redirect_to(root_path, alert: "Post doesn't exist")
+    respond_to do |format|
+      format.turbo_stream { 
+        flash.now[:alert] = "Post doesn't exist"
+        render turbo_stream: turbo_stream.update("flash", partial: "layouts/flash")
+      }
+      format.html { redirect_to(root_path, alert: "Post doesn't exist") }
+    end
   end
 
   def sort_by(items, params)
