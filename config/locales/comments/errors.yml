@@ -1,0 +1,4 @@
+en:
+  errors:
+    comment:
+      not_found: "Comment doesn't exist"
