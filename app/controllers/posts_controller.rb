@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_post, only: [:show, :like, :unlike, :destroy]
+  before_action :set_post, only: [:show, :like, :unlike, :destroy, :edit]
 
   def home
     posts = current_user.timeline
@@ -13,8 +13,6 @@ class PostsController < ApplicationController
       params[:sort_by] ? sort_by(posts, params[:sort_by]) : posts, 
       items: 10
     )
-    
-    @post = current_user.authored_posts.new
 
     respond_to do |format|
       format.html
@@ -33,8 +31,6 @@ class PostsController < ApplicationController
       params[:sort_by] ? sort_by(posts, params[:sort_by]) : posts, 
       items: 10
     )
-
-    @post = current_user.authored_posts.new
 
     respond_to do |format|
       format.html
@@ -58,21 +54,24 @@ class PostsController < ApplicationController
     @post = current_user.authored_posts.new(post_params)
     @post.image.attach(params[:post][:image])
     if @post.save
-      redirect_to @post
+      respond_to do |format|
+        format.html { redirect_to @post } 
+      end
     else
       flash[:alert] = @post.errors.full_messages.join(', ')
       redirect_back fallback_location: root_path
     end
   end
 
-  def edit
-    @post = Post.friendly.find(params[:id])
-  end
+  def edit; end
 
   def update
     @post = Post.friendly.find(params[:id])
     if @post.update(post_params)
-      redirect_to post_path(@post)
+      respond_to do |format|
+        format.html { redirect_to @post }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace(dom_id(@post), @post) }
+      end
     else
       render :edit, status: :unprocessable_entity
     end

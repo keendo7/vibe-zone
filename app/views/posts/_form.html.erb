@@ -1,7 +1,7 @@
-<div class="d-flex w-sm-75 w-100 bg-white rounded shadow p-2 gap-2 mb-4">
+<div class="d-flex w-100 gap-2">
   <%= image_tag user_avatar(current_user), id: "avatar" %>
   <div class="d-flex flex-column w-100">
-    <%= form_with(model: @post, data: { turbo: false, controller: "form" }) do |form| %>
+    <%= form_with(model: post, data: { controller: "form", turbo: turbo_action }) do |form| %>
       <div class="d-flex flex-row justify-content-center mb-3">
         <%= form.text_area :content, placeholder: "What's on your mind today?", class: "form-control border-0", data: { action: "input->form#resize input->form#count", form_target: "input"} %>
       </div>

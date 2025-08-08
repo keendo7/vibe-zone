@@ -1,6 +1,10 @@
-<%= turbo_frame_tag dom_id(@post) do %>
-  <%= render "form", post: @post %>
-  <%= link_to @post do %>
-    <i class="fa-solid fa-circle-xmark"></i>
-  <% end %>
+<%= turbo_frame_tag "modal" do %>
+  <div class="modal-header">
+    <h4 class="modal-title">Edit Post</h4>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+
+  <div class="modal-body">
+    <%= render "form", post: @post, turbo_action: "true" %>
+  </div>
 <% end %>
