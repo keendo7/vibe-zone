@@ -1,0 +1,4 @@
+en:
+  errors:
+    post:
+      not_found: "Post doesn't exist"

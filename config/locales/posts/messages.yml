@@ -1,0 +1,4 @@
+en:
+  messages:
+    post:
+      deleted: "Post was successfully deleted"
