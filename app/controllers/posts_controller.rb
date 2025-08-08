@@ -50,6 +50,8 @@ class PostsController < ApplicationController
     end
   end
 
+  def edit; end
+
   def create
     @post = current_user.authored_posts.new(post_params)
     @post.image.attach(params[:post][:image])
@@ -79,9 +81,9 @@ class PostsController < ApplicationController
     @post.destroy
 
     if referer_path == post_path(@post)
-      redirect_to root_path, notice: "Post was successfully deleted"
+      redirect_to root_path, notice: t('messages.post.deleted')
     else
-      redirect_back fallback_location: root_path, notice: "Post was successfully deleted"
+      redirect_back fallback_location: root_path, notice: t('messages.post.deleted')
     end
   end
 
@@ -122,14 +124,14 @@ class PostsController < ApplicationController
   end
 
   def set_post
-  @post = Post.friendly.find(params[:id])
+    @post = Post.friendly.find(params[:id])
   rescue
     respond_to do |format|
       format.turbo_stream { 
-        flash.now[:alert] = "Post doesn't exist"
+        flash.now[:alert] = t('errors.post.not_found')
         render turbo_stream: turbo_stream.update("flash", partial: "layouts/flash")
       }
-      format.html { redirect_to(root_path, alert: "Post doesn't exist") }
+      format.html { redirect_to(root_path, alert: t('errors.post.not_found')) }
     end
   end
 
