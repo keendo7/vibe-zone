@@ -1,0 +1,4 @@
+en:
+  errors:
+    friendship:
+      not_found: "Friendship doesn't exist"

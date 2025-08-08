@@ -82,7 +82,7 @@ class UsersController < ApplicationController
   def set_user
     @user = User.friendly.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    redirect_back(fallback_location: root_path, alert: "User doesn't exist")
+    redirect_back(fallback_location: root_path, alert: t('errors.user.not_found'))
   end
 
   def set_friendship_data

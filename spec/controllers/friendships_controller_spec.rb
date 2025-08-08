@@ -37,7 +37,7 @@ RSpec.describe FriendshipsController, type: :controller do
       it 'redirects to root_path with alert' do
         delete_request
         expect(response).to redirect_to(root_path)
-        expect(flash[:alert]).to eq("Something went wrong")
+        expect(flash[:alert]).to eq("Friendship doesn't exist")
       end
     end
   end
@@ -84,7 +84,7 @@ RSpec.describe FriendshipsController, type: :controller do
       it "redirects to root_path with alert" do
         delete_request
         expect(response).to redirect_to(root_path)
-        expect(flash[:alert]).to eq 'Something went wrong'
+        expect(flash[:alert]).to eq "Friendship doesn't exist"
       end
 
       it 'accepts html format' do

@@ -2,14 +2,6 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_comment, only: [:like, :unlike, :destroy, :replies, :update]
 
-  def update
-    if @comment.update(comment_params)
-      redirect_to @comment.commentable
-    else
-      redirect_to @comment.commentable, status: :see_other
-    end
-  end
-
   def create
     @comment = Comment.new(comment_params)
     if @comment.save
@@ -21,6 +13,14 @@ class CommentsController < ApplicationController
     else
       flash[:alert] = @comment.errors.full_messages.join(', ')
       redirect_back fallback_location: root_path
+    end
+  end
+
+  def update
+    if @comment.update(comment_params)
+      redirect_to @comment.commentable
+    else
+      redirect_to @comment.commentable, status: :see_other
     end
   end
 
@@ -72,15 +72,16 @@ class CommentsController < ApplicationController
   rescue
     respond_to do |format|
       format.turbo_stream { 
-        flash.now[:alert] = "Comment doesn't exist"
+        flash.now[:alert] = t("errors.comment.not_found")
         render turbo_stream: turbo_stream.update("flash", partial: "layouts/flash")
       }
-      format.html { redirect_back(fallback_location: root_path, alert: "Comment doesn't exist") }
+      format.html { redirect_back(fallback_location: root_path, alert: t("errors.comment.not_found")) }
     end
   end
 
   def comment_params
-    params.require(:comment).permit(:content, :commentable_id, :commentable_type, :parent_id).merge(commenter_id: current_user.id)
+    params.require(:comment).permit(:content, :commentable_id, :commentable_type, 
+                                    :parent_id).merge(commenter_id: current_user.id)
   end
 
   def like_params

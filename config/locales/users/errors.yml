@@ -1,0 +1,4 @@
+en:
+  errors:
+    user:
+      not_found: "User doesn't exist"
