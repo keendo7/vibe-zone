@@ -4,7 +4,7 @@ class Notification < ApplicationRecord
   belongs_to :notifiable, polymorphic: true
 
   scope :unread, -> { where(was_read: false) }
-  scope :deprecated, -> { where(was_read: true).where('created_at <= ?', 7.days.ago) }
+  scope :deprecated, -> { where(was_read: true).where(created_at: ..7.days.ago) }
 
   broadcasts_to ->(notification) { [notification.user, "notifications_count"] }, inserts_by: :prepend
   
