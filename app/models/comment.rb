@@ -1,5 +1,5 @@
 class Comment < ApplicationRecord
-  belongs_to :commentable, polymorphic: true, counter_cache: :commentable_count
+  belongs_to :commentable, polymorphic: true, counter_cache: :commentable_count, inverse_of: :comments
   belongs_to :commenter, class_name: 'User'
   belongs_to :parent, class_name: 'Comment', optional: true, inverse_of: :replies
   
