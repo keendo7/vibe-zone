@@ -12,8 +12,8 @@ RSpec.describe Like, type: :model do
   describe 'validations' do
     it {
       expect(subject).to validate_uniqueness_of(:user_id)
-      .scoped_to([:likeable_id, :likeable_type])
-      .with_message('can only like this item once.')
+        .scoped_to([:likeable_id, :likeable_type])
+        .with_message('can only like this item once.')
     }
   end
 end
