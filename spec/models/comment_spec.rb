@@ -4,9 +4,16 @@ RSpec.describe Comment, type: :model do
   describe 'relationships' do
     it { is_expected.to belong_to(:commenter).class_name("User") }
     it { is_expected.to belong_to(:commentable) }
-    it { is_expected.to belong_to(:parent).class_name("Comment").with_foreign_key(:parent_id).optional(:true) }
+    it { is_expected.to belong_to(:parent).class_name("Comment").optional.inverse_of(:replies) }
     it { is_expected.to have_many(:likes).dependent(:destroy) }
-    it { is_expected.to have_many(:replies).class_name("Comment").with_foreign_key(:parent_id).dependent(:destroy) }
+
+    it {
+      expect(subject).to have_many(:replies).class_name("Comment")
+                                            .with_foreign_key(:parent_id)
+                                            .dependent(:destroy)
+                                            .inverse_of(:parent)
+    }
+
     it { is_expected.to have_many(:notifications).dependent(:destroy) }
   end
 
@@ -20,8 +27,9 @@ RSpec.describe Comment, type: :model do
   describe '.of_parents' do
     context 'when parent comment exists' do
       let!(:parent_comment) { create(:comment) }
+
       it { expect(described_class.of_parents).to eq([parent_comment]) }
-      it { expect(parent_comment.parent_id).to be nil }
+      it { expect(parent_comment.parent_id).to be_nil }
     end
   end
 end
