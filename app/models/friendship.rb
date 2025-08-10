@@ -1,14 +1,14 @@
 class Friendship < ApplicationRecord
   belongs_to :user
   belongs_to :friend, class_name: 'User'
+
   has_many :notifications, as: :notifiable, dependent: :destroy
-  
-  validates :user_id, presence: true, uniqueness: { scope: :friend_id }
-  validates :friend_id, presence: true
+
+  validates :user_id, uniqueness: { scope: :friend_id }
   validate :user_is_not_equal_friend
 
   after_destroy :remove_reciprocal_friendship
-
+  
   scope :search_friend, ->(query) { joins(:friend).where("CONCAT_WS(' ', first_name, last_name) ILIKE ?", "%#{query}%") }
   
   def is_mutual?
@@ -25,8 +25,7 @@ class Friendship < ApplicationRecord
     
   private
   def remove_reciprocal_friendship
-    friendship = friend.friendships.find_by(friend_id: user.id)
-    friendship.destroy if friendship
+    friend.friendships.find_by(friend_id: user.id)&.destroy
   end
 
   def user_is_not_equal_friend
