@@ -1,16 +1,26 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  subject { FactoryBot.create(:user) }
+  subject(:user) { described_class.new }
 
   describe 'relationships' do
     it { is_expected.to have_many(:authored_posts).class_name("Post").dependent(:destroy).with_foreign_key(:author_id)}
-    it { is_expected.to have_many(:created_comments).class_name("Comment").dependent(:destroy).with_foreign_key(:commenter_id)}
+
+    it do
+      expect(user).to have_many(:created_comments)
+        .class_name("Comment").dependent(:destroy).with_foreign_key(:commenter_id)
+    end
+
     it { is_expected.to have_many(:friendships).dependent(:destroy) }
     it { is_expected.to have_many(:friends).through(:friendships) }
-    it { is_expected.to have_many(:received_friendships).class_name("Friendship").dependent(:destroy).with_foreign_key(:friend_id) }
+
+    it do
+      expect(user).to have_many(:received_friendships)
+        .class_name("Friendship").dependent(:destroy).with_foreign_key(:friend_id)
+    end
+
     it { is_expected.to have_many(:received_friends).through(:received_friendships) }
-    it { is_expected.to have_many(:likes).dependent(true) }
+    it { is_expected.to have_many(:likes).dependent(:destroy) }
     it { is_expected.to have_many(:notifications).dependent(:destroy) }
     it { is_expected.to have_one_attached(:avatar) }
     it { is_expected.to have_one_attached(:banner) }
@@ -24,14 +34,14 @@ RSpec.describe User, type: :model do
 
   describe 'validates first_name' do
     it { is_expected.to allow_value('first-name').for(:first_name) }
-    it { is_expected.to_not allow_value('f1r5t-n4m3').for(:first_name) }
-    it { is_expected.to_not allow_value('x').for(:first_name) }
+    it { is_expected.not_to allow_value('f1r5t-n4m3').for(:first_name) }
+    it { is_expected.not_to allow_value('x').for(:first_name) }
   end
 
   describe 'validates last_name' do
     it { is_expected.to allow_value('last-name').for(:last_name) }
-    it { is_expected.to_not allow_value('l4st-n4m3').for(:last_name) }
-    it { is_expected.to_not allow_value('x').for(:last_name) }
+    it { is_expected.not_to allow_value('l4st-n4m3').for(:last_name) }
+    it { is_expected.not_to allow_value('x').for(:last_name) }
   end
 
   describe 'validates email' do
@@ -55,7 +65,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'with query which returns exactly one user' do
-      it { expect(described_class.search('lastnameb').count).to eq(1) }
+      it { expect(described_class.search('firstname lastname').count).to eq(1) }
     end
 
     context 'with query which does not match any user' do
@@ -70,19 +80,15 @@ RSpec.describe User, type: :model do
       it { expect(described_class.search('lastnameb').count).to eq(1) }
     end
 
-    context 'with query which is a full name' do
-      it { expect(described_class.search('firstnameb lastnameb').count(1)).to eq(1) }
-    end
-
     context 'with empty query' do
       it { expect(described_class.search('').count).to eq(3) }
     end
   end
 
   describe '#full_name' do
-    let(:expected_result) { "#{subject.first_name} #{subject.last_name}" }
+    let(:expected_result) { "#{user.first_name} #{user.last_name}" }
 
-    it { expect(subject.full_name).to eq(expected_result) }
+    it { expect(user.full_name).to eq(expected_result) }
   end
 
   describe '#active_friends' do
@@ -146,19 +152,19 @@ RSpec.describe User, type: :model do
     let(:user1) { create :user }
     let(:user2) { create :user }
 
-    context 'user1 and user2 are not friends' do
+    context 'when user1 and user2 are not friends' do
       it { expect(user1.friendship_status_with(user2)).to eq([:no_friendship, nil]) }
       it { expect(user2.friendship_status_with(user1)).to eq([:no_friendship, nil]) }
     end
 
-    context 'user1 sent friendship request to user2' do
+    context 'when user1 sent friendship request to user2' do
       let!(:friendship) { create(:friendship, user: user1, friend: user2) }
 
       it { expect(user1.friendship_status_with(user2)).to eq([:friend, friendship]) }
       it { expect(user2.friendship_status_with(user1)).to eq([:request, user2.received_friendship_request_from(user1)]) }
     end
 
-    context 'user1 and user2 are friends' do
+    context 'when user1 and user2 are friends' do
       let!(:friendship1) { create(:friendship, user: user1, friend: user2) }
       let!(:friendship2) { create(:friendship, user: user2, friend: user1) }
 
@@ -184,8 +190,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'when user1 and user2 are friends' do
-      let!(:friendship1) { create(:friendship, user: user1, friend: user2) }
-      let!(:friendship2) { create(:friendship, user: user2, friend: user1) }
+      let!(:friendship) { create(:friendship, :for_mutual, user: user1, friend: user2) }
 
       it { expect(user1.is_friends_with?(user2)).to be true }
       it { expect(user2.is_friends_with?(user1)).to be true }
