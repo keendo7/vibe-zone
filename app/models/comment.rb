@@ -1,11 +1,13 @@
 class Comment < ApplicationRecord
-  belongs_to :commentable, polymorphic: true, counter_cache: :commentable_count
+  belongs_to :commentable, polymorphic: true, counter_cache: :commentable_count, inverse_of: :comments
   belongs_to :commenter, class_name: 'User'
-  belongs_to :parent, class_name: 'Comment', foreign_key: :parent_id, optional: true
+  belongs_to :parent, class_name: 'Comment', optional: true, inverse_of: :replies
   
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :notifications, as: :notifiable, dependent: :destroy
-  has_many :replies, -> { includes(:commenter, :commentable).order(created_at: :asc) }, class_name: 'Comment', foreign_key: :parent_id, dependent: :destroy
+  has_many :replies, lambda {
+    includes(:commenter, :commentable).order(created_at: :asc)
+  }, class_name: 'Comment', foreign_key: :parent_id, dependent: :destroy, inverse_of: :parent
   
   validates :content, length: { in: 1..250 }
   validate :parent_exists, if: -> { parent_id.present? }

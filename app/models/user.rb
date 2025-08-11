@@ -14,14 +14,18 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: %i[facebook google_oauth2]
   
-  has_many :authored_posts, -> { order(created_at: :desc) }, foreign_key: 'author_id', class_name: 'Post', dependent: :destroy
-  has_many :created_comments, foreign_key: 'commenter_id', class_name: 'Comment', dependent: :destroy
+  has_many :authored_posts, lambda {
+    order(created_at: :desc)
+  }, foreign_key: 'author_id', class_name: 'Post', dependent: :destroy, inverse_of: :author
+  has_many :created_comments, foreign_key: 'commenter_id', class_name: 'Comment', dependent: :destroy, 
+                              inverse_of: :commenter
   has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships
-  has_many :received_friendships, class_name: 'Friendship', foreign_key: 'friend_id', dependent: :destroy
+  has_many :received_friendships, class_name: 'Friendship', foreign_key: 'friend_id', dependent: :destroy, 
+                                  inverse_of: :friend
   has_many :received_friends, through: :received_friendships, source: 'user'
   has_many :likes, dependent: :destroy
-  has_many :notifications, -> { order(was_read: :asc, created_at: :desc) }, dependent: :destroy
+  has_many :notifications, -> { order(was_read: :asc, created_at: :desc) }, dependent: :destroy, inverse_of: :user
 
   has_one_attached :avatar
   has_one_attached :banner
@@ -37,7 +41,7 @@ class User < ApplicationRecord
   end
   
   def pending_friends
-    friends.select{ |friend| !friend.friends.include?(self) }  
+    friends.select{ |friend| friend.friends.exclude?(self) }  
   end
 
   def friendship_status_with(user)
@@ -61,7 +65,7 @@ class User < ApplicationRecord
   end
 
   def new_notifications_count
-    notifications.reject(&:was_read).count
+    notifications.count { |element| !element.was_read }
   end
 
   def timeline
@@ -93,8 +97,8 @@ class User < ApplicationRecord
     find_or_create_by(provider: auth.provider, uid: auth.uid) do |user|
       user.email = auth.info.email || "#{auth.uid}@#{auth.provider}.com"
       user.password = Devise.friendly_token[0, 20]
-      user.first_name = auth.info.name.split(" ")[0]
-      user.last_name = auth.info.name.split(" ")[1] 
+      user.first_name = auth.info.name.split[0]
+      user.last_name = auth.info.name.split[1] 
       url = URI.parse(auth.info.image)
       filename = File.basename(url.path)
       file = URI.open(url)
