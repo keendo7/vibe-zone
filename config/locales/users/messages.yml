@@ -1,0 +1,5 @@
+en:
+  messages:
+    user:
+      avatar_updated: 'Avatar updated successfully.'
+      avatar_removed: 'Avatar removed successfully.'

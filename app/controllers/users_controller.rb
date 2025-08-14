@@ -32,12 +32,13 @@ class UsersController < ApplicationController
     @user.avatar.attach(params[:avatar])
 
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.replace(
-        dom_id(@user, :avatar),
-        partial: "users/avatar_container",
-        locals: { user: @user }
-        )
-      }
+      format.turbo_stream do
+        flash.now[:success] = t('messages.user.avatar_updated')
+        render turbo_stream: [
+          turbo_stream.replace(dom_id(@user, :avatar), partial: "users/avatar_container", locals: { user: @user }),
+          turbo_stream.update("flash", partial: "layouts/flash")  
+        ]
+      end
       format.html { redirect_back(fallback_location: root_path) }
     end
   end
@@ -47,12 +48,13 @@ class UsersController < ApplicationController
     @user.avatar.purge
 
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.replace(
-        dom_id(@user, :avatar),
-        partial: "users/avatar_container",
-        locals: { user: @user }
-        )
-      }
+      format.turbo_stream do
+        flash.now[:success] = t('messages.user.avatar_removed')
+        render turbo_stream: [
+          turbo_stream.replace(dom_id(@user, :avatar), partial: "users/avatar_container", locals: { user: @user }),
+          turbo_stream.update("flash", partial: "layouts/flash")
+        ]
+      end
       format.html { redirect_back(fallback_location: root_path) }
     end
   end
