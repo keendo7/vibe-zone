@@ -18,7 +18,7 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
-      flash[:success] = "User updated successfully"
+      flash[:success] = t('messages.user.updated')
       redirect_to @user
     else
       flash.now[:alert] = @user.errors.full_messages.join(', ')
@@ -34,7 +34,7 @@ class UsersController < ApplicationController
       format.turbo_stream do
         flash.now[:success] = t('messages.user.avatar_updated')
         render turbo_stream: [
-          turbo_stream.replace("user_avatar", partial: "users/avatar_container", locals: { user: current_user}),
+          turbo_stream.replace("user_avatar", partial: "users/avatar_container", locals: { user: current_user }),
           turbo_stream.update("flash", partial: "layouts/flash")  
         ]
       end
@@ -62,7 +62,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream do
-        flash.now[:success] = "Banner successfully removed"
+        flash.now[:success] = t('messages.user.banner_removed')
         render turbo_stream: [
           turbo_stream.replace("user_banner", partial: "users/banner", locals: { user: current_user }),
           turbo_stream.update("flash", partial: "layouts/flash")
@@ -77,7 +77,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream do
-        flash.now[:success] = "Banner updated successfully"
+        flash.now[:success] = t('messages.user.banner_updated')
         render turbo_stream: [
           turbo_stream.replace("user_banner", partial: "users/banner", locals: { user: current_user }),
           turbo_stream.update("flash", partial: "layouts/flash")
