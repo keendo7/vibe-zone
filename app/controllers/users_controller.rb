@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user, only: [:show]
+  before_action :set_user, only: [:show, :update]
 
   def show
     @pagy, @posts = pagy_countless(@user.authored_posts, items: 10)
@@ -17,8 +17,8 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = current_user
     if @user.update(user_params)
+      flash[:success] = "User updated successfully"
       redirect_to @user
     else
       flash.now[:alert] = @user.errors.full_messages.join(', ')
@@ -28,44 +28,63 @@ class UsersController < ApplicationController
   end
 
   def update_avatar
-    @user = current_user
-    @user.avatar.attach(params[:avatar])
+    current_user.avatar.attach(params[:avatar])
 
     respond_to do |format|
       format.turbo_stream do
         flash.now[:success] = t('messages.user.avatar_updated')
         render turbo_stream: [
-          turbo_stream.replace(dom_id(@user, :avatar), partial: "users/avatar_container", locals: { user: @user }),
+          turbo_stream.replace("user_avatar", partial: "users/avatar_container", locals: { user: current_user}),
           turbo_stream.update("flash", partial: "layouts/flash")  
         ]
       end
-      format.html { redirect_back(fallback_location: root_path) }
+      format.html { redirect_back_or_to root_path }
     end
   end
 
   def remove_avatar
-    @user = current_user
-    @user.avatar.purge
+    current_user.avatar.purge
 
     respond_to do |format|
       format.turbo_stream do
         flash.now[:success] = t('messages.user.avatar_removed')
         render turbo_stream: [
-          turbo_stream.replace(dom_id(@user, :avatar), partial: "users/avatar_container", locals: { user: @user }),
+          turbo_stream.replace("user_avatar", partial: "users/avatar_container", locals: { user: current_user }),
           turbo_stream.update("flash", partial: "layouts/flash")
         ]
       end
-      format.html { redirect_back(fallback_location: root_path) }
+      format.html { redirect_back_or_to root_path }
     end
   end
 
   def remove_banner
     current_user.banner.purge
-    redirect_to current_user
+
+    respond_to do |format|
+      format.turbo_stream do
+        flash.now[:success] = "Banner successfully removed"
+        render turbo_stream: [
+          turbo_stream.replace("user_banner", partial: "users/banner", locals: { user: current_user }),
+          turbo_stream.update("flash", partial: "layouts/flash")
+        ]
+      end
+      format.html { redirect_back_or_to root_path }
+    end
   end
 
   def update_banner
-    current_user.banner.attach(params[:user][:banner])
+    current_user.banner.attach(params[:banner])
+
+    respond_to do |format|
+      format.turbo_stream do
+        flash.now[:success] = "Banner updated successfully"
+        render turbo_stream: [
+          turbo_stream.replace("user_banner", partial: "users/banner", locals: { user: current_user }),
+          turbo_stream.update("flash", partial: "layouts/flash")
+        ]
+      end
+      format.html { redirect_back_or_to root_path }
+    end
   end
 
   def search
@@ -84,7 +103,7 @@ class UsersController < ApplicationController
   def set_user
     @user = User.friendly.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    redirect_back(fallback_location: root_path, alert: t('errors.user.not_found'))
+    redirect_back_or_to root_path, alert: t('errors.user.not_found')
   end
 
   def set_friendship_data

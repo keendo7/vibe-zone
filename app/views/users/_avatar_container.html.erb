@@ -1,9 +1,9 @@
-<%= turbo_frame_tag dom_id(user, :avatar), class: 'd-flex align-items-end justify-content-end' do %>  
-  <div class="avatar_container" data-controller="user-avatar">
+<%= turbo_frame_tag "user_avatar", class: 'd-flex align-items-end justify-content-end' do %>  
+  <div class="avatar_container" data-controller="upload-image">
     <% if current_user == user %>
       <%= form_tag(update_avatar_path, multipart: true, method: :patch, data: { turbo_stream: true }) do %>
         <div class="avatar_upload_container">
-          <%= file_field_tag "avatar", accept: ".png, .jpeg, .jpg", data: { action: "change->user-avatar#uploadAvatar" } %>
+          <%= file_field_tag "avatar", accept: ".png, .jpeg, .jpg", data: { action: "change->upload-image#upload" } %>
           <label for="avatar" class="upload-file-block">
             <i class="fas fa-camera upload-button"></i>
           </label>
