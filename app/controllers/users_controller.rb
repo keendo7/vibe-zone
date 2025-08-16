@@ -34,7 +34,7 @@ class UsersController < ApplicationController
       format.turbo_stream do
         flash.now[:success] = t('messages.user.avatar_updated')
         render turbo_stream: [
-          turbo_stream.replace("user_avatar", partial: "users/avatar_container", locals: { user: current_user }),
+          turbo_stream.replace("user_avatar", partial: "users/avatar_container", locals: { user: current_user}),
           turbo_stream.update("flash", partial: "layouts/flash")  
         ]
       end
