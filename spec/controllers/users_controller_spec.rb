@@ -364,9 +364,7 @@ RSpec.describe UsersController, type: :controller do
         request.env['HTTP_REFERER'] = user_path(user1)
         patch :update_avatar, params: params
 
-        expect(response.media_type).to eq("text/html")
-        expect(response.content_type).to eq("text/html; charset=utf-8")
-        expect(response).to redirect_to(user1)
+        expect_html_response_with_redirect_to(user1)
       end
       
       it 'returns status code ok' do
@@ -413,9 +411,7 @@ RSpec.describe UsersController, type: :controller do
         request.env['HTTP_REFERER'] = user_path(user1)
         delete :remove_avatar
 
-        expect(response.media_type).to eq("text/html")
-        expect(response.content_type).to eq("text/html; charset=utf-8")
-        expect(response).to redirect_to(user1)
+        expect_html_response_with_redirect_to(user1)
       end
     end
   end
@@ -459,9 +455,7 @@ RSpec.describe UsersController, type: :controller do
         request.env['HTTP_REFERER'] = user_path(user1)
         patch :update_banner, params: params
 
-        expect(response.media_type).to eq("text/html")
-        expect(response.content_type).to eq("text/html; charset=utf-8")
-        expect(response).to redirect_to(user1)
+        expect_html_response_with_redirect_to(user1)
       end
     end
   end
@@ -497,9 +491,7 @@ RSpec.describe UsersController, type: :controller do
         request.env['HTTP_REFERER'] = user_path(user1)
         patch :remove_banner
 
-        expect(response.media_type).to eq("text/html")
-        expect(response.content_type).to eq("text/html; charset=utf-8")
-        expect(response).to redirect_to(user1)
+        expect_html_response_with_redirect_to(user1)
       end
     end
   end
@@ -508,5 +500,11 @@ RSpec.describe UsersController, type: :controller do
     expect(response.media_type).to eq("text/vnd.turbo-stream.html")
     expect(response.content_type).to eq("text/vnd.turbo-stream.html; charset=utf-8")
     expect(response.body).to include('<turbo-stream action="replace"')
+  end
+
+  def expect_html_response_with_redirect_to(path)
+    expect(response.media_type).to eq("text/html")
+    expect(response.content_type).to eq("text/html; charset=utf-8")
+    expect(response).to redirect_to(path)
   end
 end
