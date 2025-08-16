@@ -12,3 +12,9 @@ eagerLoadControllersFrom("controllers", application)
 
 import SearchController from "./search_controller.js"
 application.register("search", SearchController)
+
+import UploadImageController from "./upload_image_controller.js"
+application.register("upload-image", UploadImageController)
+
+import ToggleController from "./toggle_controller.js"
+application.register("toggle", ToggleController)

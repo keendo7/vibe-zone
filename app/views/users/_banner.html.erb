@@ -1,15 +1,20 @@
-<div class="banner_container d-flex flex-column align-items-end justify-content-end" data-controller="user-banner">
-  <% if user == current_user %>
-    <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <i class="fas fa-camera upload-button"></i>
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenu2"> 
-      <%= file_field_tag "file", accept: ".png, .jpeg, .jpg", data: { action: "change->user-banner#uploadBanner" } %>
-      <label for="file" class="dropdown-item" type="button">Upload from files</label>
-      <% if @user.banner.attached? %>
-        <%= link_to "Remove banner", remove_banner_path, class: "dropdown-item", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
-      <% end %>
-    </div>
-  <% end %>
-  <%= user_banner(@user) %>
-</div>
+<%= turbo_frame_tag "user_banner" do %>
+  <div class="banner_container d-flex flex-column align-items-end justify-content-end" data-controller="upload-image">
+    <% if user == current_user %>
+      <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-camera upload-button"></i>
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <%= form_tag(update_banner_path, multipart: true, method: :patch, data: {turbo_stream: true}) do %>
+          <%= file_field_tag "banner", accept: ".png, .jpeg, .jpg", data: { action: "change->upload-image#upload" } %>
+          <label for="banner" class="dropdown-item" type="button">Upload from files</label>
+          <%= submit_tag "Upload", style: "display: none;" %>
+        <% end %>
+        <% if user.banner.attached? %>
+          <%= button_to "Remove banner", remove_banner_path, class: "dropdown-item", method: :delete, data: { turbo_method: :delete, turbo_stream: true, turbo_confirm: "Are you sure?" } %>
+        <% end %>
+      </div>
+    <% end %>
+    <%= user_banner(user) %>
+  </div>
+<% end %>
