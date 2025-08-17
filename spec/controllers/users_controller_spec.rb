@@ -340,11 +340,6 @@ RSpec.describe UsersController, type: :controller do
         }
       end
 
-      it 'assigns @user' do
-        patch_request
-        expect(assigns(:user)).to eq(user1)
-      end
-
       it 'updates avatar' do
         expect{patch_request}.to change{user1.reload.avatar.attached?}.from(false).to(true)
         expect(user1.avatar.filename.to_s).to eq("avatar1.png")
@@ -355,21 +350,21 @@ RSpec.describe UsersController, type: :controller do
         expect(response).to render_template(partial: "users/_avatar_container")
       end
 
+      it 'renders flash message' do
+        patch_request
+        expect(flash.now[:success]).to eq I18n.t('messages.user.avatar_updated')
+      end
+
       it 'uses turbo_stream replace action and accepts turbo_stream format' do
         patch_request
-      
-        expect(response.media_type).to eq("text/vnd.turbo-stream.html")
-        expect(response.content_type).to eq("text/vnd.turbo-stream.html; charset=utf-8")
-        expect(response.body).to include('<turbo-stream action="replace"')
+        expect_turbo_stream_response_with_replace_action
       end
 
       it 'accepts html format and redirects back' do
         request.env['HTTP_REFERER'] = user_path(user1)
         patch :update_avatar, params: params
 
-        expect(response.media_type).to eq("text/html")
-        expect(response.content_type).to eq("text/html; charset=utf-8")
-        expect(response).to redirect_to(user1)
+        expect_html_response_with_redirect_to(user1)
       end
       
       it 'returns status code ok' do
@@ -387,11 +382,6 @@ RSpec.describe UsersController, type: :controller do
       before do
         user1.avatar.attach(avatar_asset)
       end
-
-      it 'assigns @user' do
-        delete_request
-        expect(assigns(:user)).to eq(user1)
-      end
   
       it 'removes avatar' do
         expect{delete_request}.to change{user1.reload.avatar.attached?}.from(true).to(false)
@@ -404,9 +394,12 @@ RSpec.describe UsersController, type: :controller do
   
       it 'uses turbo_stream replace action and accepts turbo_stream format' do
         delete_request
-        expect(response.media_type).to eq("text/vnd.turbo-stream.html")
-        expect(response.content_type).to eq("text/vnd.turbo-stream.html; charset=utf-8")
-        expect(response.body).to include('<turbo-stream action="replace"')
+        expect_turbo_stream_response_with_replace_action
+      end
+
+      it 'renders flash message' do
+        delete_request
+        expect(flash.now[:success]).to eq I18n.t('messages.user.avatar_removed')
       end
   
       it 'returns status code ok' do
@@ -418,22 +411,18 @@ RSpec.describe UsersController, type: :controller do
         request.env['HTTP_REFERER'] = user_path(user1)
         delete :remove_avatar
 
-        expect(response.media_type).to eq("text/html")
-        expect(response.content_type).to eq("text/html; charset=utf-8")
-        expect(response).to redirect_to(user1)
+        expect_html_response_with_redirect_to(user1)
       end
     end
   end
 
   describe "[PATCH] #update_banner" do
-    let(:patch_request) { patch :update_banner, params: params }
+    let(:patch_request) { patch :update_banner, params: params, format: :turbo_stream }
 
     context 'with correct params' do
       let!(:params) do
         {
-          user: {
-            banner: banner_asset
-          }
+          banner: banner_asset
         }
       end
 
@@ -442,15 +431,37 @@ RSpec.describe UsersController, type: :controller do
         expect(user1.banner.filename.to_s).to eq("banner1.png")
       end
 
-      it 'returns status code no_content' do
+      it 'renders banner partial' do
         patch_request
-        expect(response).to have_http_status(:no_content)
+        expect(response).to render_template(partial: "users/_banner")
+      end
+
+      it 'returns status code ok' do
+        patch_request
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'uses turbo_stream replace action and accepts turbo_stream format' do
+        patch_request
+        expect_turbo_stream_response_with_replace_action
+      end
+
+      it 'renders flash message' do
+        patch_request
+        expect(flash.now[:success]).to eq I18n.t('messages.user.banner_updated')
+      end
+
+      it 'accepts html format and redirects back' do
+        request.env['HTTP_REFERER'] = user_path(user1)
+        patch :update_banner, params: params
+
+        expect_html_response_with_redirect_to(user1)
       end
     end
   end
 
   describe "[DELETE] #remove_banner" do
-    let(:delete_request) { delete :remove_banner }
+    let(:delete_request) { delete :remove_banner, format: :turbo_stream }
 
     context 'with banner attached' do
       before do
@@ -461,16 +472,39 @@ RSpec.describe UsersController, type: :controller do
         expect{delete_request}.to change{user1.reload.banner.attached?}.from(true).to(false)
       end
 
-      it 'redirects to user' do
+      it 'renders banner partial' do
         delete_request
-        expect(response).to redirect_to(user1)
+        expect(response).to render_template(partial: 'users/_banner')
       end
 
-      it 'uses html response' do
+      it 'renders flash message' do
         delete_request
-        expect(response.media_type).to eq('text/html')
-        expect(response.content_type).to eq('text/html; charset=utf-8')
+        expect(flash.now[:success]).to eq I18n.t('messages.user.banner_removed')
+      end
+
+      it 'uses turbo_stream replace action and accepts turbo_stream format' do
+        delete_request
+        expect_turbo_stream_response_with_replace_action
+      end
+
+      it 'accepts html format and redirects back' do
+        request.env['HTTP_REFERER'] = user_path(user1)
+        patch :remove_banner
+
+        expect_html_response_with_redirect_to(user1)
       end
     end
+  end
+
+  def expect_turbo_stream_response_with_replace_action
+    expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+    expect(response.content_type).to eq("text/vnd.turbo-stream.html; charset=utf-8")
+    expect(response.body).to include('<turbo-stream action="replace"')
+  end
+
+  def expect_html_response_with_redirect_to(path)
+    expect(response.media_type).to eq("text/html")
+    expect(response.content_type).to eq("text/html; charset=utf-8")
+    expect(response).to redirect_to(path)
   end
 end

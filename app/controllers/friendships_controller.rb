@@ -7,20 +7,20 @@ class FriendshipsController < ApplicationController
     
     if @friendship.save
       notify(@user, @friendship)
-      redirect_back(fallback_location: root_path)
+      redirect_back_or_to root_path
     end
   end
 
   def destroy
     @friendship = current_user.friendships.find(params[:id])
-    redirect_back(fallback_location: root_path) if @friendship.destroy
+    redirect_back_or_to root_path if @friendship.destroy
   rescue ActiveRecord::RecordNotFound
     redirect_to(root_path, alert: t('errors.friendship.not_found'))
   end
 
   def decline
     @friendship = current_user.received_friendships.find(params[:id])
-    redirect_back(fallback_location: root_path) if @friendship.destroy
+    redirect_back_or_to root_path if @friendship.destroy
   rescue ActiveRecord::RecordNotFound
     redirect_to(root_path, alert: t('errors.friendship.not_found'))
   end

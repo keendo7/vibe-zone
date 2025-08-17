@@ -1,0 +1,8 @@
+en:
+  messages:
+    user:
+      avatar_updated: 'Avatar updated successfully.'
+      avatar_removed: 'Avatar removed successfully.'
+      banner_updated: 'Banner updated successfully.'
+      banner_removed: 'Banner removed successfully.'
+      updated: 'User updated successfully.'
