@@ -12,7 +12,7 @@ class CommentsController < ApplicationController
       end
     else
       flash[:alert] = @comment.errors.full_messages.join(', ')
-      redirect_back fallback_location: root_path
+      redirect_back_or_to root_path
     end
   end
 
@@ -75,7 +75,7 @@ class CommentsController < ApplicationController
         flash.now[:alert] = t("errors.comment.not_found")
         render turbo_stream: turbo_stream.update("flash", partial: "layouts/flash")
       }
-      format.html { redirect_back(fallback_location: root_path, alert: t("errors.comment.not_found")) }
+      format.html { redirect_back_or_to root_path, alert: t("errors.comment.not_found") }
     end
   end
 

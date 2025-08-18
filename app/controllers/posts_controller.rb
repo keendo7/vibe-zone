@@ -61,7 +61,7 @@ class PostsController < ApplicationController
       end
     else
       flash[:alert] = @post.errors.full_messages.join(', ')
-      redirect_back fallback_location: root_path
+      redirect_back_or_to root_path
     end
   end
 
@@ -83,7 +83,7 @@ class PostsController < ApplicationController
     if referer_path == post_path(@post)
       redirect_to root_path, notice: t('messages.post.deleted')
     else
-      redirect_back fallback_location: root_path, notice: t('messages.post.deleted')
+      redirect_back_or_to root_path, notice: t('messages.post.deleted')
     end
   end
 
