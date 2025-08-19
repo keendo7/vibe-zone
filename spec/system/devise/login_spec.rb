@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "User logs in" do
+RSpec.describe 'User logs in' do
   let!(:user) { create(:user) }
 
   scenario 'with valid email and password' do
@@ -16,7 +16,7 @@ RSpec.describe "User logs in" do
     expect(page).to have_content('Invalid Email or password.')
     expect(page).to have_current_path(new_user_session_path)
   end
-  
+
   scenario 'with invalid password' do
     login_with(user.email, 'wrongpassword')
 

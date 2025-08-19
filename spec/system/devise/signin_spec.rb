@@ -12,7 +12,7 @@ RSpec.describe 'User Sign In', type: :system do
 
   scenario 'with invalid email' do
     sign_in_with('invalid_email', user.first_name, user.last_name, user.password, user.password_confirmation)
-    
+
     expect(page).to have_content('Email is invalid')
   end
 
@@ -55,7 +55,7 @@ RSpec.describe 'User Sign In', type: :system do
     fill_in 'user_last_name', with: last_name
     fill_in 'user_password', with: password
     fill_in 'user_password_confirmation', with: password_confirmation
-    
+
     click_button 'Sign up'
   end
 end

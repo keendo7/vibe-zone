@@ -6,7 +6,7 @@ RSpec.describe 'User requests password reset' do
   scenario 'with valid email' do
     reset_with(user.email)
 
-    expect(page).to have_content I18n.t("devise.passwords.send_instructions")
+    expect(page).to have_content I18n.t('devise.passwords.send_instructions')
   end
 
   scenario 'with blank email' do
