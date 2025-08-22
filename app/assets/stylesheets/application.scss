@@ -268,15 +268,11 @@ ul {
   transition: filter 0.3s ease;
 }
 
-.image-small {
-  display: block;
-  max-width: 100%;
+.image.small {
   max-height: 200px;
-  object-fit: contain;
-  transition: filter 0.3s ease;
 }
 
-.image-small:hover, .image:hover {
+.image:hover {
   filter: brightness(70%);
 }
 

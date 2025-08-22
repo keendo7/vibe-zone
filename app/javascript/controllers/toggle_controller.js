@@ -26,6 +26,6 @@ export default class extends Controller {
   }
 
   toggleImageSize(event) {
-    event.target.classList.toggle("image-small");
+    event.target.classList.toggle("small");
   }
 }

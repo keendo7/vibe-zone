@@ -67,6 +67,8 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::IntegrationHelpers, type: :system
+  config.include Warden::Test::Helpers
+  config.include ActionView::RecordIdentifier, type: :system
 
   config.before(:each) do
     Sidekiq::Worker.clear_all

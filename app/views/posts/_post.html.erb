@@ -1,42 +1,40 @@
 <%= turbo_frame_tag dom_id(post), class: "w-100 p-3 d-flex justify-content-center shadow mb-3 bg-white rounded" do %>
-  <div class="w-100", style="max-width: 900px;">
-    <div class="d-flex flex-row gap-2">
-      <%= image_tag user_avatar(post.author, 50), id: "avatar" %>
-      <div class="d-flex flex-column w-100">
-        <div class="d-flex flex-sm-row flex-column gap-sm-1">
-          <b> <%= link_to post.author.full_name, user_path(post.author), data: { turbo: false } %> </b>
-          <div class="d-flex fw-light">
-            <% if (post.updated_at - post.created_at) > 1 %>
-              <span> ∙ <%= time_ago_in_words(post.created_at) %> ago </span>
-              <p title="Edited <%= time_ago_in_words(post.updated_at) %> ago" class="mb-0">
-                *
-              </p>
-            <% else %>
-              <span> ∙ <%= time_ago_in_words(post.created_at) %> ago </span>
-            <% end %>
-          </div>
+  <div class="d-flex flex-row gap-2 w-100">
+    <%= image_tag user_avatar(post.author, 50), id: "avatar" %>
+    <div class="d-flex flex-column w-100">
+      <div class="d-flex flex-sm-row flex-column gap-sm-1">
+        <b> <%= link_to post.author.full_name, user_path(post.author), data: { turbo: false } %> </b>
+        <div class="d-flex fw-light">
+          <span> ∙ <%= time_ago_in_words(post.created_at) %> ago </span>
         </div>
-        <div class="d-flex text-break fs-5">
-          <%= post.content %>
-        </div>
-        <div>
-          <%= image_tag(post.image_variant, class: "image image-small", loading: "lazy", data: { controller: "toggle", action: "click->toggle#toggleImageSize" }) if post.image.attached? %> 
-        </div>
-        <%= render partial: "posts/buttons", locals: { post: post } %>
       </div>
-
-      <% if post.author == current_user %>
-        <div class="dropdown">
-          <button style="border: none; background: transparent; outline: none;" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa-solid fa-ellipsis-vertical"></i> 
-          </button>
-
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <%= button_to "Delete", post_path(post), class: "dropdown-item", method: :delete, data: { turbo: false } %>
-            <%= link_to "Edit", edit_post_path(post), class: "dropdown-item", data: { turbo_frame: "modal" } %>
-          </div>
+      <div class="d-flex text-break fs-5">
+        <%= post.content %>
+      </div>
+      <% if post.image.attached? %>
+        <div>
+          <%= image_tag(post.image_variant, id: "post-image", class: "image small", loading: "lazy", data: { controller: "toggle", action: "click->toggle#toggleImageSize" }) %> 
         </div>
       <% end %>
+      <%= render partial: "posts/buttons", locals: { post: post } %>
+      <% if (post.updated_at - post.created_at) > 1 %>
+        <span class="fst-italic fw-light mt-3">
+          <i class="fa-solid fa-pen-to-square fst-italic fw-light"></i> Edited <%= time_ago_in_words(post.updated_at) %> ago
+        </span>
+      <% end %>
     </div>
+
+    <% if post.author == current_user %>
+      <div class="dropdown">
+        <button style="border: none; background: transparent; outline: none;" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa-solid fa-ellipsis-vertical"></i> 
+        </button>
+
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <%= button_to "Delete", post_path(post), class: "dropdown-item", method: :delete, data: { turbo: false } %>
+          <%= link_to "Edit", edit_post_path(post), class: "dropdown-item", data: { turbo_frame: "modal" } %>
+        </div>
+      </div>
+    <% end %>
   </div>
 <% end %>
