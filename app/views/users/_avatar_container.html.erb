@@ -17,7 +17,7 @@
   <% if user.avatar.attached? %>
     <div class="position-absolute">
       <% if current_user == user %>
-        <%= button_to remove_avatar_path, class: "btn btn-dark round-btn px-2", method: :delete do %>
+        <%= button_to remove_avatar_path, class: "btn btn-dark round-btn px-2", id: 'remove-avatar', method: :delete do %>
           <i class="fa-solid fa-xl fa-trash"></i>
         <% end %>
       <% end %>

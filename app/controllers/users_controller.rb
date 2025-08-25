@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   def update
     if @user.update(user_params)
       flash[:success] = t('messages.user.updated')
-      redirect_to @user
+      redirect_back_or_to @user
     else
       flash.now[:alert] = @user.errors.full_messages.join(', ')
       @user.reload
@@ -34,7 +34,7 @@ class UsersController < ApplicationController
       format.turbo_stream do
         flash.now[:success] = t('messages.user.avatar_updated')
         render turbo_stream: [
-          turbo_stream.replace("user_avatar", partial: "users/avatar_container", locals: { user: current_user}),
+          turbo_stream.replace("user_avatar", partial: "users/avatar_container", locals: { user: current_user }),
           turbo_stream.update("flash", partial: "layouts/flash")  
         ]
       end
@@ -112,6 +112,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :avatar, :banner)
+    params.require(:user).permit(:first_name, :last_name, :email, :avatar, :banner)
   end
 end
