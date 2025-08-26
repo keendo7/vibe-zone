@@ -8,14 +8,7 @@
           <div class="d-flex flex-sm-row flex-column gap-sm-1">
             <b> <%= link_to comment.commenter.full_name, user_path(comment.commenter), data: { turbo_frame: "_top" } %> </b>
             <div class="fw-light d-flex"> ∙
-              <% if (comment.updated_at - comment.created_at) > 1 %>
-                <%= time_ago_in_words(comment.created_at) %> ago
-                <p title="Edited <%= time_ago_in_words(comment.updated_at) %> ago" class="mb-0">
-                  *
-                </p>
-              <% else %>
-                <%= time_ago_in_words(comment.created_at) %> ago
-              <% end %>
+              <%= time_ago_in_words(comment.created_at) %> ago
             </div>
           </div>
         </div>
@@ -34,7 +27,11 @@
               }
           %>
         </div>
-        
+        <% if (comment.updated_at - comment.created_at) > 1 %>
+          <span class="fst-italic fw-light mb-2">
+            <i class="fa-solid fa-pen-to-square fst-italic fw-light"></i> Edited <%= time_ago_in_words(comment.updated_at) %> ago
+          </span>
+        <% end %>
         <div class="d-flex">
           <% if comment.parent_id.nil? && comment.replies.any? %>
             <%= button_to "#{pluralize(comment.replies.count, 'reply')}", replies_comment_path(comment), class: "round-btn blank",

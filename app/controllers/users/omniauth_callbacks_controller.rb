@@ -24,6 +24,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
   end
 
+  def failure
+    redirect_to new_user_session_path, alert: "Authentication failed, please try again."
+  end
+
   private
 
   def auth
